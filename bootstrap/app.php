@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Application;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\PetugasMiddleware;
+use App\Http\Middleware\PeminjamMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Application;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
