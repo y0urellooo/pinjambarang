@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
     });
     // Auth Routes
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -13,21 +13,24 @@ Route::get('/', function () {
     Route::get('/register', [AuthController::class, 'showRegister']);
     Route::post('/register', [AuthController::class, 'register']);
 
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-    // Admin Routes 
+    // Admin Routes
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
-    })->middleware('auth', 'admin');
+    })->middleware(['auth']);
 
     // Petugas Routes
     Route::get('/petugas/dashboard', function () {
         return view('petugas.dashboard');
-    })->middleware('auth', 'petugas');
+    })->middleware(['auth']);
 
     // Peminjam Routes
     Route::get('/peminjam/dashboard', function() {
         return view('peminjam.dashboard');
-    })->middleware('auth', 'peminjam');
+    })->middleware(['auth']);
+
+
+    Route::resource('/admin/users', App\Http\Controllers\Admin\UserController::class);
 
