@@ -12,12 +12,12 @@ class AuthController extends Controller
     // ===== FORM =====
     public function showLogin()
     {
-        return view('/login');
+        return view('auth.login');
     }
 
     public function showRegister()
     {
-        return view('/register');
+        return view('auth.register');
     }
 
     // ===== ACTION =====
@@ -50,22 +50,20 @@ class AuthController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => 'admin', // default
+            'role'     => 'peminjam', // default
         ]);
 
         return redirect('/login')->with('success', 'Registrasi berhasil');
     }
 
-   public function logout(Request $request)
+  public function logout(Request $request)
 {
     Auth::logout();
 
-    // Hapus session dan regenerate token
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    // Redirect ke landing page
-    return redirect('/'); // <-- pastikan ini '/'
+    return redirect('/login');
 }
 
     // ===== REDIRECT ROLE =====
