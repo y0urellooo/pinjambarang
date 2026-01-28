@@ -3,10 +3,10 @@
 @section('page_title', 'Edit Kategori')
 
 @section('content')
-<h3 class="mb-4">Edit Kategori</h3>
 
 <div class="card col-md-6">
     <div class="card-body">
+        <h3 class="mb-4">Edit Kategori</h3>
         <form action="{{ route('kategori.update', $kategori->id) }}" method="POST">
             @csrf
             @method('PUT')

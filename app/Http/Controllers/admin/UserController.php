@@ -12,12 +12,12 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('users.index', compact('users'));
+        return view('admin.users.index', compact('users'));
     }
 
     public function create()
     {
-        return view('users.create');
+        return view('admin.users.create');
     }
 
     public function store(Request $request)
@@ -27,7 +27,22 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
             'role' => 'required',
+        ], [
+            'name.required' => 'Nama wajib diisi',
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'email.unique' => 'Email sudah terdaftar',
+            'password.required' => 'Password wajib diisi',
+            'password.min' => 'Password minimal 6 karakter',
+            'role.required' => 'Role wajib dipilih',
         ]);
+
+        // TAMBAH ADMIN
+        if (auth()->user()->role === 'admin' && $request->role === 'admin') {
+            return back()
+                ->withErrors(['role' => 'Admin tidak boleh menambahkan admin lain'])
+                ->withInput();
+        }
 
         User::create([
             'name' => $request->name,
@@ -37,14 +52,14 @@ class UserController extends Controller
         ]);
 
         return redirect()
-            ->route('users.index')
+            ->route('admin.users.index')
             ->with('success', 'User berhasil ditambahkan');
     }
 
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('users.edit', compact('user'));
+        return view('admin.users.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
@@ -53,6 +68,12 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
             'role' => 'required',
+        ], [
+            'name.required' => 'Nama wajib diisi',
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'email.unique' => 'Email sudah terdaftar',
+            'role.required' => 'Role wajib dipilih',
         ]);
 
         $user = User::findOrFail($id);
@@ -72,10 +93,15 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        if ($user->role === 'admin') {
+            return back()
+                ->withErrors(['error' => 'User admin tidak dapat dihapus']);
+        }
+
         $user->delete();
 
         return redirect()
-            ->route('users.index')
+            ->route('admin.users.index')
             ->with('success', 'User berhasil dihapus');
     }
 }

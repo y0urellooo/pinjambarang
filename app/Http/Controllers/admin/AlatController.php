@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alat;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class AlatController extends Controller
@@ -14,7 +15,7 @@ class AlatController extends Controller
     public function index()
     {
         $alats = Alat::all();
-        return view('alats.index', compact('alats'));
+        return view('admin.alat.index', compact('alats'));
     }
 
     /**
@@ -22,7 +23,8 @@ class AlatController extends Controller
      */
     public function create()
     {
-        return view('alats.create');
+        $kategoris = Kategori::all();
+        return view('admin.alat.create', compact('kategoris'));
     }
 
     /**
@@ -35,23 +37,32 @@ class AlatController extends Controller
             'kode_alat'   => 'required|integer|unique:alats,kode_alat',
             'kategori_id' => 'required|exists:kategoris,id',
             'jumlah_alat' => 'required|integer|min:0',
-            'kondisi'     => 'required|in:tersedia,dipinjam,rusak,perbaikan',
-            'status'      => 'required|in:tersedia,dipinjam',
             'deskripsi'   => 'nullable|string',
+        ], [
+            'nama_alat.required'   => 'Nama alat wajib diisi',
+            'kode_alat.required'   => 'Kode alat wajib diisi',
+            'kode_alat.integer'    => 'Kode alat harus berupa angka',
+            'kode_alat.unique'     => 'Kode alat sudah digunakan',
+            'kategori_id.required' => 'Kategori wajib dipilih',
+            'kategori_id.exists'   => 'Kategori tidak valid',
+            'jumlah_alat.required' => 'Jumlah alat wajib diisi',
+            'jumlah_alat.integer'  => 'Jumlah alat harus berupa angka',
+            'jumlah_alat.min'      => 'Jumlah alat tidak boleh kurang dari 0',
+            'deskripsi.string'     => 'Deskripsi harus berupa teks',
         ]);
 
         Alat::create($validated);
 
-        return redirect()->route('alats.index')
+        return redirect()->route('alat.index')
             ->with('success', 'Alat berhasil ditambahkan');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Alat $alat)
+    public function show()
     {
-        return view('alats.show', compact('alat'));
+        // 
     }
 
     /**
@@ -59,7 +70,8 @@ class AlatController extends Controller
      */
     public function edit(Alat $alat)
     {
-        return view('alats.edit', compact('alat'));
+        $kategoris = Kategori::all();
+        return view('admin.alat.edit', compact('kategoris', 'alat'));
     }
 
     /**
@@ -72,14 +84,23 @@ class AlatController extends Controller
             'kode_alat'   => 'required|integer|unique:alats,kode_alat,' . $alat->id,
             'kategori_id' => 'required|exists:kategoris,id',
             'jumlah_alat' => 'required|integer|min:0',
-            'kondisi'     => 'required|in:tersedia,dipinjam,rusak,perbaikan',
-            'status'      => 'required|in:tersedia,dipinjam',
             'deskripsi'   => 'nullable|string',
+        ], [
+            'nama_alat.required'   => 'Nama alat wajib diisi',
+            'kode_alat.required'   => 'Kode alat wajib diisi',
+            'kode_alat.integer'    => 'Kode alat harus berupa angka',
+            'kode_alat.unique'     => 'Kode alat sudah digunakan',
+            'kategori_id.required' => 'Kategori wajib dipilih',
+            'kategori_id.exists'   => 'Kategori tidak valid',
+            'jumlah_alat.required' => 'Jumlah alat wajib diisi',
+            'jumlah_alat.integer'  => 'Jumlah alat harus berupa angka',
+            'jumlah_alat.min'      => 'Jumlah alat tidak boleh kurang dari 0',
+            'deskripsi.string'     => 'Deskripsi harus berupa teks',
         ]);
 
         $alat->update($validated);
 
-        return redirect()->route('alats.index')
+        return redirect()->route('alat.index')
             ->with('success', 'Alat berhasil diupdate');
     }
 
@@ -90,7 +111,7 @@ class AlatController extends Controller
     {
         $alat->delete();
 
-        return redirect()->route('alats.index')
+        return redirect()->route('alat.index')
             ->with('success', 'Alat berhasil dihapus');
     }
 }

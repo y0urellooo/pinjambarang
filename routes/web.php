@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\KategoriController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\admin\AlatController;
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -20,9 +21,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 // Admin Routes
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth','admin']);
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'admin'])
+    ->name('admin.dashboard');
 
 // Petugas Routes
 Route::get('/petugas/dashboard', function () {

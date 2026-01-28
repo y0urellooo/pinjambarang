@@ -29,10 +29,10 @@
             </thead>
             <tbody>
                 @forelse ($kategoris as $kategori)
-                    <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
+                    <tr class="text-center">
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $kategori->nama_kategori }}</td>
-                        <td class="text-center">
+                        <td>
                             <a href="{{ route('kategori.edit', $kategori->id) }}"
                                class="btn btn-warning btn-sm">
                                 Edit

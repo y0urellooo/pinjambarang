@@ -23,6 +23,10 @@ class KategoriController extends Controller
     {
         $request->validate([
             'nama_kategori' => 'required|unique:kategoris',
+        ],
+        [
+            'nama_kategori.required' => 'Nama kategori wajib diisi.',
+            'nama_kategori.unique' => 'Nama kategori sudah ada.',
         ]);
 
         Kategori::create([

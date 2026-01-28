@@ -1,5 +1,6 @@
 <aside class="sidebar p-3 text-white">
-    <h5 class="text-center mb-4">SIPAT APP</h5>
+    <h5 class="fw-semibold text-center">SIPAT APP</h5>
+    <hr>
 
     @php
         $role = auth()->user()->role;

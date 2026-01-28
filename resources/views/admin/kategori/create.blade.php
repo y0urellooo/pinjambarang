@@ -12,7 +12,18 @@
 
             <div class="mb-3">
                 <label>Nama Kategori</label>
-                <input type="text" name="nama_kategori" class="form-control" placeholder="Masukkan nama kategori">
+                <input type="text"
+                    name="nama_kategori"
+                    value="{{ old('nama_kategori') }}"
+                    class="form-control @error('nama_kategori') is-invalid @enderror"
+                    placeholder="Masukkan nama kategori">
+
+                <!-- validasi -->
+                @error('nama_kategori')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
             </div>
 
             <button class="btn btn-success">Simpan</button>
