@@ -12,12 +12,12 @@ class AuthController extends Controller
     // ===== FORM =====
     public function showLogin()
     {
-        return view('login');
+        return view('auth.login');
     }
 
     public function showRegister()
     {
-        return view('register');
+        return view('auth.register');
     }
 
     // ===== ACTION =====
