@@ -22,6 +22,10 @@ class Peminjaman extends Model
        }
 
        public function alat() {
-        return $this->hasMany(Alat::class);
+        return $this->belongsTo(Alat::class);
+       }
+
+       public function pengembalian() {
+        return $this->hasOne(Pengembalian::class);
        }
 }

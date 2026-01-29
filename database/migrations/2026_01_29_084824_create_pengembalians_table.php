@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('alats', function (Blueprint $table) {
+        Schema::create('pengembalians', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_alat');
-            $table->integer('kode_alat')->unique();
-
-            $table->unsignedBigInteger('kategori_id');
-            $table->foreign('kategori_id')
-                ->references('id')
-                ->on('kategoris')
+            $table->foreignId('peminjaman_id')
+                ->constrained('peminjaman')
                 ->onDelete('cascade');
-            $table->integer('jumlah_alat');
+
+            $table->date('tanggal_kembali');
+            $table->enum('kondisi', ['baik', 'rusak', 'hilang']);
+            $table->text('catatan')->nullable();
             $table->timestamps();
-    });
+        });
     }
 
     /**
@@ -31,7 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('alats');
+        Schema::dropIfExists('pengembalians');
     }
 };
-

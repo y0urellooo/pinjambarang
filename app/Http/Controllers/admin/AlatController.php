@@ -37,7 +37,6 @@ class AlatController extends Controller
             'kode_alat'   => 'required|integer|unique:alats,kode_alat',
             'kategori_id' => 'required|exists:kategoris,id',
             'jumlah_alat' => 'required|integer|min:0',
-            'deskripsi'   => 'nullable|string',
         ], [
             'nama_alat.required'   => 'Nama alat wajib diisi',
             'kode_alat.required'   => 'Kode alat wajib diisi',
@@ -48,12 +47,11 @@ class AlatController extends Controller
             'jumlah_alat.required' => 'Jumlah alat wajib diisi',
             'jumlah_alat.integer'  => 'Jumlah alat harus berupa angka',
             'jumlah_alat.min'      => 'Jumlah alat tidak boleh kurang dari 0',
-            'deskripsi.string'     => 'Deskripsi harus berupa teks',
         ]);
 
         Alat::create($validated);
 
-        return redirect()->route('alat.index')
+        return redirect()->route('admin.alat.index')
             ->with('success', 'Alat berhasil ditambahkan');
     }
 
@@ -84,7 +82,6 @@ class AlatController extends Controller
             'kode_alat'   => 'required|integer|unique:alats,kode_alat,' . $alat->id,
             'kategori_id' => 'required|exists:kategoris,id',
             'jumlah_alat' => 'required|integer|min:0',
-            'deskripsi'   => 'nullable|string',
         ], [
             'nama_alat.required'   => 'Nama alat wajib diisi',
             'kode_alat.required'   => 'Kode alat wajib diisi',
@@ -95,12 +92,11 @@ class AlatController extends Controller
             'jumlah_alat.required' => 'Jumlah alat wajib diisi',
             'jumlah_alat.integer'  => 'Jumlah alat harus berupa angka',
             'jumlah_alat.min'      => 'Jumlah alat tidak boleh kurang dari 0',
-            'deskripsi.string'     => 'Deskripsi harus berupa teks',
         ]);
 
         $alat->update($validated);
 
-        return redirect()->route('alat.index')
+        return redirect()->route('admin.alat.index')
             ->with('success', 'Alat berhasil diupdate');
     }
 
@@ -111,7 +107,7 @@ class AlatController extends Controller
     {
         $alat->delete();
 
-        return redirect()->route('alat.index')
+        return redirect()->route('admin.alat.index')
             ->with('success', 'Alat berhasil dihapus');
     }
 }

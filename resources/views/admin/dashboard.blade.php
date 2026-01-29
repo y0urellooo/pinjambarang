@@ -89,17 +89,17 @@
             <div class="card-body">
                 <h5 class="fw-semibold mb-3">
                     <i class="bi bi-lightning-fill text-warning"></i>
-                    Akses Cepat
+                    Manajemen Cepat
                 </h5>
                 <div class="d-grid gap-2">
-                    <a href="{{ route('alat.index') }}" class="btn btn-primary">
-                        <i class="bi bi-box"></i> Data Alat
-                    </a>
-                    <a href="{{ route('kategori.index') }}" class="btn btn-success">
+                    <a href="{{ route('admin.kategori.index') }}" class="btn btn-success">
                         <i class="bi bi-tags"></i> Data Kategori
                     </a>
-                    <a href="{{ route('users.index') }}" class="btn btn-dark">
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-dark">
                         <i class="bi bi-people"></i> Manajemen User
+                    </a>
+                    <a href="{{ route('admin.alat.index') }}" class="btn btn-primary">
+                        <i class="bi bi-box"></i> Data Alat
                     </a>
                 </div>
             </div>

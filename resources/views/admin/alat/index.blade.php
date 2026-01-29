@@ -12,7 +12,7 @@
 </div>
 @endif
 
-<a href="{{ route('alat.create') }}" class="btn btn-primary mb-3">
+<a href="{{ route('admin.alat.create') }}" class="btn btn-primary mb-3">
     + Tambah Alat
 </a>
 
@@ -38,12 +38,12 @@
                     <td>{{ $alat->kategori->nama_kategori }}</td>
                     <td>{{ $alat->jumlah_alat }}</td>
                     <td>
-                        <a href="{{ route('alat.edit', $alat->id) }}"
+                        <a href="{{ route('admin.alat.edit', $alat->id) }}"
                             class="btn btn-warning btn-sm">
                             Edit
                         </a>
 
-                        <form action="{{ route('alat.destroy', $alat->id) }}"
+                        <form action="{{ route('admin.alat.destroy', $alat->id) }}"
                             method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')

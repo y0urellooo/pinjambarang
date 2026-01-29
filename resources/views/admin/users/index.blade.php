@@ -13,7 +13,7 @@
 </div>
 @endif
 
-<a href="{{ route('users.create') }}" class="btn btn-primary mb-3">
+<a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">
     + Tambah User
 </a>
 
@@ -37,13 +37,13 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ ucfirst($user->role) }}</td>
                     <td>
-                        <a href="{{ route('users.edit', $user->id) }}"
+                        <a href="{{ route('admin.users.edit', $user->id) }}"
                             class="btn btn-warning btn-sm">
                             Edit
                         </a>
 
                         @if($user->role !== 'admin')
-                        <form action="{{ route('users.destroy', $user->id) }}"
+                        <form action="{{ route('admin.users.destroy', $user->id) }}"
                             method="POST" style="display:inline">
                             @csrf
                             @method('DELETE')

@@ -3,15 +3,17 @@
 @section('title', 'Tambah Kategori')
 
 @section('content')
+
 <div class="card col-md-6">
     <div class="card-body">
-        <h3 class="mb-3">Tambah Kategori</h3>
 
-        <form action="{{ route('kategori.store') }}" method="POST">
+        <h3 class="mb-4">Tambah Kategori</h3>
+
+        <form action="{{ route('admin.kategori.store') }}" method="POST">
             @csrf
 
             <div class="mb-3">
-                <label>Nama Kategori</label>
+                <label class="mb-2">Nama Kategori</label>
                 <input type="text"
                     name="nama_kategori"
                     value="{{ old('nama_kategori') }}"
@@ -27,7 +29,7 @@
             </div>
 
             <button class="btn btn-success">Simpan</button>
-            <a href="{{ route('kategori.index') }}" class="btn btn-secondary">Kembali</a>
+            <a href="{{ route('admin.kategori.index') }}" class="btn btn-secondary">Kembali</a>
         </form>
     </div>
 </div>

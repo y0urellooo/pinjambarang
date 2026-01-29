@@ -7,17 +7,14 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\AlatController;
 use App\Http\Controllers\Admin\PeminjamanController;
+use App\Http\Controllers\Admin\PengembalianController;
 
-/*
-|--------------------------------------------------------------------------
-| Redirect awal
-|--------------------------------------------------------------------------
-*/
+// ROUTES
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-    // Auth Route
+// Auth Route
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -39,9 +36,19 @@ Route::prefix('admin')
         Route::resource('/kategori', KategoriController::class);
         Route::resource('/alat', AlatController::class);
         Route::resource('/peminjaman', PeminjamanController::class);
+        Route::resource('/pengembalian', PengembalianController::class)->only(['index']);
+        Route::get(
+            '/pengembalian/{peminjaman}',
+            [PengembalianController::class, 'create']
+        )->name('pengembalian.create');
+
+        Route::post(
+            '/pengembalian/{peminjaman}',
+            [PengembalianController::class, 'store']
+        )->name('pengembalian.store');
     });
 
-    // petugas route
+// petugas route
 Route::prefix('petugas')
     ->middleware(['auth', 'petugas'])
     ->name('petugas.')

@@ -13,7 +13,7 @@
     </div>
 @endif
 
-<a href="{{ route('kategori.create') }}" class="btn btn-primary mb-3">
+<a href="{{ route('admin.kategori.create') }}" class="btn btn-primary mb-3">
     + Tambah Kategori
 </a>
 
@@ -33,12 +33,12 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $kategori->nama_kategori }}</td>
                         <td>
-                            <a href="{{ route('kategori.edit', $kategori->id) }}"
+                            <a href="{{ route('admin.kategori.edit', $kategori->id) }}"
                                class="btn btn-warning btn-sm">
                                 Edit
                             </a>
 
-                            <form action="{{ route('kategori.destroy', $kategori->id) }}"
+                            <form action="{{ route('admin.kategori.destroy', $kategori->id) }}"
                                   method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')

@@ -4,7 +4,7 @@
 
 @section('content')
 
-<form action="{{ route('alat.store') }}" method="POST" class="card">
+<form action="{{ route('admin.alat.store') }}" method="POST" class="card">
     @csrf
 
         <div class="card-body">
@@ -82,7 +82,7 @@
 
             <div class="d-flex gap-2">
                 <button class="btn btn-primary">Simpan</button>
-                <a href="{{ route('alat.index') }}" class="btn btn-secondary">Kembali</a>
+                <a href="{{ route('admin.alat.index') }}" class="btn btn-secondary">Kembali</a>
             </div>
         </div>
 </form>
