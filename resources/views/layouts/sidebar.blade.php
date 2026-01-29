@@ -32,12 +32,17 @@
 
                 <a href="/admin/peminjaman"
                    class="nav-link {{ request()->is('admin/peminjaman*') ? 'active' : '' }}">
-                    <i class="bi bi-cart me-2"></i> Peminjaman
+                    <i class="bi bi-handbag me-2"></i> Peminjaman
                 </a>
                 
                 <a href="/admin/pengembalian"
                    class="nav-link {{ request()->is('admin/pengembalian*') ? 'active' : '' }}">
-                    <i class="bi bi-cart me-2"></i> pengembalian
+                    <i class="bi bi-check2-circle me-2"></i> Pengembalian
+                </a>
+
+                <a href="/admin/log-aktivitas"
+                   class="nav-link {{ request()->is('admin/log-aktvitas*') ? 'active' : '' }}">
+                    <i class="bi bi-clock-history me-2"></i> Log Aktivitas
                 </a>
             @endif
 
