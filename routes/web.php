@@ -4,8 +4,10 @@ use App\Http\Controllers\admin\KategoriController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\admin\AlatController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\admin\PeminjamanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Peminjaman;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -39,3 +41,4 @@ Route::get('/peminjam/dashboard', function () {
 Route::resource('/admin/users', UserController::class);
 Route::resource('/admin/kategori', KategoriController::class);
 Route::resource('/admin/alat', AlatController::class);
+Route::resource('/admin/peminjaman', PeminjamanController::class);
