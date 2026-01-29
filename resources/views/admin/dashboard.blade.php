@@ -3,26 +3,17 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
-<h3>Dashboard Admin</h3>
-<p>Selamat datang, <strong>{{ auth()->user()->name }}</strong></p>
+<div class="card">
+    <h2>Selamat Datang, Admin</h2>
+    <p>
+        Anda memiliki akses penuh terhadap sistem peminjaman alat.
+    </p>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body text-center">
-                <h5>Data User</h5>
-                <a href="#" class="btn btn-primary btn-sm">Kelola</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body text-center">
-                <h5>Data Barang</h5>
-                <a href="#" class="btn btn-primary btn-sm">Kelola</a>
-            </div>
-        </div>
-    </div>
+    <ul style="margin-top: 15px;">
+        <li>Kelola data alat</li>
+        <li>Kelola petugas</li>
+        <li>Kelola peminjam</li>
+        <li>Lihat laporan peminjaman</li>
+    </ul>
 </div>
 @endsection
