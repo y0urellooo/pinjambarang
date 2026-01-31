@@ -9,36 +9,11 @@ class Mencetak extends Model
 {
     use HasFactory;
 
-    /**
-     * Nama tabel (WAJIB kalau nama tabel
-     * tidak jamak otomatis dari Laravel)
-     */
     protected $table = 'mencetak';
-
-    /**
-     * Primary key (kalau bukan `id`)
-     */
     protected $primaryKey = 'id';
-
-    /**
-     * Auto increment
-     */
     public $incrementing = true;
-
-    /**
-     * Tipe primary key
-     */
     protected $keyType = 'int';
-
-    /**
-     * Timestamp (created_at & updated_at)
-     * set false kalau tabel tidak punya
-     */
     public $timestamps = true;
-
-    /**
-     * Kolom yang boleh diisi (WAJIB untuk create/update)
-     */
     protected $fillable = [
         'nama',
         'jenis',

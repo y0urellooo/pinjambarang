@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
-use App\Models\Peminjaman;
+use App\Models\petugas\Peminjaman;
 
 class PengembalianController extends Controller
 {
