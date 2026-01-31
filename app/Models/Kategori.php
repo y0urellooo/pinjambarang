@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Kategori extends Model
 {
-    protected $fillable = [
-        'nama_kategori',
-    ];
+    use HasFactory;
 
-    public function alats ()
-    {
-        return $this->hasMany(Alat::class, 'kategori_id');
-    }
+    protected $fillable = [
+        'nama',
+        'deskripsi',
+    ];
 }

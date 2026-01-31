@@ -1,77 +1,40 @@
 @extends('layouts.app')
 
-@section('title', 'Data Kategori')
-@section('page_title', 'Kategori')
+@section('title', 'Kategori')
 
 @section('content')
-<h3 class="mb-4">Data Kategori</h3>
+<h2>Data Kategori</h2>
 
-<!-- alert -->
-@if (session('success'))
-    <div class="alert alert-success" id="success-alert">
-        {{ session('success') }}
-    </div>
+<a href="{{ route('admin.kategori.create') }}">+ Tambah Kategori</a>
+
+@if(session('success'))
+    <p style="color:green">{{ session('success') }}</p>
 @endif
 
-<a href="{{ route('kategori.create') }}" class="btn btn-primary mb-3">
-    + Tambah Kategori
-</a>
+<table border="1" cellpadding="10" cellspacing="0" width="100%">
+    <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Deskripsi</th>
+        <th>Aksi</th>
+    </tr>
 
-<div class="card">
-    <div class="card-body p-0">
-        <table class="table table-bordered mb-0">
-            <thead class="table-dark text-center">
-                <tr>
-                    <th width="100">No</th>
-                    <th>Nama Kategori</th>
-                    <th width="280">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($kategoris as $kategori)
-                    <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $kategori->nama_kategori }}</td>
-                        <td class="text-center">
-                            <a href="{{ route('kategori.edit', $kategori->id) }}"
-                               class="btn btn-warning btn-sm">
-                                Edit
-                            </a>
+    @foreach($kategoris as $kategori)
+    <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ $kategori->nama }}</td>
+        <td>{{ $kategori->deskripsi }}</td>
+        <td>
+            <a href="{{ route('admin.kategori.edit', $kategori->id) }}">Edit</a>
 
-                            <form action="{{ route('kategori.destroy', $kategori->id) }}"
-                                  method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button onclick="return confirm('Hapus data?')"
-                                        class="btn btn-danger btn-sm">
-                                    Hapus
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="3" class="text-center text-muted">
-                            Belum ada kategori
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- notif 3 detik -->
- @if (session('success'))
-<script>
-    setTimeout(() => {
-        const alert = document.getElementById('success-alert');
-        if (alert) {
-            alert.classList.add('fade');
-            alert.classList.remove('show');
-            alert.remove();
-        }
-    }, 3000);
-</script>
-@endif
+            <form action="{{ route('admin.kategori.destroy', $kategori->id) }}"
+                  method="POST" style="display:inline">
+                @csrf
+                @method('DELETE')
+                <button onclick="return confirm('Hapus kategori?')">Hapus</button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
+</table>
 @endsection

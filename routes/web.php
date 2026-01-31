@@ -1,15 +1,27 @@
 <?php
 
-use App\Http\Controllers\admin\KategoriController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\admin\AlatController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\Admin\AlatController;
+use App\Http\Controllers\Admin\PeminjamanController;
+use App\Http\Controllers\Admin\PengembalianController;
+
+use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
+use App\Http\Controllers\Petugas\PeminjamanController as PetugasPeminjamanController;
+use App\Http\Controllers\Petugas\PengembalianController as PetugasPengembalianController;
+use App\Http\Controllers\Petugas\MencetakController;
+
 use App\Http\Controllers\AuthController;
 
+use Illuminate\Support\Facades\Route;
+
+// ROOT redirect to login
 Route::get('/', function () {
     return redirect()->route('login');
-}); 
-// Auth Routes
+});
+
+// ================= AUTH =================
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -18,23 +30,46 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// ================= ADMIN =================
+Route::prefix('admin')
+    ->middleware(['auth', 'admin'])
+    ->name('admin.')
+    ->group(function () {
 
-// Admin Routes
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth','admin']);
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-// Petugas Routes
-Route::get('/petugas/dashboard', function () {
-    return view('petugas.dashboard');
-})->middleware(['auth','petugas']);
+        Route::resource('users', UserController::class);
+        Route::resource('kategori', KategoriController::class);
+        Route::resource('alat', AlatController::class);
+        Route::resource('peminjaman', PeminjamanController::class);
 
-// Peminjam Routes
-Route::get('/peminjam/dashboard', function () {
-    return view('peminjam.dashboard');
-})->middleware(['auth','peminjam']);
+        Route::resource('pengembalian', PengembalianController::class)->only(['index']);
+        Route::get('/pengembalian/{peminjaman}', [PengembalianController::class, 'create'])->name('pengembalian.create');
+        Route::post('/pengembalian/{peminjaman}', [PengembalianController::class, 'store'])->name('pengembalian.store');
+    });
 
+// ================= PETUGAS =================
+Route::prefix('petugas')
+    ->middleware(['auth', 'petugas'])
+    ->name('petugas.')
+    ->group(function () {
 
-Route::resource('/admin/users', UserController::class);
-Route::resource('/admin/kategori', KategoriController::class);
-Route::resource('/admin/alat', AlatController::class);
+        Route::get('/dashboard', [PetugasDashboardController::class, 'index'])->name('dashboard');
+
+        Route::resource('peminjaman', PetugasPeminjamanController::class);
+        Route::resource('pengembalian', PetugasPengembalianController::class);
+        Route::resource('mencetak', MencetakController::class);
+        Route::get('/mencetak/cetak', [MencetakController::class, 'cetak'])
+            ->name('mencetak.cetak');
+
+    });
+
+// ================= PEMINJAM =================
+Route::prefix('peminjam')
+    ->middleware(['auth', 'peminjam'])
+    ->name('peminjam.')
+    ->group(function () {
+        Route::get('/dashboard', function () {
+            return view('peminjam.dashboard');
+        })->name('dashboard');
+    });

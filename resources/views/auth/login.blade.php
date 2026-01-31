@@ -1,62 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+@extends('layouts.landing')
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+@section('title', 'Login')
 
-    <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-md-4">
+@push('styles')
+<style>
+    .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+    }
 
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h3 class="text-center mb-4">Login</h3>
+    .auth-card {
+        background: white;
+        padding: 40px;
+        width: 380px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,.1);
+    }
 
-                        @if ($errors->any())
-                            <div class="alert alert-danger text-center">
-                                {{ $errors->first() }}
-                            </div>
-                        @endif
+    .auth-card h2 {
+        text-align: center;
+        margin-bottom: 25px;
+    }
 
-                        <form method="POST" action="/login">
-                            @csrf
+    .form-group {
+        margin-bottom: 15px;
+    }
 
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control"
-                                    placeholder="Masukkan email anda" required>
-                            </div>
+    .form-group label {
+        font-weight: 500;
+    }
 
-                            <div class="mb-3">
-                                <label class="form-label">Password</label>
-                                <input type="password" name="password" class="form-control"
-                                    placeholder="Masukkan password anda" required>
-                            </div>
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
 
-                            <button type="submit" class="btn btn-primary w-100">
-                                Login
-                            </button>
+    .btn-auth {
+        width: 100%;
+        background: #020617;
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
+        border: none;
+        margin-top: 10px;
+        font-weight: 600;
+        cursor: pointer;
+    }
 
-                            <div class="text-center mt-3">
-                            <small>
-                                Belum punya akun?
-                                <a href="/register">register</a>
-                            </small>
+    .auth-footer {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+    }
 
-                        </form>
+    .auth-footer a {
+        color: #020617;
+        font-weight: 600;
+        text-decoration: none;
+    }
 
-                    </div>
-                </div>
+    .error {
+        color: red;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+</style>
+@endpush
 
+@section('content')
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Login</h2>
+
+        @if ($errors->any())
+            <div class="error">{{ $errors->first() }}</div>
+        @endif
+
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" required>
             </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button class="btn-auth">Login</button>
+        </form>
+
+        <div class="auth-footer">
+            Belum punya akun?
+            <a href="{{ route('register') }}">Daftar</a>
         </div>
     </div>
-
-</body>
-</html>
+</div>
+@endsection

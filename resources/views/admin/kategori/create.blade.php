@@ -1,23 +1,21 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('title', 'Tambah Kategori')
 
 @section('content')
-<div class="card col-md-6">
-    <div class="card-body">
-        <h3 class="mb-3">Tambah Kategori</h3>
+<h2>Tambah Kategori</h2>
 
-        <form action="{{ route('kategori.store') }}" method="POST">
-            @csrf
+<form method="POST" action="{{ route('admin.kategori.store') }}">
+    @csrf
 
-            <div class="mb-3">
-                <label>Nama Kategori</label>
-                <input type="text" name="nama_kategori" class="form-control" placeholder="Masukkan nama kategori">
-            </div>
+    <label>Nama Kategori</label>
+    <input type="text" name="nama" required>
 
-            <button class="btn btn-success">Simpan</button>
-            <a href="{{ route('kategori.index') }}" class="btn btn-secondary">Kembali</a>
-        </form>
-    </div>
-</div>
+    <label>Deskripsi</label>
+    <textarea name="deskripsi"></textarea>
+
+    <br><br>
+    <button type="submit">Simpan</button>
+    <a href="{{ route('admin.kategori.index') }}">Kembali</a>
+</form>
 @endsection
