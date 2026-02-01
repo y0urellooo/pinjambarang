@@ -16,7 +16,7 @@ class PeminjamMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->check() && auth()->user()->role !== 'peminjam') {
-            abort(403, 'Unauthorized action.');
+            abort(403, 'Anda Tidak Punya Akses');
         }
         return $next($request);
     }

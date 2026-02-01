@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Dashboard Petugas')
+@section('page_title', 'Dashboard Petugas')
 
 @section('content')
 <h3>Dashboard Petugas</h3>

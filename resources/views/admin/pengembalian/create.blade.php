@@ -19,22 +19,6 @@
                    class="form-control" required>
         </div>
 
-        <div class="mb-3">
-            <label>Kondisi Barang</label>
-            <select name="kondisi" class="form-select" required>
-                <option value="baik">Baik</option>
-                <option value="rusak">Rusak</option>
-                <option value="hilang">Hilang</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label>Catatan</label>
-            <textarea name="catatan"
-                      class="form-control"
-                      rows="3" placeholder="Masukkan catatan kondisi alat"></textarea>
-        </div>
-
         <button class="btn btn-success">Proses Pengembalian</button>
         <a href="{{ route('admin.peminjaman.index') }}"
            class="btn btn-secondary">Batal</a>

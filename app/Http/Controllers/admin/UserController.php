@@ -98,6 +98,11 @@ class UserController extends Controller
                 ->withErrors(['error' => 'User admin tidak dapat dihapus']);
         }
 
+        if ($user->peminjamans()->exists()) {
+            return back()
+                ->with('error', 'User tidak dapat dihapus karena masih memiliki data peminjaman');
+        }
+
         $user->delete();
 
         return redirect()

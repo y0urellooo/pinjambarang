@@ -13,6 +13,12 @@
 </div>
 @endif
 
+@if (session('error'))
+<div class="alert alert-danger" id="error-alert">
+    {{ session('error') }}
+</div>
+@endif
+
 <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">
     + Tambah User
 </a>
@@ -73,6 +79,15 @@
 <script>
     setTimeout(() => {
         const alert = document.getElementById('success-alert');
+        if (alert) alert.remove();
+    }, 3000);
+</script>
+@endif
+
+@if (session('error'))
+<script>
+    setTimeout(() => {
+        const alert = document.getElementById('error-alert');
         if (alert) alert.remove();
     }, 3000);
 </script>

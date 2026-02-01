@@ -14,9 +14,8 @@
                     <th>No</th>
                     <th>Peminjam</th>
                     <th>Alat</th>
+                    <th>Tgl Pinjam</th>
                     <th>Tgl Kembali</th>
-                    <th>Kondisi</th>
-                    <th>Catatan</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,16 +24,8 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->peminjaman->user->name }}</td>
                     <td>{{ $item->peminjaman->alat->nama_alat }}</td>
+                    <td>{{ $item->peminjaman->tanggal_pinjam }}</td>
                     <td>{{ $item->tanggal_kembali }}</td>
-                    <td>
-                        <span class="badge bg-{{
-                            $item->kondisi === 'baik' ? 'success' :
-                            ($item->kondisi === 'rusak' ? 'danger' : 'primary')
-                        }}">
-                            {{ ucfirst($item->kondisi) }}
-                        </span>
-                    </td>
-                    <td>{{ $item->catatan ?? '-' }}</td>
                 </tr>
                 @empty
                 <tr>

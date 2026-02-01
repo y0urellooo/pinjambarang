@@ -20,11 +20,11 @@ class UserSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        User::create([
-            'name' => 'Petugas',
-            'email' => 'petugas@gmail.com',
-            'password' => bcrypt('password'),
-            'role' => 'petugas',
-        ]);
+        // User::create([
+        //     'name' => 'Petugas',
+        //     'email' => 'petugas@gmail.com',
+        //     'password' => bcrypt('password'),
+        //     'role' => 'petugas',
+        // ]);
     }
 }

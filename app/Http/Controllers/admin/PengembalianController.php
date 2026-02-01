@@ -29,8 +29,6 @@ class PengembalianController extends Controller
     {
         $request->validate([
             'tanggal_kembali' => 'required|date',
-            'kondisi' => 'required|in:baik,rusak,hilang',
-            'catatan' => 'nullable|string'
         ]);
 
         DB::transaction(function () use ($request, $peminjaman) {
@@ -38,16 +36,12 @@ class PengembalianController extends Controller
             Pengembalian::create([
                 'peminjaman_id' => $peminjaman->id,
                 'tanggal_kembali' => $request->tanggal_kembali,
-                'kondisi' => $request->kondisi,
-                'catatan' => $request->catatan,
             ]);
 
             // update status peminjaman
             $peminjaman->update([
                 'tanggal_kembali' => $request->tanggal_kembali,
-                'status' => $request->kondisi === 'baik'
-                            ? 'dikembalikan'
-                            : $request->kondisi
+                'status' => 'dikembalikan'
             ]);
 
             // stok alat kembali kalau baik

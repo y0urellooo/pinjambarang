@@ -36,7 +36,7 @@
                     <td>
                         <a href="{{ route('peminjam.peminjaman.create', $alat->id) }}"
                             class="btn btn-primary btn-sm">
-                            Ajukan
+                            Pinjam
                         </a>
                     </td>
                 </tr>

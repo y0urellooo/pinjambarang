@@ -66,9 +66,9 @@
 </div>
 
 {{-- SECTION BAWAH --}}
-<div class="row mt-4 g-4">
+<div class="row mt-4 g-2">
 
-    <div class="col-md-8">
+    <!-- <div class="col-md-8">
         <div class="card shadow-sm">
             <div class="card-body">
                 <h5 class="fw-semibold mb-3">
@@ -82,29 +82,49 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div class="col-md-4">
+    <!-- <div class="col-md-4">
         <div class="card shadow-sm">
-            <div class="card-body">
+            <div class="card-body flex">
                 <h5 class="fw-semibold mb-3">
                     <i class="bi bi-lightning-fill text-warning"></i>
-                    Manajemen Cepat
+                    Akses Cepat
                 </h5>
                 <div class="d-grid gap-2">
                     <a href="{{ route('admin.kategori.index') }}" class="btn btn-success">
                         <i class="bi bi-tags"></i> Data Kategori
                     </a>
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-dark">
-                        <i class="bi bi-people"></i> Manajemen User
+                    <a href="{{ route('admin.petugas.index') }}" class="btn btn-success">
+                        <i class="bi bi-person-gear"></i> Data Petugas
+                    </a>
+                    <a href="{{ route('admin.peminjam.index') }}" class="btn btn-primary">
+                        <i class="bi bi-people-fill"></i> Data Peminjam
                     </a>
                     <a href="{{ route('admin.alat.index') }}" class="btn btn-primary">
                         <i class="bi bi-box"></i> Data Alat
                     </a>
+                    <a href="{{ route('admin.peminjaman.index') }}" class="btn btn-primary">
+                        <i class="bi bi-cart"></i> Data Peminjaman
+                    </a>
+                    <a href="{{ route('admin.pengembalian.index') }}" class="btn btn-primary">
+                        <i class="bi bi-check2-circle"></i> Data Pengembalian
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="fw-semibold">Daftar Alat</h5>
+                    <a href="kategori" class="btn btn-warning btn-sm">Lihat</a>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 @endsection

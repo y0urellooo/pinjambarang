@@ -16,7 +16,7 @@
     + Tambah Alat
 </a>
 
-<div class="card">
+<div class="card shadow-sm">
     <div class="card-body p-0">
         <table class="table table-bordered table-hover mb-0">
             <thead class="table-dark">

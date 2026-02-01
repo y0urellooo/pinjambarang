@@ -28,12 +28,14 @@ class PeminjamanController extends Controller
     {
         $request->validate([
             'tanggal_pinjam' => 'required|date',
+            'tanggal_kembali' => 'required|date',
         ]);
 
         Peminjaman::create([
             'user_id' => auth()->id(),
             'alat_id' => $alat->id,
             'tanggal_pinjam' => $request->tanggal_pinjam,
+            'tanggal_kembali' => $request->tanggal_kembali,
             'status' => 'menunggu',
         ]);
 

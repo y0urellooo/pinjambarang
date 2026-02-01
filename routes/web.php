@@ -3,11 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\AlatController;
 use App\Http\Controllers\Admin\PeminjamanController;
+use App\Http\Controllers\Admin\PeminjamController;
 use App\Http\Controllers\Admin\PengembalianController;
+use App\Http\Controllers\Admin\PetugasController;
+use App\Http\Controllers\Peminjam\AlatController as PeminjamAlatController;
+use App\Http\Controllers\Peminjam\PeminjamanController as PeminjamPeminjamanController;
 
 // ROUTES
 Route::get('/', function () {
@@ -32,10 +35,14 @@ Route::prefix('admin')
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
-        Route::resource('/users', UserController::class);
+        // Route::resource('/users', UserController::class);
+        Route::resource('petugas', PetugasController::class);
+        Route::get('peminjam', [PeminjamController::class, 'index'])
+            ->name('peminjam.index');
         Route::resource('/kategori', KategoriController::class);
         Route::resource('/alat', AlatController::class);
-        Route::resource('/peminjaman', PeminjamanController::class);
+        Route::resource('/peminjaman', PeminjamanController::class)
+        ->only(['index']);
         Route::resource('/pengembalian', PengembalianController::class)->only(['index']);
         Route::get(
             '/pengembalian/{peminjaman}',
@@ -68,4 +75,30 @@ Route::prefix('peminjam')
         Route::get('/dashboard', function () {
             return view('peminjam.dashboard');
         })->name('dashboard');
+
+        // lihat alat
+        Route::get('/alat', [PeminjamAlatController::class, 'index'])
+            ->name('alat.index');
+
+        // ajukan peminjaman
+        Route::get(
+            '/peminjaman/create/{alat}',
+            [PeminjamPeminjamanController::class, 'create']
+        )->name('peminjaman.create');
+
+        Route::post(
+            '/peminjaman/store/{alat}',
+            [PeminjamPeminjamanController::class, 'store']
+        )->name('peminjaman.store');
+
+        Route::delete(
+            '/peminjaman/{peminjaman}/cencel',
+            [PeminjamPeminjamanController::class, 'cencel']
+        )->name('peminjaman.cencel');
+
+        // riwayat peminjaman peminjam
+        Route::get(
+            '/peminjaman',
+            [PeminjamPeminjamanController::class, 'index']
+        )->name('peminjaman.index');
     });
