@@ -17,66 +17,128 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- GLOBAL CSS (tidak diubah dari halaman) -->
+    <!-- GLOBAL CSS -->
     <style>
         body {
-            font-family: 'Poppins';
-            background-color: #f1f5f9;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fdf2f8, #fce7f3);
         }
 
+        /* ================= SIDEBAR ================= */
         .sidebar {
-            width: 250px;
+            width: 260px;
             min-height: 100vh;
-            background: #020617;
+            background: linear-gradient(180deg, #ec4899, #db2777);
+            color: #fff;
+            box-shadow: 8px 0 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar h5 {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .sidebar hr {
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .sidebar .nav-link {
-            color: #e5e7eb;
-            border-radius: 8px;
+            color: #fde7f3;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+        }
+
+        .sidebar .nav-link i {
+            font-size: 1.1rem;
         }
 
         .sidebar .nav-link:hover {
-            background: #1e293b;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
             color: #fff;
         }
 
         .sidebar .nav-link.active {
-            background: #334155;
+            background: #fff;
+            color: #db2777;
+            font-weight: 600;
+        }
+
+        .sidebar .nav-link.active i {
+            color: #db2777;
+        }
+
+        /* ================= CONTENT ================= */
+        main {
+            background: #fdf2f8;
+            min-height: 100vh;
+            border-radius: 30px 0 0 30px;
+        }
+
+        /* ================= CARD ================= */
+        .card {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(219, 39, 119, 0.15);
+        }
+
+        .card h5 {
+            font-weight: 600;
+        }
+
+        /* ================= TABLE ================= */
+        .table {
+            font-size: 0.9rem;
+        }
+
+        .table thead {
+            background: linear-gradient(90deg, #ec4899, #db2777);
             color: #fff;
         }
 
-        /* tabel */
-        .table-peminjaman th,
-        .table-peminjaman td {
-            padding: 12px 14px;
-            /* jarak antar kolom */
-            font-size: 0.9rem;
-            /* kecilin font dikit */
-            vertical-align: middle;
-        }
-
-        .table-peminjaman tbody tr {
-            height: 60px;
-            /* jarak antar baris */
-        }
-
-        .table-peminjaman th {
-            white-space: nowrap;
-            /* header tidak turun baris */
-        }
-
-        .table-peminjaman td {
+        .table thead th {
+            border: none;
             white-space: nowrap;
         }
 
-        .table-peminjaman .badge {
-            font-size: 0.75rem;
-            padding: 6px 12px;
+        .table tbody tr {
+            transition: all 0.2s ease;
         }
 
-        .table-peminjaman .btn {
-            padding: 4px 10px;
+        .table tbody tr:hover {
+            background-color: #fce7f3;
+        }
+
+        /* ================= BADGE ================= */
+        .badge {
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ================= BUTTON ================= */
+        .btn {
+            border-radius: 12px;
             font-size: 0.75rem;
+            padding: 6px 14px;
+        }
+
+        .btn-success {
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            border: none;
+        }
+
+        .btn-danger {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+            border: none;
         }
     </style>
 

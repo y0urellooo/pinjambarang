@@ -21,17 +21,30 @@ class AuthController extends Controller
     }
 
     // ===== ACTION =====
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
+   public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return $this->redirectByRole();
-        }
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+
+        return match (Auth::user()->role) {
+            'admin'     => redirect('/admin/dashboard'),
+            'petugas'   => redirect('/petugas/dashboard'),
+            'peminjam'  => redirect('/peminjam/dashboard'),
+            default     => redirect('/login'),
+        };
+    }
+
+    return back()->withErrors([
+        'email' => 'Email atau password salah',
+    ]);
+
+
+
 
         return back()->withErrors([
             'email' => 'Email atau password salah',
@@ -69,7 +82,7 @@ class AuthController extends Controller
     // ===== REDIRECT ROLE =====
     private function redirectByRole()
     {
-        return match (auth()->user()->role) {
+        return match (Auth::user()->role) {
             'admin'     => redirect('/admin/dashboard'),
             'petugas'   => redirect('/petugas/dashboard'),
             'peminjam'  => redirect('/peminjam/dashboard'),

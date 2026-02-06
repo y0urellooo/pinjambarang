@@ -52,7 +52,9 @@ class AlatController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            $validated['foto'] = $request->file('foto')->store('alat', 'public');
+            $foto = time() . '_' . $request->file('foto')->extension();
+            $request->file('foto')->move(public_path('foto_alat'), $foto);
+            $validated['foto'] = $foto;
         }
 
         Alat::create($validated);
@@ -66,7 +68,7 @@ class AlatController extends Controller
      */
     public function show()
     {
-        // 
+        //
     }
 
     /**
@@ -101,7 +103,7 @@ class AlatController extends Controller
             'jumlah_alat.min'      => 'Jumlah alat tidak boleh kurang dari 0',
             'deskripsi.string'     => 'Deskripsi harus berupa teks',
         ]);
-        
+
         if ($request->hasFile('foto')) {
             $validated['foto'] = $request->file('foto')->store('alat', 'public');
         }

@@ -127,4 +127,10 @@ Route::prefix('peminjam')
             '/peminjaman',
             [PeminjamPeminjamanController::class, 'index']
         )->name('peminjaman.index');
+
+        Route::get('/pengembalian', [PengembalianController::class, 'index'])
+            ->name('pengembalian.index');
+
+        Route::put('/pengembalian/{id}', [PengembalianController::class, 'store'])
+            ->name('pengembalian.store');
     });

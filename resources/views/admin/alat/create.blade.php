@@ -70,9 +70,9 @@
             @enderror
         </div>
 
-        <!-- deskripsi -->
+        <!-- Kondisi -->
         <div class="mb-3">
-            <label>Deskripsi</label>
+            <label>Kondisi</label>
             <textarea name="deskripsi" class="form-control" rows="3"></textarea>
         </div>
 
