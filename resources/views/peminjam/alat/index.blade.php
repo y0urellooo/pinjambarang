@@ -30,7 +30,7 @@
                     {{-- FOTO --}}
                     <td>
                         @if ($alat->foto)
-                        <img src="{{ asset('storage/' . $alat->foto) }}"
+                        <img src="{{ asset('foto_alat/' . $alat->foto) }}"
                             width="70"
                             class="img-thumbnail">
                         @else

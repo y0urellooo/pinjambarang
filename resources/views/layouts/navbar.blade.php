@@ -8,13 +8,18 @@
         <div class="dropdown ms-auto">
 
             @auth
-                <a class="btn btn-outline-primary dropdown-toggle d-flex align-items-center gap-2"
-                   href="#"
-                   role="button"
-                   data-bs-toggle="dropdown">
+                <a class="btn btn-outline-primary dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
+                    data-bs-toggle="dropdown">
 
-                    <i class="bi bi-person-circle"></i>
-                    {{ auth()->user()->name }}
+                    @if (auth()->user()->foto)
+                        <img src="{{ asset('foto_peminjam/' . auth()->user()->foto) }}" alt="Foto Profil" width="32" height="32"
+                            class="rounded-circle border">
+                    @else
+                        <i class="bi bi-person-circle fs-4"></i>
+                    @endif
+
+                    <span>{{ auth()->user()->name }}</span>
+
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-end shadow">
@@ -23,7 +28,21 @@
                         <strong>{{ auth()->user()->role }}</strong>
                     </li>
 
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    @if (auth()->user()->role == 'peminjam')
+                        <li>
+                            <a href="{{ route('peminjam.profile') }}" class="dropdown-item">
+                                <i class="bi bi-person me-2"></i> Profil
+                            </a>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                    @endif
 
                     <li>
                         <form action="{{ route('logout') }}" method="POST">

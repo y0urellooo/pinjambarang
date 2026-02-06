@@ -24,7 +24,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
@@ -41,39 +41,55 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name'     => 'required',
-            'email'    => 'required|email|unique:users',
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
+            'no_telpon' => 'required',
+            'alamat' => 'required',
+            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        $fotoName = null;
+
+        if ($request->hasFile('foto')) {
+            $fotoName = time() . '_' . $request->foto->getClientOriginalName();
+            $request->foto->move(public_path('foto_peminjam'), $fotoName);
+        }
+
         User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => 'peminjam', // default
+            'role' => 'peminjam',
+
+            'no_telpon' => $request->no_telpon,
+            'alamat' => $request->alamat,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'foto' => $fotoName,
         ]);
 
         return redirect('/login')->with('success', 'Registrasi berhasil');
     }
 
-  public function logout(Request $request)
-{
-    Auth::logout();
+    public function logout(Request $request)
+    {
+        Auth::logout();
 
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    return redirect('/login');
-}
+        return redirect('/login');
+    }
 
     // ===== REDIRECT ROLE =====
     private function redirectByRole()
     {
         return match (auth()->user()->role) {
-            'admin'     => redirect('/admin/dashboard'),
-            'petugas'   => redirect('/petugas/dashboard'),
-            'peminjam'  => redirect('/peminjam/dashboard'),
-            default     => redirect('/login'),
+            'admin' => redirect('/admin/dashboard'),
+            'petugas' => redirect('/petugas/dashboard'),
+            'peminjam' => redirect('/peminjam/dashboard'),
+            default => redirect('/login'),
         };
     }
 }

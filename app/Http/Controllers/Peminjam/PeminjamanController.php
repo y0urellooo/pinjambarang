@@ -62,4 +62,22 @@ class PeminjamanController extends Controller
 
         return back()->with('success', 'Peminjaman berhasil dibatalkan');
     }
+
+    // pengembalian
+    public function ajukanPengembalian(Peminjaman $peminjaman)
+    {
+        if ($peminjaman->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        if ($peminjaman->status !== 'dipinjam') {
+            return back()->with('error', 'Tidak bisa mengajukan pengembalian');
+        }
+
+        $peminjaman->update([
+            'status' => 'pengajuan_kembali'
+        ]);
+
+        return back()->with('success', 'Pengajuan pengembalian berhasil dikirim');
+    }
 }

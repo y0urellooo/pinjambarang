@@ -21,6 +21,10 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'no_telpon',
+        'alamat',
+        'jenis_kelamin',
+        'foto',
     ];
 
     /**
@@ -46,7 +50,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function peminjamans() {
+    public function peminjamans()
+    {
         return $this->hasMany(Peminjaman::class);
     }
 }

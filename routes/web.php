@@ -86,6 +86,16 @@ Route::prefix('petugas')
         Route::resource('/pengembalian', PetugasPengembalianController::class)
             ->only(['index']);
 
+        Route::get(
+            '/pengembalian/{peminjaman}/create',
+            [PetugasPengembalianController::class, 'create']
+        )->name('pengembalian.create');
+
+        Route::post(
+            '/pengembalian/{peminjaman}/store',
+            [PetugasPengembalianController::class, 'store']
+        )->name('pengembalian.store');
+
         // laporan pengembalian
         Route::resource('laporan', LaporanController::class)->only(['index']);
 
@@ -133,6 +143,11 @@ Route::prefix('peminjam')
             '/peminjaman/{peminjaman}/cencel',
             [PeminjamPeminjamanController::class, 'cencel']
         )->name('peminjaman.cencel');
+
+        Route::post(
+            '/peminjaman/{peminjaman}/ajukan-pengembalian',
+            [PeminjamPeminjamanController::class, 'ajukanPengembalian']
+        )->name('peminjaman.ajukan_pengembalian');
 
         // riwayat peminjaman peminjam
         Route::get(

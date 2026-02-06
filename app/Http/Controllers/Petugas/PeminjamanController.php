@@ -54,13 +54,13 @@ class PeminjamanController extends Controller
         $peminjaman = Peminjaman::with('alat')->findOrFail($id);
 
         // validasi status
-        if ($peminjaman->status !== 'dipinjam') {
-            return back()->with('error', 'Peminjaman tidak valid untuk dikembalikan');
+        if ($peminjaman->status !== 'pengajuan_kembali') {
+            return back()->with('error', 'Belum ada pengajuan pengembalian');
         }
 
         DB::transaction(function () use ($peminjaman) {
 
-            // simpan pengembalian
+            // simpan ke tabel pengembalian
             Pengembalian::create([
                 'peminjaman_id' => $peminjaman->id,
                 'tanggal_kembali' => now(),
@@ -78,6 +78,6 @@ class PeminjamanController extends Controller
             ]);
         });
 
-        return back()->with('success', 'Barang berhasil dikembalikan');
+        return back()->with('success', 'Pengembalian berhasil dikonfirmasi');
     }
 }
