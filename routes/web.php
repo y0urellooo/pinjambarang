@@ -14,6 +14,7 @@ use App\Http\Controllers\Petugas\PengembalianController as PetugasPengembalianCo
 use App\Http\Controllers\Peminjam\AlatController as PeminjamAlatController;
 use App\Http\Controllers\Peminjam\PeminjamanController as PeminjamPeminjamanController;
 use App\Http\Controllers\Petugas\LaporanController;
+use App\Http\Controllers\Peminjam\ProfilController;
 
 // ROUTES
 Route::get('/', function () {
@@ -101,6 +102,17 @@ Route::prefix('peminjam')
         Route::get('/dashboard', function () {
             return view('peminjam.dashboard');
         })->name('dashboard');
+
+        // profil peminjam
+        Route::get('/profile', function () {
+            return view('peminjam.profile.profile');
+        })->name('profile');
+
+        Route::get('/profile/edit', [ProfilController::class, 'edit'])
+            ->name('profile.edit');
+
+        Route::put('/profile/update', [ProfilController::class, 'update'])
+            ->name('profile.update');
 
         // lihat alat
         Route::get('/alat', [PeminjamAlatController::class, 'index'])
