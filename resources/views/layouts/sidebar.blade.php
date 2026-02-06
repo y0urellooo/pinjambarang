@@ -39,8 +39,8 @@
             <i class="bi bi-box-seam me-2"></i> Alat
         </a>
 
-        <a href="/admin/peminjaman"
-            class="nav-link {{ request()->is('admin/peminjaman*') ? 'active' : '' }}">
+        <a href="/admin/data-peminjaman"
+            class="nav-link {{ request()->is('admin/data-peminjaman*') ? 'active' : '' }}">
             <i class="bi bi-handbag me-2"></i> Peminjaman
         </a>
 

@@ -13,6 +13,7 @@ class Peminjaman extends Model
               'alat_id',
               'tanggal_pinjam',
               'tanggal_kembali',
+              'jumlah_pinjam',
               'status'
        ];
 

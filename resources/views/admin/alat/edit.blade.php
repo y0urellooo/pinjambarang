@@ -5,41 +5,38 @@
 @section('content')
 
 <form action="{{ route('admin.alat.update', $alat->id) }}"
-      method="POST"
-      class="card">
+    method="POST"
+    class="card"
+    enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
     <div class="card-body">
         <h3 class="mb-4">Edit Alat</h3>
 
-        {{-- KODE ALAT --}}
+        <!-- foto alat -->
         <div class="mb-3">
-            <label class="form-label">Kode Alat</label>
-            <input type="text"
-                   name="kode_alat"
-                   class="form-control @error('kode_alat') is-invalid @enderror"
-                   value="{{ old('kode_alat', $alat->kode_alat) }}">
+            <label>Foto Alat</label><br>
 
-            @error('kode_alat')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
+            @if($alat->foto)
+            <img src="{{ asset('storage/' . $alat->foto) }}" width="100" class="mb-2">
+            @endif
+
+            <input type="file" name="foto" class="form-control">
         </div>
 
         {{-- NAMA ALAT --}}
         <div class="mb-3">
             <label class="form-label">Nama Alat</label>
             <input type="text"
-                   name="nama_alat"
-                   class="form-control @error('nama_alat') is-invalid @enderror"
-                   value="{{ old('nama_alat', $alat->nama_alat) }}">
+                name="nama_alat"
+                class="form-control @error('nama_alat') is-invalid @enderror"
+                value="{{ old('nama_alat', $alat->nama_alat) }}">
 
             @error('nama_alat')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
             @enderror
         </div>
 
@@ -47,19 +44,19 @@
         <div class="mb-3">
             <label class="form-label">Kategori</label>
             <select name="kategori_id"
-                    class="form-select @error('kategori_id') is-invalid @enderror">
+                class="form-select @error('kategori_id') is-invalid @enderror">
                 @foreach ($kategoris as $kategori)
-                    <option value="{{ $kategori->id }}"
-                        {{ old('kategori_id', $alat->kategori_id) == $kategori->id ? 'selected' : '' }}>
-                        {{ $kategori->nama_kategori }}
-                    </option>
+                <option value="{{ $kategori->id }}"
+                    {{ old('kategori_id', $alat->kategori_id) == $kategori->id ? 'selected' : '' }}>
+                    {{ $kategori->nama_kategori }}
+                </option>
                 @endforeach
             </select>
 
             @error('kategori_id')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
             @enderror
         </div>
 
@@ -67,15 +64,28 @@
         <div class="mb-3">
             <label class="form-label">Stok</label>
             <input type="number"
-                   name="jumlah_alat"
-                   class="form-control @error('jumlah_alat') is-invalid @enderror"
-                   value="{{ old('jumlah_alat', $alat->jumlah_alat) }}"
-                   min="0">
+                name="jumlah_alat"
+                class="form-control @error('jumlah_alat') is-invalid @enderror"
+                value="{{ old('jumlah_alat', $alat->jumlah_alat) }}"
+                min="0">
 
             @error('jumlah_alat')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+
+        <!-- deskripsi -->
+        <div class="mb-3">
+            <textarea name="deskripsi" class="form-control" rows="3">
+            {{ old('deskripsi', $alat->deskripsi) }}
+            </textarea>
+
+            @error('deskripsi')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
             @enderror
         </div>
 

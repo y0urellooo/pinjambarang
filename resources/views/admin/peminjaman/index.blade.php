@@ -28,7 +28,8 @@
                     <td>
                         <span class="badge
                     {{ $item->status == 'menunggu' ? 'bg-warning' :
-                       ($item->status == 'dipinjam' ? 'bg-primary' : 'bg-danger') }}">
+                       ($item->status == 'dipinjam' ? 'bg-primary' : 'bg-success') }}">
+                            <i class="bi bi-check-circle me-1"></i>
                             {{ ucfirst($item->status) }}
                         </span>
                     </td>

@@ -22,21 +22,41 @@
             <thead class="table-dark">
                 <tr class="text-center">
                     <th>No</th>
-                    <th>Kode</th>
+                    <th>Foto</th>
                     <th>Nama Alat</th>
                     <th>Kategori</th>
                     <th>Stok</th>
+                    <th>Deskripsi</th>
                     <th width="160">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($alats as $alat)
-                <tr class="text-center">
+                <tr class="text-center align-middle">
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $alat->kode_alat }}</td>
+
+                    {{-- FOTO --}}
+                    <td>
+                        @if ($alat->foto)
+                        <img src="{{ asset('storage/' . $alat->foto) }}"
+                            width="70"
+                            class="img-thumbnail">
+                        @else
+                        <span class="text-muted">-</span>
+                        @endif
+                    </td>
+
                     <td>{{ $alat->nama_alat }}</td>
                     <td>{{ $alat->kategori->nama_kategori }}</td>
+
+                    
                     <td>{{ $alat->jumlah_alat }}</td>
+                    
+                    {{-- DESKRIPSI --}}
+                    <td class="text-start">
+                        {{ $alat->deskripsi ?? '-' }}
+                    </td>
+
                     <td>
                         <a href="{{ route('admin.alat.edit', $alat->id) }}"
                             class="btn btn-warning btn-sm">
@@ -56,7 +76,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center text-muted">
+                    <td colspan="8" class="text-center text-muted">
                         Data barang masih kosong
                     </td>
                 </tr>

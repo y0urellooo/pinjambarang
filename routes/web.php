@@ -9,8 +9,11 @@ use App\Http\Controllers\Admin\PeminjamanController;
 use App\Http\Controllers\Admin\PeminjamController;
 use App\Http\Controllers\Admin\PengembalianController;
 use App\Http\Controllers\Admin\PetugasController;
+use App\Http\Controllers\Petugas\PeminjamanController as PetugasPeminjamanController;
+use App\Http\Controllers\Petugas\PengembalianController as PetugasPengembalianController;
 use App\Http\Controllers\Peminjam\AlatController as PeminjamAlatController;
 use App\Http\Controllers\Peminjam\PeminjamanController as PeminjamPeminjamanController;
+use App\Http\Controllers\Petugas\LaporanController;
 
 // ROUTES
 Route::get('/', function () {
@@ -41,8 +44,10 @@ Route::prefix('admin')
             ->name('peminjam.index');
         Route::resource('/kategori', KategoriController::class);
         Route::resource('/alat', AlatController::class);
-        Route::resource('/peminjaman', PeminjamanController::class)
-        ->only(['index']);
+        Route::resource('/data-peminjaman', PeminjamanController::class)
+            ->only(['index']);
+
+        // pengembalian
         Route::resource('/pengembalian', PengembalianController::class)->only(['index']);
         Route::get(
             '/pengembalian/{peminjaman}',
@@ -50,7 +55,7 @@ Route::prefix('admin')
         )->name('pengembalian.create');
 
         Route::post(
-            '/pengembalian/{peminjaman}',
+            '/pengembalian/{peminjaman}/kemblaikan',
             [PengembalianController::class, 'store']
         )->name('pengembalian.store');
     });
@@ -64,6 +69,27 @@ Route::prefix('petugas')
         Route::get('/dashboard', function () {
             return view('petugas.dashboard');
         })->name('dashboard');
+
+        Route::get('/peminjaman', [PetugasPeminjamanController::class, 'index'])
+            ->name('peminjaman.index');
+
+        Route::post('/peminjaman/{id}/approve', [PetugasPeminjamanController::class, 'approve'])
+            ->name('peminjaman.approve');
+
+        Route::post('/peminjaman/{id}/reject', [PetugasPeminjamanController::class, 'reject'])
+            ->name('peminjaman.reject');
+
+        Route::post('/peminjaman/{id}/kembalikan', [PetugasPeminjamanController::class, 'kembalikan'])
+            ->name('peminjaman.kembalikan');
+
+        Route::resource('/pengembalian', PetugasPengembalianController::class)
+            ->only(['index']);
+
+        // laporan pengembalian
+        Route::resource('laporan', LaporanController::class)->only(['index']);
+
+        Route::get('/laporan-cetak', [LaporanController::class, 'cetak'])
+            ->name('laporan-cetak');
     });
 
 // peminjam route

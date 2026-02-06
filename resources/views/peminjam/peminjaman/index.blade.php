@@ -25,6 +25,7 @@
                 <tr>
                     <th>No</th>
                     <th>Alat</th>
+                    <th>Jumlah</th>
                     <th>Tgl Pinjam</th>
                     <th>Tgl Kembali</th>
                     <th>Lama Hari</th>
@@ -41,6 +42,7 @@
                 <tr class="text-center">
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->alat->nama_alat }}</td>
+                    <td>{{ $item->jumlah_pinjam }}</td>
                     <td>
                         {{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d M Y') }}
                     </td>
@@ -55,7 +57,7 @@
                     <td>
                         <span class="badge 
                 {{ $item->status === 'menunggu' ? 'bg-warning' : 
-                   ($item->status === 'dipinjam' ? 'bg-primary' : 'bg-danger') }}">
+                   ($item->status === 'dipinjam' ? 'bg-primary' : 'bg-success') }}">
                             {{ ucfirst($item->status) }}
                         </span>
                     </td>

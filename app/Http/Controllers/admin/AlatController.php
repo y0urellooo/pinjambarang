@@ -33,21 +33,27 @@ class AlatController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'nama_alat'   => 'required|string|max:255',
-            'kode_alat'   => 'required|integer|unique:alats,kode_alat',
             'kategori_id' => 'required|exists:kategoris,id',
             'jumlah_alat' => 'required|integer|min:0',
+            'deskripsi'   => 'nullable|string',
         ], [
+            'foto.image'        => 'File harus berupa gambar',
+            'foto.mimes'        => 'Format gambar harus jpg, jpeg, atau png',
+            'foto.max'          => 'Ukuran gambar maksimal 2MB',
             'nama_alat.required'   => 'Nama alat wajib diisi',
-            'kode_alat.required'   => 'Kode alat wajib diisi',
-            'kode_alat.integer'    => 'Kode alat harus berupa angka',
-            'kode_alat.unique'     => 'Kode alat sudah digunakan',
             'kategori_id.required' => 'Kategori wajib dipilih',
             'kategori_id.exists'   => 'Kategori tidak valid',
             'jumlah_alat.required' => 'Jumlah alat wajib diisi',
             'jumlah_alat.integer'  => 'Jumlah alat harus berupa angka',
             'jumlah_alat.min'      => 'Jumlah alat tidak boleh kurang dari 0',
+            'deskripsi.string'     => 'Deskripsi harus berupa teks',
         ]);
+
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('alat', 'public');
+        }
 
         Alat::create($validated);
 
@@ -78,21 +84,27 @@ class AlatController extends Controller
     public function update(Request $request, Alat $alat)
     {
         $validated = $request->validate([
+            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'nama_alat'   => 'required|string|max:255',
-            'kode_alat'   => 'required|integer|unique:alats,kode_alat,' . $alat->id,
             'kategori_id' => 'required|exists:kategoris,id',
             'jumlah_alat' => 'required|integer|min:0',
+            'deskripsi'   => 'nullable|string',
         ], [
+            'foto.image'        => 'File harus berupa gambar',
+            'foto.mimes'        => 'Format gambar harus jpg, jpeg, atau png',
+            'foto.max'          => 'Ukuran gambar maksimal 2MB',
             'nama_alat.required'   => 'Nama alat wajib diisi',
-            'kode_alat.required'   => 'Kode alat wajib diisi',
-            'kode_alat.integer'    => 'Kode alat harus berupa angka',
-            'kode_alat.unique'     => 'Kode alat sudah digunakan',
             'kategori_id.required' => 'Kategori wajib dipilih',
             'kategori_id.exists'   => 'Kategori tidak valid',
             'jumlah_alat.required' => 'Jumlah alat wajib diisi',
             'jumlah_alat.integer'  => 'Jumlah alat harus berupa angka',
             'jumlah_alat.min'      => 'Jumlah alat tidak boleh kurang dari 0',
+            'deskripsi.string'     => 'Deskripsi harus berupa teks',
         ]);
+        
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('alat', 'public');
+        }
 
         $alat->update($validated);
 

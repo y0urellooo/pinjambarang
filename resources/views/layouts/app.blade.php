@@ -20,7 +20,7 @@
     <!-- GLOBAL CSS (tidak diubah dari halaman) -->
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins';
             background-color: #f1f5f9;
         }
 

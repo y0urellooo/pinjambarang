@@ -11,8 +11,8 @@
     <div class="col-md-4">
         <div class="card shadow-sm">
             <div class="card-body text-center">
-                <h5>Verifikasi Peminjaman</h5>
-                <a href="#" class="btn btn-success btn-sm">Lihat</a>
+                <h5>Pantau Pengajuan</h5>
+                <a href="peminjaman" class="btn btn-success btn-sm">Lihat</a>
             </div>
         </div>
     </div>

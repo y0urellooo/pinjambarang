@@ -27,6 +27,7 @@ class PeminjamanController extends Controller
     public function store(Request $request, Alat $alat)
     {
         $request->validate([
+            'jumlah_pinjam' => 'required|integer' . $alat->jumlah_pinjam,
             'tanggal_pinjam' => 'required|date',
             'tanggal_kembali' => 'required|date',
         ]);
@@ -34,6 +35,7 @@ class PeminjamanController extends Controller
         Peminjaman::create([
             'user_id' => auth()->id(),
             'alat_id' => $alat->id,
+            'jumlah_pinjam' => $request->jumlah_pinjam,
             'tanggal_pinjam' => $request->tanggal_pinjam,
             'tanggal_kembali' => $request->tanggal_kembali,
             'status' => 'menunggu',
