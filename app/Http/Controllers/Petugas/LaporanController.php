@@ -9,48 +9,33 @@ use App\Models\Pengembalian;
 
 class LaporanController extends Controller
 {
-    // halaman laporan (tabel + tombol cetak)
+    private function queryLaporan(Request $request)
+    {
+        return Pengembalian::with(['peminjaman.user', 'peminjaman.alat'])
+            ->when($request->tgl_awal && $request->tgl_akhir, function ($query) use ($request) {
+                $query->whereBetween('tanggal_kembali_aktual', [
+                    $request->tgl_awal,
+                    $request->tgl_akhir
+                ]);
+            })
+            ->orderBy('tanggal_kembali_aktual', 'desc');
+    }
+
     public function index(Request $request)
     {
-        $pengembalians = Pengembalian::with(['peminjaman.user', 'peminjaman.alat'])
-            ->when($request->tgl_awal && $request->tgl_akhir, function ($query) use ($request) {
-                $query->whereBetween('tanggal_kembali', [$request->tgl_awal, $request->tgl_akhir]);
-            })
-            ->orderBy('tanggal_kembali', 'desc')
-            ->get();
-
+        $pengembalians = $this->queryLaporan($request)->get();
         return view('petugas.laporan.index', compact('pengembalians'));
     }
 
-    // halaman cetak
     public function laporan(Request $request)
     {
-        $pengembalians = Pengembalian::with(['peminjaman.user', 'peminjaman.alat'])
-            ->when($request->tgl_awal && $request->tgl_akhir, function ($query) use ($request) {
-                $query->whereBetween('tanggal_kembali', [
-                    $request->tgl_awal,
-                    $request->tgl_akhir
-                ]);
-            })
-            ->orderBy('tanggal_kembali', 'desc')
-            ->get();
-
+        $pengembalians = $this->queryLaporan($request)->get();
         return view('petugas.laporan.index', compact('pengembalians'));
     }
 
-    // cetak laporan
     public function cetak(Request $request)
     {
-        $pengembalians = Pengembalian::with(['peminjaman.user', 'peminjaman.alat'])
-            ->when($request->tgl_awal && $request->tgl_akhir, function ($query) use ($request) {
-                $query->whereBetween('tanggal_kembali', [
-                    $request->tgl_awal,
-                    $request->tgl_akhir
-                ]);
-            })
-            ->orderBy('tanggal_kembali', 'desc')
-            ->get();
-
+        $pengembalians = $this->queryLaporan($request)->get();
         return view('petugas.laporan.laporan-print', compact('pengembalians'));
     }
 }

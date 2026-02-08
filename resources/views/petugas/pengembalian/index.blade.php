@@ -6,17 +6,34 @@
 @section('content')
 <h5 class="fw-semibold mb-3">Riwayat Pengembalian</h5>
 
+{{-- alert --}}
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
+@endif
+
 <div class="card shadow-sm">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
             <thead class="table-dark text-center">
-                <tr>
+                <tr class="align-middle">
                     <th>No</th>
                     <th>Peminjam</th>
                     <th>Alat</th>
                     <th>Jumlah</th>
                     <th>Tgl Pinjam</th>
-                    <th>Tgl Kembali</th>
+                    <th>Tgl Kembali Rencana</th>
+                    <th>Tgl Kembali Aktual</th>
+                    <th>Kondisi</th>
+                    <th>Denda (Rp)</th>
+                    <th>Status Bayar</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -28,18 +45,36 @@
                     <td>{{ $item->peminjaman->alat->nama_alat ?? '-' }}</td>
                     <td>{{ $item->peminjaman->jumlah_pinjam }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->peminjaman->tanggal_pinjam)->format('d M Y') }}</td>
-                    <td class="fw-semibold">
-                        {{ \Carbon\Carbon::parse($item->tanggal_kembali)->format('d M Y') }}
-                    </td>
+                    <td>{{ \Carbon\Carbon::parse($item->peminjaman->tanggal_kembali_rencana)->format('d M Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->tanggal_kembali_aktual)->format('d M Y') }}</td>
                     <td>
-                        <span class="badge bg-success px-3 py-2">
-                            <i class="bi bi-check-circle me-1"></i> Dikembalikan
-                        </span>
+                        @if($item->kondisi === 'baik')
+                            <span class="badge bg-success">Baik</span>
+                        @elseif($item->kondisi === 'rusak')
+                            <span class="badge bg-warning text-dark">Rusak</span>
+                        @elseif($item->kondisi === 'hilang')
+                            <span class="badge bg-danger">Hilang</span>
+                        @endif
+                    </td>
+                    <td>{{ number_format($item->denda, 0, ',', '.') }}</td>
+
+                    {{-- Status Bayar (petugas hanya lihat badge) --}}
+                    <td>
+                        @if($item->status_bayar === 'belum')
+                            <span class="badge bg-danger">Belum Dibayar</span>
+                        @else
+                            <span class="badge bg-success">Sudah Dibayar</span>
+                        @endif
+                    </td>
+
+                    {{-- Status pengembalian --}}
+                    <td>
+                        <span class="badge bg-primary">Dikembalikan</span>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-muted py-4">
+                    <td colspan="10" class="text-muted py-4">
                         Belum ada data pengembalian
                     </td>
                 </tr>

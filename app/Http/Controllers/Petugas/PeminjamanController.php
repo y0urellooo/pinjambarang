@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Petugas;
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
-use Illuminate\Http\Request;
-use App\Models\Alat;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PeminjamanController extends Controller
@@ -49,35 +46,20 @@ class PeminjamanController extends Controller
     }
 
     // proses pengembalian
+    
+    // proses pengajuan pengembalian (oleh peminjam)
     public function kembalikan($id)
     {
-        $peminjaman = Peminjaman::with('alat')->findOrFail($id);
+        $peminjaman = Peminjaman::findOrFail($id);
 
-        // validasi status
-        if ($peminjaman->status !== 'pengajuan_kembali') {
-            return back()->with('error', 'Belum ada pengajuan pengembalian');
+        if ($peminjaman->status !== 'dipinjam') {
+            return back()->with('error', 'Peminjaman belum aktif');
         }
 
-        DB::transaction(function () use ($peminjaman) {
+        $peminjaman->update([
+            'status' => 'pengajuan_kembali'
+        ]);
 
-            // simpan ke tabel pengembalian
-            Pengembalian::create([
-                'peminjaman_id' => $peminjaman->id,
-                'tanggal_kembali' => now(),
-            ]);
-
-            // kembalikan stok alat
-            $peminjaman->alat->increment(
-                'jumlah_alat',
-                $peminjaman->jumlah_pinjam
-            );
-
-            // update status peminjaman
-            $peminjaman->update([
-                'status' => 'dikembalikan'
-            ]);
-        });
-
-        return back()->with('success', 'Pengembalian berhasil dikonfirmasi');
+        return back()->with('success', 'Pengajuan pengembalian berhasil');
     }
 }

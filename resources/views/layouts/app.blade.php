@@ -25,7 +25,7 @@
         }
 
         .sidebar {
-            width: 250px;
+            width: 230px;
             min-height: 100vh;
             background: #020617;
         }

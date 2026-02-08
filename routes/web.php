@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PetugasController;
 use App\Http\Controllers\Petugas\PeminjamanController as PetugasPeminjamanController;
 use App\Http\Controllers\Petugas\PengembalianController as PetugasPengembalianController;
 use App\Http\Controllers\Peminjam\AlatController as PeminjamAlatController;
+use App\Http\Controllers\Peminjam\PembayaranController;
 use App\Http\Controllers\Peminjam\PeminjamanController as PeminjamPeminjamanController;
 use App\Http\Controllers\Petugas\LaporanController;
 use App\Http\Controllers\Peminjam\ProfilController;
@@ -39,13 +40,12 @@ Route::prefix('admin')
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
-        // Route::resource('/users', UserController::class);
         Route::resource('petugas', PetugasController::class);
         Route::get('peminjam', [PeminjamController::class, 'index'])
             ->name('peminjam.index');
         Route::resource('/kategori', KategoriController::class);
         Route::resource('/alat', AlatController::class);
-        Route::resource('/data-peminjaman', PeminjamanController::class)
+        Route::resource('/peminjaman', PeminjamanController::class)
             ->only(['index']);
 
         // pengembalian
@@ -71,6 +71,17 @@ Route::prefix('petugas')
             return view('petugas.dashboard');
         })->name('dashboard');
 
+        // profil petugas
+        Route::get('/profile', [\App\Http\Controllers\Petugas\ProfilController::class, 'show'])
+            ->name('profile.show');
+
+        Route::get('/profile/edit', [\App\Http\Controllers\Petugas\ProfilController::class, 'edit'])
+            ->name('profile.edit');
+
+        Route::put('/profile/update', [\App\Http\Controllers\Petugas\ProfilController::class, 'update'])
+            ->name('profile.update');
+
+        // manajemen peminjaman
         Route::get('/peminjaman', [PetugasPeminjamanController::class, 'index'])
             ->name('peminjaman.index');
 
@@ -83,6 +94,7 @@ Route::prefix('petugas')
         Route::post('/peminjaman/{id}/kembalikan', [PetugasPeminjamanController::class, 'kembalikan'])
             ->name('peminjaman.kembalikan');
 
+        // manajemen pengembalian
         Route::resource('/pengembalian', PetugasPengembalianController::class)
             ->only(['index']);
 
@@ -154,4 +166,20 @@ Route::prefix('peminjam')
             '/peminjaman',
             [PeminjamPeminjamanController::class, 'index']
         )->name('peminjaman.index');
+
+        // Halaman denda/pengembalian
+        Route::get('/pengembalian', [PembayaranController::class, 'index'])
+            ->name('pengembalian.index');
+
+        // Form bayar denda
+        Route::get('/pengembalian/{pengembalian}/bayar', [PembayaranController::class, 'edit'])
+            ->name('pengembalian.edit');
+
+        // Update bayar denda
+        Route::put('/pengembalian/{pengembalian}', [PembayaranController::class, 'update'])
+            ->name('pengembalian.update');
+
+        // Bayar langsung via tombol
+        Route::post('/pengembalian/{pengembalian}/bayar', [PembayaranController::class, 'bayar'])
+            ->name('pengembalian.bayar');
     });

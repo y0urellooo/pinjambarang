@@ -22,6 +22,7 @@
             <thead class="table-dark text-center">
                 <tr>
                     <th width="80">No</th>
+                    <th>Foto</th>
                     <th>Nama</th>
                     <th>Email</th>
                     <th width="220">Aksi</th>
@@ -29,8 +30,21 @@
             </thead>
             <tbody>
                 @forelse($petugas as $p)
-                <tr class="text-center">
+                <tr class="text-center align-middle">
                     <td>{{ $loop->iteration }}</td>
+                    <td>
+                        @if($p->foto)
+                            <img src="{{ asset('foto_petugas/' . $p->foto) }}"
+                                 alt="Foto {{ $p->name }}"
+                                 width="50"
+                                 class="rounded border">
+                        @else
+                            <img src="{{ asset('default-avatar.png') }}" 
+                                 alt="Foto {{ $p->name }}" 
+                                 width="50" 
+                                 class="rounded-circle border text-muted">
+                        @endif
+                    </td>
                     <td>{{ $p->name }}</td>
                     <td>{{ $p->email }}</td>
                     <td>
@@ -52,7 +66,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="text-center text-muted">
+                    <td colspan="5" class="text-center text-muted">
                         Belum ada data petugas
                     </td>
                 </tr>

@@ -1,8 +1,8 @@
 <aside class="sidebar p-3 text-white">
-    <h5 class="fw-semibold text-center">Peminjaman Barang</h5>
+    <h6 class="fw-semibold text-center">Peminjaman Barang</h6>
     <hr>
 
-    <div class="nav flex-column gap-1">
+    <div class="nav flex-column gap-2">
 
         @auth
 
@@ -29,7 +29,7 @@
                     <i class="bi bi-box-seam me-2"></i> Alat
                 </a>
 
-                <a href="/admin/data-peminjaman" class="nav-link {{ request()->is('admin/data-peminjaman*') ? 'active' : '' }}">
+                <a href="/admin/peminjaman" class="nav-link {{ request()->is('admin/peminjaman*') ? 'active' : '' }}">
                     <i class="bi bi-handbag me-2"></i> Peminjaman
                 </a>
 
@@ -83,6 +83,10 @@
                 <a href="{{ route('peminjam.peminjaman.index') }}"
                     class="nav-link {{ request()->routeIs('peminjam.peminjaman.*') ? 'active' : '' }}">
                     <i class="bi bi-handbag me-2"></i> Peminjaman
+                </a>
+                <a href="{{ route('peminjam.pengembalian.index') }}"
+                    class="nav-link {{ request()->routeIs('peminjam.pengembalian.*') ? 'active' : '' }}">
+                    <i class="bi bi-cash-stack me-2"></i> Pengembalian
                 </a>
 
             @endif

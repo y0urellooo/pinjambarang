@@ -26,21 +26,35 @@ class PetugasController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-        ],[
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
             'name.required' => 'Nama petugas wajib diisi.',
+            'name.max' => 'required|max:50',
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah digunakan.',
             'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password minimal 6 karakter.',
+            'foto.required' => 'Foto wajib diisi.',
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus jpg, jpeg, atau png.',
+            'foto.max' => 'Ukuran foto maksimal 2MB.',
         ]);
 
-        User::create([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'petugas',
-        ]);
+        ];
+
+        if ($request->hasFile('foto')) {
+            $foto = time() . '.' . $request->foto->extension();
+            $request->foto->move(public_path('foto_petugas'), $foto);
+            $data['foto'] = $foto;
+        }
+
+        User::create($data);
 
         return redirect()->route('admin.petugas.index')
             ->with('success', 'Petugas berhasil ditambahkan');
@@ -59,17 +73,29 @@ class PetugasController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
-        ],[
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
             'name.required' => 'Nama petugas wajib diisi.',
+            'name.max' => 'required|max:50',
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah digunakan.',
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.required' => 'Foto wajib diisi.',
+            'foto.mimes' => 'Format foto harus jpg, jpeg, atau png.',
+            'foto.max' => 'Ukuran foto maksimal 2MB.',
         ]);
 
         $data = $request->only('name', 'email');
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('foto')) {
+            $foto = time() . '.' . $request->foto->extension();
+            $request->foto->move(public_path('foto_petugas'), $foto);
+            $data['foto'] = $foto;
         }
 
         $petugas->update($data);

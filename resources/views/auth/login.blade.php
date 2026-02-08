@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
     <div class="container">
@@ -19,9 +21,9 @@
                         <h3 class="text-center mb-4">Login</h3>
 
                         @if ($errors->any())
-                            <div class="alert alert-danger text-center">
-                                {{ $errors->first() }}
-                            </div>
+                        <div class="alert alert-danger text-center">
+                            {{ $errors->first() }}
+                        </div>
                         @endif
 
                         <form method="POST" action="/login">
@@ -44,10 +46,10 @@
                             </button>
 
                             <div class="text-center mt-3">
-                            <small>
-                                Belum punya akun?
-                                <a href="/register">register</a>
-                            </small>
+                                <small>
+                                    Belum punya akun?
+                                    <a href="/register">register</a>
+                                </small>
 
                         </form>
 
@@ -59,4 +61,5 @@
     </div>
 
 </body>
+
 </html>
