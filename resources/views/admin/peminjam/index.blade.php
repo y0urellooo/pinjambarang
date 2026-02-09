@@ -37,6 +37,7 @@
 
                     <td>{{ $p->name }}</td>
                     <td>{{ $p->email }}</td>
+                    
                     <td>{{ $p->created_at->format('d M Y') }}</td>
                     <td colspan="5" class="text-center text-muted">
                         <form action="{{ route('admin.peminjam.toggleStatus', $p->id) }}" method="POST">
