@@ -21,7 +21,7 @@
             <tbody class="align-middle">
                 @forelse($peminjams as $p)
                 <tr class="text-center">
-                    <td>{{ $loop->iteration }}</td>
+                    {{ $peminjams->firstItem() + $loop->index }}
 
                     {{-- FOTO --}}
                     <td>
@@ -47,6 +47,9 @@
                 @endforelse
             </tbody>
         </table>
+
+        <!-- pagination -->
+        <x-pagination :paginator="$peminjams" />
     </div>
 </div>
 @endsection

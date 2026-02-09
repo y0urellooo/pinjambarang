@@ -11,7 +11,9 @@ class PetugasController extends Controller
 {
     public function index()
     {
-        $petugas = User::where('role', 'petugas')->get();
+        $petugas = User::where('role', 'petugas')
+        ->latest()
+        ->paginate(8);
         return view('admin.petugas.index', compact('petugas'));
     }
 
@@ -25,7 +27,7 @@ class PetugasController extends Controller
         $request->validate([
             'name' => 'required|max:25',
             'email' => 'required|email|unique:users',
-            'password' => 'required|max:8',
+            'password' => 'required|min:8',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'name.required' => 'Nama petugas wajib diisi.',
@@ -34,7 +36,7 @@ class PetugasController extends Controller
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah digunakan.',
             'password.required' => 'Password wajib diisi.',
-            'password.max' => 'Password maksimal 8 karakter.',
+            'password.min' => 'Password maksimal 8 karakter.',
             'foto.required' => 'Foto wajib diisi.',
             'foto.image' => 'File harus berupa gambar.',
             'foto.mimes' => 'Format foto harus jpg, jpeg, atau png.',
@@ -74,12 +76,14 @@ class PetugasController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'password' => 'nullable|min:8',
         ], [
             'name.required' => 'Nama petugas wajib diisi.',
             'name.max' => 'required|max:50',
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah digunakan.',
+            'password.min' => 'Password minimal 8 karakter.',
             'foto.image' => 'File harus berupa gambar.',
             'foto.required' => 'Foto wajib diisi.',
             'foto.mimes' => 'Format foto harus jpg, jpeg, atau png.',

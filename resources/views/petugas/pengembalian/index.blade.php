@@ -40,7 +40,7 @@
             <tbody class="text-center">
                 @forelse($pengembalians as $item)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $pengembalians->firstName() + $loop->index }}</td>
                     <td>{{ $item->peminjaman->user->name ?? '-' }}</td>
                     <td>{{ $item->peminjaman->alat->nama_alat ?? '-' }}</td>
                     <td>{{ $item->peminjaman->jumlah_pinjam }}</td>
@@ -81,6 +81,9 @@
                 @endforelse
             </tbody>
         </table>
+        
+        <!-- pagination -->
+        <x-pagination :paginator="$pengembalians" />
     </div>
 </div>
 @endsection

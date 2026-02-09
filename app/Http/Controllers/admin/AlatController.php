@@ -14,7 +14,7 @@ class AlatController extends Controller
      */
     public function index()
     {
-        $alats = Alat::all();
+        $alats = Alat::latest()->paginate(8);
         return view('admin.alat.index', compact('alats'));
     }
 

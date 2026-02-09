@@ -25,7 +25,7 @@
                     @forelse($alats as $alat)
                         <tr class="text-center align-middle">
 
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $alats->firstName() + $loop->index }}</td>
 
                             {{-- FOTO --}}
                             <td>
@@ -86,13 +86,16 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted">
+                            <td colspan="8" class="text-center text-muted">
                                 Data alat belum tersedia
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
+
+            <!-- pagination -->
+             <x-pagination :paginator="$alats" />
         </div>
     </div>
 @endsection

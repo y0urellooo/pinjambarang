@@ -41,7 +41,7 @@
                 ->diffInDays(\Carbon\Carbon::parse($item->tanggal_kembali_rencana));
                 @endphp
                 <tr class="text-center align-middle">
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $peminjamans->firstName() + $loop->index }}</td>
 
                     {{-- FOTO --}}
                     <td>
@@ -100,6 +100,9 @@
                 @endforelse
             </tbody>
         </table>
+
+        <!-- pagination -->
+        <x-pagination :paginator="$peminjamans" />
     </div>
 </div>
 

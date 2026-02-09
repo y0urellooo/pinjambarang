@@ -31,34 +31,34 @@
             <tbody>
                 @forelse($petugas as $p)
                 <tr class="text-center align-middle">
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $petugas->firstItem() + $loop->index }}</td>
                     <td>
                         @if($p->foto)
-                            <img src="{{ asset('foto_petugas/' . $p->foto) }}"
-                                 alt="Foto {{ $p->name }}"
-                                 width="50"
-                                 class="rounded border">
+                        <img src="{{ asset('foto_petugas/' . $p->foto) }}"
+                            alt="Foto {{ $p->name }}"
+                            width="50"
+                            class="rounded border">
                         @else
-                            <img src="{{ asset('default-avatar.png') }}" 
-                                 alt="Foto {{ $p->name }}" 
-                                 width="50" 
-                                 class="rounded-circle border text-muted">
+                        <img src="{{ asset('default-avatar.png') }}"
+                            alt="Foto {{ $p->name }}"
+                            width="50"
+                            class="rounded-circle border text-muted">
                         @endif
                     </td>
                     <td>{{ $p->name }}</td>
                     <td>{{ $p->email }}</td>
                     <td>
                         <a href="{{ route('admin.petugas.edit', $p->id) }}"
-                           class="btn btn-warning btn-sm">
+                            class="btn btn-warning btn-sm">
                             Edit
                         </a>
 
                         <form action="{{ route('admin.petugas.destroy', $p->id) }}"
-                              method="POST" class="d-inline">
+                            method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button onclick="return confirm('Hapus petugas?')"
-                                    class="btn btn-danger btn-sm">
+                                class="btn btn-danger btn-sm">
                                 Hapus
                             </button>
                         </form>
@@ -73,6 +73,10 @@
                 @endforelse
             </tbody>
         </table>
+
+        <!-- pagination -->
+        <x-pagination :paginator="$petugas" />
+
     </div>
 </div>
 @endsection

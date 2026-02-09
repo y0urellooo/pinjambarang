@@ -15,7 +15,7 @@ class PembayaranController extends Controller
             ->whereHas('peminjaman', fn($q) => $q->where('user_id', auth()->id()))
             ->where('denda', '>', 0)
             ->orderBy('tanggal_kembali_aktual', 'desc')
-            ->get();
+            ->paginate(8);
 
         return view('peminjam.pengembalian.index', compact('pengembalians'));
     }

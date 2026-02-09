@@ -18,7 +18,7 @@ class PengembalianController extends Controller
             'peminjaman.alat'
         ])
             ->orderBy('tanggal_kembali_aktual', 'desc')
-            ->get();
+            ->paginate(8);
 
         return view('petugas.pengembalian.index', compact('pengembalians'));
     }
