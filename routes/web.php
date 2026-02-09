@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PeminjamanController;
 use App\Http\Controllers\Admin\PeminjamController;
 use App\Http\Controllers\Admin\PengembalianController;
 use App\Http\Controllers\Admin\PetugasController;
+use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
 use App\Http\Controllers\Petugas\PeminjamanController as PetugasPeminjamanController;
 use App\Http\Controllers\Petugas\PengembalianController as PetugasPengembalianController;
 use App\Http\Controllers\Peminjam\AlatController as PeminjamAlatController;
@@ -79,9 +80,8 @@ Route::prefix('petugas')
     ->name('petugas.')
     ->group(function () {
 
-        Route::get('/dashboard', function () {
-            return view('petugas.dashboard');
-        })->name('dashboard');
+    Route::get('/dashboard', [PetugasDashboardController::class, 'index'])
+        ->name('dashboard');
 
         // profil petugas
         Route::get('/profile', [\App\Http\Controllers\Petugas\ProfilController::class, 'show'])
@@ -125,6 +125,7 @@ Route::prefix('petugas')
 
         Route::get('/laporan-cetak', [LaporanController::class, 'cetak'])
             ->name('laporan-cetak');
+
     });
 
 // peminjam route
@@ -133,9 +134,10 @@ Route::prefix('peminjam')
     ->name('peminjam.')
     ->group(function () {
 
-        Route::get('/dashboard', function () {
-            return view('peminjam.dashboard');
-        })->name('dashboard');
+         Route::get(
+            '/dashboard',
+            [App\Http\Controllers\Peminjam\DashboardController::class, 'index']
+        )->name('dashboard');
 
         // profil peminjam
         Route::get('/profile', function () {
@@ -194,4 +196,5 @@ Route::prefix('peminjam')
         // Bayar langsung via tombol
         Route::post('/pengembalian/{pengembalian}/bayar', [PembayaranController::class, 'bayar'])
             ->name('pengembalian.bayar');
+
     });
