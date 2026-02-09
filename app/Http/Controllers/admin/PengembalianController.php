@@ -13,10 +13,12 @@ class PengembalianController extends Controller
     public function index()
     {
         $pengembalians = Pengembalian::with([
-            'peminjaman.alat', 
+            'peminjaman.alat',
             'peminjaman.user'
-            ])->latest()->get();
-            
+        ])
+        ->orderBy('tanggal_kembali_aktual', 'desc')
+        ->paginate(8);
+
         return view('admin.pengembalian.index', compact('pengembalians'));
     }
 
@@ -28,25 +30,34 @@ class PengembalianController extends Controller
     public function store(Request $request, Peminjaman $peminjaman)
     {
         $request->validate([
-            'tanggal_kembali' => 'required|date',
+            'tanggal_kembali_aktual' => 'required|date',
+            'kondisi' => 'required|in:baik,rusak,hilang',
+            'catatan' => 'nullable|string',
+            'denda' => 'nullable|integer|min:0',
         ]);
 
         DB::transaction(function () use ($request, $peminjaman) {
 
+            // simpan ke tabel pengembalians
             Pengembalian::create([
                 'peminjaman_id' => $peminjaman->id,
-                'tanggal_kembali' => $request->tanggal_kembali,
+                'tanggal_kembali_aktual' => $request->tanggal_kembali_aktual,
+                'kondisi' => $request->kondisi,
+                'catatan' => $request->catatan,
+                'denda' => $request->denda ?? 0,
             ]);
 
-            // update status peminjaman
+            // update STATUS saja (tanpa tanggal)
             $peminjaman->update([
-                'tanggal_kembali' => $request->tanggal_kembali,
                 'status' => 'dikembalikan'
             ]);
 
-            // stok alat kembali kalau baik
-            if ($request->kondisi === 'baik') {
-                $peminjaman->alat->increment('jumlah_alat');
+            // stok kembali kalau tidak hilang
+            if ($request->kondisi !== 'hilang') {
+                $peminjaman->alat->increment(
+                    'jumlah_alat',
+                    $peminjaman->jumlah_pinjam
+                );
             }
         });
 

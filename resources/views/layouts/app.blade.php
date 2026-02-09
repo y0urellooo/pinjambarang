@@ -25,7 +25,7 @@
         }
 
         .sidebar {
-            width: 250px;
+            width: 240px;
             min-height: 100vh;
             background: #020617;
         }
@@ -45,39 +45,49 @@
             color: #fff;
         }
 
-        /* tabel */
-        .table-peminjaman th,
-        .table-peminjaman td {
-            padding: 12px 14px;
-            /* jarak antar kolom */
-            font-size: 0.9rem;
-            /* kecilin font dikit */
-            vertical-align: middle;
+        .deskripsi-wrapper {
+            white-space: normal;
+            word-break: break-word;
         }
 
-        .table-peminjaman tbody tr {
-            height: 60px;
-            /* jarak antar baris */
-        }
+        /* dashboard */
+        .dashboard-card {
+    border-radius: 8px;
+    padding: 20px;
+    color: #333;
+    position: relative;
+    overflow: hidden;
+    transition: 0.2s;
+}
 
-        .table-peminjaman th {
-            white-space: nowrap;
-            /* header tidak turun baris */
-        }
+.dashboard-card:hover {
+    transform: translateY(-3px);
+}
 
-        .table-peminjaman td {
-            white-space: nowrap;
-        }
+.dashboard-card .icon {
+    font-size: 48px;
+    opacity: 0.25;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+}
 
-        .table-peminjaman .badge {
-            font-size: 0.75rem;
-            padding: 6px 12px;
-        }
+.dashboard-card .count {
+    font-size: 36px;
+    font-weight: bold;
+}
 
-        .table-peminjaman .btn {
-            padding: 4px 10px;
-            font-size: 0.75rem;
-        }
+.dashboard-card .title {
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.dashboard-card a {
+    font-size: 13px;
+    text-decoration: none;
+}
+
     </style>
 
     @stack('css')
@@ -104,6 +114,25 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('js')
+
+    <script>
+        function toggleDeskripsi(el) {
+            const wrapper = el.closest('.deskripsi-wrapper');
+            const shortText = wrapper.querySelector('.short-text');
+            const fullText = wrapper.querySelector('.full-text');
+
+            if (fullText.classList.contains('d-none')) {
+                shortText.classList.add('d-none');
+                fullText.classList.remove('d-none');
+                el.textContent = 'Sembunyikan';
+            } else {
+                shortText.classList.remove('d-none');
+                fullText.classList.add('d-none');
+                el.textContent = 'Lihat selengkapnya';
+            }
+        }
+    </script>
+
 </body>
 
 </html>

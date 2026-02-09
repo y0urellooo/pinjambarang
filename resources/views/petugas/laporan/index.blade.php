@@ -49,40 +49,59 @@
         <div class="table-responsive p-3 shadow-sm">
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-dark text-center">
-                    <tr>
+                    <tr class="align-middle">
                         <th>No</th>
                         <th>Peminjam</th>
+                        <th>Foto</th>
                         <th>Alat</th>
                         <th>Jumlah</th>
-                        <th>Tanggal Pinjam</th>
-                        <th>Tanggal Kembali</th>
-                        <th>Status</th>
+                        <th>Tgl Pinjam</th>
+                        <th>Tgl Kembali Rencana</th>
+                        <th>Tgl Kembali Aktual</th>
+                        <th>Denda</th>
+                        <th>Status Bayar</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
                     @forelse($pengembalians as $item)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $pengembalians->firstName() + $loop->index }}</td>
                         <td>{{ $item->peminjaman->user->name ?? '-' }}</td>
+                        {{-- FOTO --}}
+                    <td>
+                        @if($item->peminjaman->alat->foto)
+                        <img src="{{ asset('foto_alat/' . $item->peminjaman->alat->foto) }}" width="50" class="img-thumbnail">
+                        @else
+                        <span class="text-muted">-</span>
+                        @endif
+                    </td>
                         <td>{{ $item->peminjaman->alat->nama_alat ?? '-' }}</td>
                         <td>{{ $item->peminjaman->jumlah_pinjam ?? '-' }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->peminjaman->tanggal_pinjam)->format('d M Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal_kembali)->format('d M Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->peminjaman->tanggal_kembali_rencana)->format('d M Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_kembali_aktual)->format('d M Y') }}</td>
+                        <td>Rp. {{ number_format($item->denda) }}</td>
+
+                        <!-- Status Bayar -->
                         <td>
-                            <span class="badge bg-success px-3 py-2">
-                                <i class="bi bi-check-circle me-1"></i> Dikembalikan
+                            <span class="badge {{ $item->status_bayar === 'lunas' ? 'bg-success' : 'bg-danger' }}">
+                                {{ ucfirst($item->status_bayar) }}
                             </span>
                         </td>
+
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="py-4 text-muted">
+                        <td colspan="10" class="py-4 text-muted">
                             Tidak ada data pengembalian
                         </td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
+
+            <!-- pagination -->
+             <x-pagination :paginator="$pengembalians" />
         </div>
     </div>
 

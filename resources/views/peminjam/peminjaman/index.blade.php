@@ -24,10 +24,11 @@
             <thead class="table-dark text-center">
                 <tr>
                     <th>No</th>
+                    <th>Foto</th>
                     <th>Alat</th>
                     <th>Jumlah</th>
                     <th>Tgl Pinjam</th>
-                    <th>Tgl Kembali</th>
+                    <th>Tgl Kembali Rencana</th>
                     <th>Lama Hari</th>
                     <th>Status</th>
                     <th>Aksi</th>
@@ -37,42 +38,56 @@
                 @forelse($peminjamans as $item)
                 @php
                 $lama = \Carbon\Carbon::parse($item->tanggal_pinjam)
-                ->diffInDays(\Carbon\Carbon::parse($item->tanggal_kembali));
+                ->diffInDays(\Carbon\Carbon::parse($item->tanggal_kembali_rencana));
                 @endphp
-                <tr class="text-center">
-                    <td>{{ $loop->iteration }}</td>
+                <tr class="text-center align-middle">
+                    <td>{{ $peminjamans->firstName() + $loop->index }}</td>
+
+                    {{-- FOTO --}}
+                    <td>
+                        @if($item->alat->foto)
+                        <img src="{{ asset('foto_alat/' . $item->alat->foto) }}" width="50" class="img-thumbnail">
+                        @else
+                        <span class="text-muted">-</span>
+                        @endif
+                    </td>
+
                     <td>{{ $item->alat->nama_alat }}</td>
                     <td>{{ $item->jumlah_pinjam }}</td>
-                    <td>
-                        {{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d M Y') }}
-                    </td>
-
-                    <td>
-                        {{ \Carbon\Carbon::parse($item->tanggal_kembali)->format('d M Y') }}
-                    </td>
-
-                    <td>
-                        <span class="fw-semibold">{{ $lama }} hari</span>
-                    </td>
+                    <td>{{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d M Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->tanggal_kembali_rencana)->format('d M Y') }}</td>
+                    <td><span class="fw-semibold">{{ $lama }} hari</span></td>
                     <td>
                         <span class="badge 
-                {{ $item->status === 'menunggu' ? 'bg-warning' : 
-                   ($item->status === 'dipinjam' ? 'bg-primary' : 'bg-success') }}">
-                            {{ ucfirst($item->status) }}
+                    {{ $item->status === 'menunggu' ? 'bg-warning' : 
+                       ($item->status === 'dipinjam' ? 'bg-primary' :
+                       ($item->status === 'pengajuan_kembali' ? 'bg-info' : 'bg-success')) }}">
+                            {{ str_replace('_', ' ', ucfirst($item->status)) }}
                         </span>
                     </td>
                     <td>
                         @if($item->status === 'menunggu')
-                        <form action="{{ route('peminjam.peminjaman.cencel', $item->id) }}"
-                            method="POST"
-                            class="d-inline"
-                            onsubmit="return confirm('Batalkan pengajuan peminjaman?')">
+                        <form action="{{ route('peminjam.peminjaman.cencel', $item->id) }}" method="POST"
+                            class="d-inline" onsubmit="return confirm('Batalkan pengajuan peminjaman?')">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger btn-sm">
                                 Batalkan
                             </button>
                         </form>
+
+                        @elseif($item->status === 'dipinjam')
+                        <form method="POST" action="{{ route('peminjam.peminjaman.ajukan_pengembalian', $item->id) }}"
+                            onsubmit="return confirm('Ajukan pengembalian barang?')">
+                            @csrf
+                            <button class="btn btn-warning rounded text-white fw-semibold btn-sm">
+                                Ajukan Pengembalian
+                            </button>
+                        </form>
+
+                        @elseif($item->status === 'pengajuan_kembali')
+                        <span class="badge bg-info">Menunggu Verifikasi</span>
+
                         @else
                         <span class="text-muted">-</span>
                         @endif
@@ -80,13 +95,14 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center text-muted">
-                        Belum ada peminjaman
-                    </td>
+                    <td colspan="9" class="text-center text-muted">Belum ada peminjaman</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
+
+        <!-- pagination -->
+        <x-pagination :paginator="$peminjamans" />
     </div>
 </div>
 

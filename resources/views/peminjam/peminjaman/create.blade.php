@@ -49,12 +49,12 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Tanggal Kembali</label>
+                <label class="form-label">Tanggal Kembali Rencana</label>
                 <input type="date"
-                    name="tanggal_kembali"
-                    class="form-control @error('tanggal_kembali') is-invalid @enderror">
+                    name="tanggal_kembali_rencana"
+                    class="form-control @error('tanggal_kembali_rencana') is-invalid @enderror">
 
-                @error('tanggal_kembali')
+                @error('tanggal_kembali_rencana')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>

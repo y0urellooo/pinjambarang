@@ -10,7 +10,7 @@ class KategoriController extends Controller
 {
     public function index()
     {
-        $kategoris = Kategori::all();
+        $kategoris = Kategori::latest()->paginate(8);
         return view('admin.kategori.index', compact('kategoris'));
     }
 
@@ -22,11 +22,12 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kategori' => 'required|unique:kategoris',
+            'nama_kategori' => 'required|max:25|unique:kategoris',
         ],
         [
             'nama_kategori.required' => 'Nama kategori wajib diisi.',
             'nama_kategori.unique' => 'Nama kategori sudah ada.',
+            'nama_kategori.max' => 'Nama kategori maksimal 25 huruf'
         ]);
 
         Kategori::create([
@@ -47,7 +48,7 @@ class KategoriController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_kategori' => 'required|unique:kategoris,nama_kategori,' . $id,
+            'nama_kategori' => 'required|max:25|unique:kategoris,nama_kategori,' . $id,
         ]);
 
         $kategori = Kategori::findOrFail($id);

@@ -17,11 +17,18 @@ class DashboardController extends Controller
         $alatTersedia = Alat::where('jumlah_alat', '>', 0)->count();
         $alatHabis = Alat::where('jumlah_alat', 0)->count();
 
+        $alatTerbaru = Alat::with('kategori')
+            ->latest()
+            ->take(5)
+            ->get();
+
         return view('admin.dashboard', compact(
             'totalAlat',
             'totalKategori',
             'alatTersedia',
-            'alatHabis'
+            'alatHabis',
+            'alatTerbaru'
         ));
     }
+
 }

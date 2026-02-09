@@ -8,15 +8,15 @@
 
 {{-- alert --}}
 @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
 @endif
 
 @if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
 @endif
 
 <div class="card shadow-sm">
@@ -38,79 +38,99 @@
 
             <tbody class="text-center">
                 @forelse($peminjamans as $item)
-                    @php
-                        $lama = \Carbon\Carbon::parse($item->tanggal_pinjam)
-                            ->diffInDays(\Carbon\Carbon::parse($item->tanggal_kembali));
-                    @endphp
+                @php
+                $lama = \Carbon\Carbon::parse($item->tanggal_pinjam)
+                ->diffInDays(\Carbon\Carbon::parse($item->tanggal_kembali_rencana));
+                @endphp
 
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $item->user->name ?? '-' }}</td>
-                        <td>{{ $item->alat->nama_alat ?? '-' }}</td>
-                        <td>{{ $item->jumlah_pinjam }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d M Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal_kembali)->format('d M Y') }}</td>
-                        <td class="fw-semibold">{{ $lama }} hari</td>
+                <tr>
+                    <td>{{ $peminjamans->firstName() + $loop->index }}</td>
+                    <td>{{ $item->user->name ?? '-' }}</td>
+                    <td>{{ $item->alat->nama_alat ?? '-' }}</td>
+                    <td>{{ $item->jumlah_pinjam }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d M Y') }}</td>
+                    <td>
+                        <div>
+                            <small class="text-muted">Rencana</small><br>
+                            {{ \Carbon\Carbon::parse($item->tanggal_kembali_rencana)->format('d M Y') }}
+                        </div>
 
-                        <td>
-                            @if($item->status === 'menunggu')
-                                <span class="badge bg-warning text-dark">Menunggu</span>
-                            @elseif($item->status === 'dipinjam')
-                                <span class="badge bg-primary">Dipinjam</span>
-                            @elseif($item->status === 'dikembalikan')
-                                <span class="badge bg-success">Dikembalikan</span>
-                            @else
-                                <span class="badge bg-danger">Ditolak</span>
-                            @endif
-                        </td>
+                        @if($item->tanggal_kembali_aktual)
+                        <div class="mt-1">
+                            <small class="text-muted">Aktual</small><br>
+                            <span class="fw-semibold text-success">
+                                {{ \Carbon\Carbon::parse($item->tanggal_kembali_aktual)->format('d M Y') }}
+                            </span>
+                        </div>
+                        @endif
+                    </td>
+                    <td class="fw-semibold">{{ $lama }} hari</td>
 
-                        <td>
-                            {{-- MENUNGGU --}}
-                            @if($item->status === 'menunggu')
-                                <form action="{{ route('petugas.peminjaman.approve', $item->id) }}"
-                                      method="POST"
-                                      class="d-inline">
-                                    @csrf
-                                    <button class="btn btn-success btn-sm">
-                                        Setujui
-                                    </button>
-                                </form>
+                    <td>
+                        @if($item->status === 'menunggu')
+                        <span class="badge bg-warning text-dark">Menunggu</span>
 
-                                <form action="{{ route('petugas.peminjaman.reject', $item->id) }}"
-                                      method="POST"
-                                      class="d-inline">
-                                    @csrf
-                                    <button class="btn btn-danger btn-sm">
-                                        Tolak
-                                    </button>
-                                </form>
+                        @elseif($item->status === 'dipinjam')
+                        <span class="badge bg-primary">Dipinjam</span>
 
-                            {{-- DIPINJAM --}}
-                            @elseif($item->status === 'dipinjam')
-                                <form action="{{ route('petugas.peminjaman.kembalikan', $item->id) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Barang sudah dikembalikan?')">
-                                    @csrf
-                                    <button class="btn btn-primary btn-sm">
-                                        Kembalikan
-                                    </button>
-                                </form>
+                        @elseif($item->status === 'pengajuan_kembali')
+                        <span class="badge bg-info text-dark">Menunggu Verifikasi</span>
 
-                            {{-- LAINNYA --}}
-                            @else
-                                -
-                            @endif
-                        </td>
-                    </tr>
+                        @elseif($item->status === 'dikembalikan')
+                        <span class="badge bg-success">Dikembalikan</span>
+
+                        @elseif($item->status === 'ditolak')
+                        <span class="badge bg-danger">Ditolak</span>
+                        @endif
+                    </td>
+
+                    <td>
+                        {{-- MENUNGGU --}}
+                        @if($item->status === 'menunggu')
+                        <form action="{{ route('petugas.peminjaman.approve', $item->id) }}" method="POST"
+                            class="d-inline">
+                            @csrf
+                            <button class="btn btn-success btn-sm">
+                                Setujui
+                            </button>
+                        </form>
+
+                        <form action="{{ route('petugas.peminjaman.reject', $item->id) }}" method="POST"
+                            class="d-inline">
+                            @csrf
+                            <button class="btn btn-danger btn-sm">
+                                Tolak
+                            </button>
+                        </form>
+
+                        {{-- DIPINJAM --}}
+                        @elseif($item->status === 'dipinjam')
+                        <span class="text-muted">Menunggu pengembalian</span>
+
+                        {{-- PENGAJUAN KEMBALI --}}
+                        @elseif($item->status === 'pengajuan_kembali')
+                        <a href="{{ route('petugas.pengembalian.create', $item->id) }}" class="btn btn-warning btn-sm">
+                            Proses Pengembalian
+                        </a>
+
+                        {{-- DIKEMBALIKAN / DITOLAK --}}
+                        @else
+                        <span class="text-muted">-</span>
+                        @endif
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="9" class="text-muted py-4">
-                            Tidak ada data peminjaman
-                        </td>
-                    </tr>
+                <tr>
+                    <td colspan="9" class="text-muted py-4">
+                        Tidak ada data peminjaman
+                    </td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
+
+        <!-- pagination -->
+        <x-pagination :paginator="$peminjamans" />
     </div>
 </div>
 @endsection

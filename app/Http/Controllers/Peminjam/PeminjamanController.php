@@ -11,12 +11,14 @@ class PeminjamanController extends Controller
 {
     public function index()
     {
-        $peminjamans = Peminjaman::with('alat')
+        $peminjamans = Peminjaman::with(['alat', 'pengembalian'])
             ->where('user_id', auth()->id())
             ->latest()
-            ->get();
+            ->paginate(8);
 
-        return view('peminjam.peminjaman.index', compact('peminjamans'));
+        $totalDenda = auth()->user()->total_denda; // ambil total denda user
+
+        return view('peminjam.peminjaman.index', compact('peminjamans', 'totalDenda'));
     }
 
     public function create(Alat $alat)
@@ -29,7 +31,7 @@ class PeminjamanController extends Controller
         $request->validate([
             'jumlah_pinjam' => 'required|integer' . $alat->jumlah_pinjam,
             'tanggal_pinjam' => 'required|date',
-            'tanggal_kembali' => 'required|date',
+            'tanggal_kembali_rencana' => 'required|date',
         ]);
 
         Peminjaman::create([
@@ -37,7 +39,7 @@ class PeminjamanController extends Controller
             'alat_id' => $alat->id,
             'jumlah_pinjam' => $request->jumlah_pinjam,
             'tanggal_pinjam' => $request->tanggal_pinjam,
-            'tanggal_kembali' => $request->tanggal_kembali,
+            'tanggal_kembali_rencana' => $request->tanggal_kembali_rencana,
             'status' => 'menunggu',
         ]);
 
@@ -61,5 +63,23 @@ class PeminjamanController extends Controller
         $peminjaman->delete();
 
         return back()->with('success', 'Peminjaman berhasil dibatalkan');
+    }
+
+    // pengembalian
+    public function ajukanPengembalian(Peminjaman $peminjaman)
+    {
+        if ($peminjaman->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        if ($peminjaman->status !== 'dipinjam') {
+            return back()->with('error', 'Tidak bisa mengajukan pengembalian');
+        }
+
+        $peminjaman->update([
+            'status' => 'pengajuan_kembali'
+        ]);
+
+        return back()->with('success', 'Pengajuan pengembalian berhasil dikirim');
     }
 }

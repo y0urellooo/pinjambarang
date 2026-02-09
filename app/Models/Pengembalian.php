@@ -8,8 +8,11 @@ class Pengembalian extends Model
 {
     protected $fillable = [
         'peminjaman_id',
-        'tanggal_kembali',
-        // 'kondisi'
+        'tanggal_kembali_aktual',
+        'kondisi',
+        'catatan',
+        'denda',
+        'status_bayar'
     ];
 
     public function peminjaman() {
