@@ -36,7 +36,7 @@
             <tbody>
                 @forelse ($kategoris as $kategori)
                 <tr class="text-center">
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $kategoris->firstItem() + $loop->index }}</td>
                     <td>{{ $kategori->nama_kategori }}</td>
                     <td>
                         <a href="{{ route('admin.kategori.edit', $kategori->id) }}"
@@ -64,6 +64,9 @@
                 @endforelse
             </tbody>
         </table>
+        
+        <!-- pagination -->
+        <x-pagination :paginator="$kategoris" />
     </div>
 </div>
 

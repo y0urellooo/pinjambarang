@@ -14,7 +14,7 @@ class PeminjamanController extends Controller
     {
         $peminjamans = Peminjaman::with(['user', 'alat'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(8);
 
         return view('petugas.peminjaman.index', compact('peminjamans'));
     }

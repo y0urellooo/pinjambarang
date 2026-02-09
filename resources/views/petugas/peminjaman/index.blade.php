@@ -44,7 +44,7 @@
                 @endphp
 
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $peminjamans->firstName() + $loop->index }}</td>
                     <td>{{ $item->user->name ?? '-' }}</td>
                     <td>{{ $item->alat->nama_alat ?? '-' }}</td>
                     <td>{{ $item->jumlah_pinjam }}</td>
@@ -128,6 +128,9 @@
                 @endforelse
             </tbody>
         </table>
+
+        <!-- pagination -->
+        <x-pagination :paginator="$peminjamans" />
     </div>
 </div>
 @endsection

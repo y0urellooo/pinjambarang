@@ -11,7 +11,7 @@ class AlatController extends Controller
     public function index() {
         $alats = Alat::with('kategori')
         ->orderBy('nama_alat', 'asc')
-        ->get();
+        ->paginate(8);
 
         return view('peminjam.alat.index', compact('alats'));
     }

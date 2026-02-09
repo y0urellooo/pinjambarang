@@ -23,16 +23,16 @@
             <tbody>
                 @forelse($peminjamans as $item)
                 <tr class="text-center align-middle">
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $peminjamans->firstItem() + $loop->index }}</td>
                     <td>{{ $item->user->name }}</td>
 
                     {{-- FOTO ALAT --}}
                     <td>
                         @if($item->alat->foto)
-                            <img src="{{ asset('foto_alat/' . $item->alat->foto) }}" 
-                                 width="50" height="50" class="img-thumbnail" alt="{{ $item->alat->nama_alat }}">
+                        <img src="{{ asset('foto_alat/' . $item->alat->foto) }}"
+                            width="50" height="50" class="img-thumbnail" alt="{{ $item->alat->nama_alat }}">
                         @else
-                            <span class="text-muted">-</span>
+                        <span class="text-muted">-</span>
                         @endif
                     </td>
 
@@ -57,6 +57,10 @@
                 @endforelse
             </tbody>
         </table>
+
+        <!-- pagination -->
+        <x-pagination :paginator="$peminjamans" />
+
     </div>
 </div>
 @endsection

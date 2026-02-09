@@ -11,7 +11,7 @@ class PeminjamanController extends Controller
     {
         $peminjamans = Peminjaman::with(['user', 'alat'])
             ->latest()
-            ->get();
+            ->paginate(8);
 
         return view('admin.peminjaman.index', compact('peminjamans'));
     }

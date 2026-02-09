@@ -23,7 +23,7 @@ class LaporanController extends Controller
 
     public function index(Request $request)
     {
-        $pengembalians = $this->queryLaporan($request)->get();
+        $pengembalians = $this->queryLaporan($request)->paginate(8);
         return view('petugas.laporan.index', compact('pengembalians'));
     }
 

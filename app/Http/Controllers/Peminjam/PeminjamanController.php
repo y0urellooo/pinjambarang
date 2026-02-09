@@ -14,7 +14,7 @@ class PeminjamanController extends Controller
         $peminjamans = Peminjaman::with(['alat', 'pengembalian'])
             ->where('user_id', auth()->id())
             ->latest()
-            ->get();
+            ->paginate(8);
 
         $totalDenda = auth()->user()->total_denda; // ambil total denda user
 

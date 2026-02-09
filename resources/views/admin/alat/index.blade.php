@@ -33,7 +33,7 @@
                 <tbody>
                     @forelse ($alats as $alat)
                         <tr class="text-center align-middle">
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $alats->firstItem() + $loop->index }}</td>
 
                             {{-- FOTO --}}
                             <td>
@@ -99,6 +99,9 @@
                     @endforelse
                 </tbody>
             </table>
+
+            <!-- pagination -->
+            <x-pagination :paginator="$alats" />
         </div>
     </div>
 @endsection

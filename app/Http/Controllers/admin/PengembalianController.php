@@ -17,7 +17,7 @@ class PengembalianController extends Controller
             'peminjaman.user'
         ])
         ->orderBy('tanggal_kembali_aktual', 'desc')
-        ->get();
+        ->paginate(8);
 
         return view('admin.pengembalian.index', compact('pengembalians'));
     }
