@@ -60,6 +60,9 @@ Route::prefix('admin')
         Route::resource('/alat', AlatController::class);
         Route::resource('/peminjaman', PeminjamanController::class)
             ->only(['index']);
+            Route::patch('/admin/peminjam/{id}/toggle-status', 
+            [PeminjamController::class, 'toggleStatus']
+                    )->name('peminjam.toggleStatus');
 
         // pengembalian
         Route::resource('/pengembalian', PengembalianController::class)->only(['index']);

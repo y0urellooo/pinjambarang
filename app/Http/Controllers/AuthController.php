@@ -22,21 +22,32 @@ class AuthController extends Controller
 
     // ===== ACTION =====
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+{
+    $credentials = $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return $this->redirectByRole();
-        }
+    // Ambil user dulu berdasarkan email
+    $user = User::where('email', $request->email)->first();
 
+    // Cek status
+    if ($user && $user->status === 'nonactive') {
         return back()->withErrors([
-            'email' => 'Email atau password salah',
+            'email' =>'Login ditolak. Status akun Anda tidak aktif. Hubungi administrator jika ini adalah kesalahan.'
         ]);
     }
+
+    // Baru attempt login
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        return $this->redirectByRole();
+    }
+
+    return back()->withErrors([
+        'email' => 'Email atau password salah',
+    ]);
+}
 
     public function register(Request $request)
     {
@@ -44,18 +55,8 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
-            'no_telpon' => 'required',
-            'alamat' => 'required',
-            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'status'   => 'active',
         ]);
-
-        $fotoName = null;
-
-        if ($request->hasFile('foto')) {
-            $fotoName = time() . '_' . $request->foto->getClientOriginalName();
-            $request->foto->move(public_path('foto_peminjam'), $fotoName);
-        }
 
         User::create([
             'name' => $request->name,
