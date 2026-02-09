@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Overview')
+@section('title', 'Dashboard Admin')
 
 @section('content')
 
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h3 class="fw-bold mb-0">Dashboard Admin</h3>
-            <p class="text-muted">Selamat datang kembali, Admin! Berikut ringkasan hari ini.</p>
+            <h3 class="fw-bold mb-1">Dashboard Admin</h3>
+            <p class="text-muted">Selamat datang kembali, <strong>Admin!</strong> Berikut ringkasan hari ini.</p>
         </div>
         <div class="text-end">
             <span class="badge bg-primary px-3 py-2">{{ now()->format('d M Y') }}</span>
@@ -22,7 +22,7 @@
                 <div class="card-body p-4">
                     <h6 class="text-uppercase opacity-75 fw-bold">Total Alat</h6>
                     <h2 class="display-5 fw-bold mb-0">{{ $totalAlat }}</h2>
-                    <small>Items terdaftar</small>
+                    <small>Alat terdaftar</small>
                     <i class="bi bi-box stat-icon"></i>
                 </div>
             </div>
@@ -68,13 +68,13 @@
             <div class="table-container border-0 shadow-sm">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold mb-0">Alat Terbaru Ditambahkan</h5>
-                    <a href="{{ route('admin.alat.index') }}" class="btn btn-sm btn-outline-primary rounded-pill">Lihat Semua</a>
+                    <a href="{{ route('admin.alat.index') }}" class="btn btn-sm btn-outline-primary rounded">Lihat Semua</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-middle table-hover">
                         <thead class="text-muted small uppercase">
                             <tr>
-                                <th>Info Alat</th>
+                                <th>Data Alat</th>
                                 <th class="text-center">Kategori</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Stok</th>
