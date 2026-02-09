@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProfilController as AdminProfilController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\AlatController;
 use App\Http\Controllers\Admin\PeminjamanController;
@@ -39,6 +40,17 @@ Route::prefix('admin')
 
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
+
+        // profil admin
+        // profil admin
+        Route::get('/profile', [AdminProfilController::class, 'show'])
+            ->name('profile.show');
+
+        Route::get('/profile/edit', [AdminProfilController::class, 'edit'])
+            ->name('profile.edit');
+
+        Route::put('/profile/update', [AdminProfilController::class, 'update'])
+            ->name('profile.update');
 
         Route::resource('petugas', PetugasController::class);
         Route::get('peminjam', [PeminjamController::class, 'index'])

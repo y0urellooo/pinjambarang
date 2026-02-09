@@ -10,24 +10,31 @@
             @auth
             @php
                 $user = auth()->user();
-                $fotoPath = $user->foto
-                    ? ($user->role == 'petugas'
-                        ? asset('foto_petugas/' . $user->foto)
-                        : asset('foto_peminjam/' . $user->foto))
-                    : null;
+
+                $fotoPath = null;
+                if ($user->foto) {
+                    if ($user->role == 'admin') {
+                        $fotoPath = asset('foto_admin/' . $user->foto);
+                    } elseif ($user->role == 'petugas') {
+                        $fotoPath = asset('foto_petugas/' . $user->foto);
+                    } elseif ($user->role == 'peminjam') {
+                        $fotoPath = asset('foto_peminjam/' . $user->foto);
+                    }
+                }
             @endphp
 
-            <a class="btn btn-outline-primary dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
-                data-bs-toggle="dropdown">
+            <a class="btn btn-outline-primary dropdown-toggle d-flex align-items-center gap-2"
+               href="#" role="button" data-bs-toggle="dropdown">
 
                 @if ($fotoPath)
-                    <img src="{{ $fotoPath }}" alt="Foto Profil" width="32" height="32" class="rounded-circle border">
+                    <img src="{{ $fotoPath }}" alt="Foto Profil"
+                         width="32" height="32"
+                         class="rounded-circle border">
                 @else
                     <i class="bi bi-person-circle fs-4"></i>
                 @endif
 
                 <span>{{ $user->name }}</span>
-
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end shadow">
@@ -38,21 +45,32 @@
 
                 <li><hr class="dropdown-divider"></li>
 
-                {{-- Link Profil --}}
-                @if ($user->role == 'peminjam')
-                <li>
-                    <a href="{{ route('peminjam.profile') }}" class="dropdown-item">
-                        <i class="bi bi-person me-2"></i> Profil
-                    </a>
-                </li>
-                <li><hr class="dropdown-divider"></li>
+                {{-- ADMIN --}}
+                @if ($user->role == 'admin')
+                    <li>
+                        <a href="{{ route('admin.profile.show') }}" class="dropdown-item">
+                            <i class="bi bi-person me-2"></i> Profil
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+
+                {{-- PETUGAS --}}
                 @elseif ($user->role == 'petugas')
-                <li>
-                    <a href="{{ route('petugas.profile.show') }}" class="dropdown-item">
-                        <i class="bi bi-person me-2"></i> Profil
-                    </a>
-                </li>
-                <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a href="{{ route('petugas.profile.show') }}" class="dropdown-item">
+                            <i class="bi bi-person me-2"></i> Profil
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+
+                {{-- PEMINJAM --}}
+                @elseif ($user->role == 'peminjam')
+                    <li>
+                        <a href="{{ route('peminjam.profile') }}" class="dropdown-item">
+                            <i class="bi bi-person me-2"></i> Profil
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
                 @endif
 
                 <li>
