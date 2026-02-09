@@ -44,7 +44,7 @@
                 @endphp
 
                 <tr>
-                    <td>{{ $peminjamans->firstName() + $loop->index }}</td>
+                    <td>{{ $peminjamans->firstItem() + $loop->index }}</td>
                     <td>{{ $item->user->name ?? '-' }}</td>
                     <td>{{ $item->alat->nama_alat ?? '-' }}</td>
                     <td>{{ $item->jumlah_pinjam }}</td>

@@ -22,32 +22,32 @@ class AuthController extends Controller
 
     // ===== ACTION =====
     public function login(Request $request)
-{
-    $credentials = $request->validate([
-        'email'    => 'required|email',
-        'password' => 'required',
-    ]);
+    {
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
 
-    // Ambil user dulu berdasarkan email
-    $user = User::where('email', $request->email)->first();
+        // Ambil user dulu berdasarkan email
+        $user = User::where('email', $request->email)->first();
 
-    // Cek status
-    if ($user && $user->status === 'nonactive') {
+        // Cek status
+        if ($user && $user->status === 'nonactive') {
+            return back()->withErrors([
+                'email' => 'Login ditolak. Status akun Anda tidak aktif. Hubungi administrator jika ini adalah kesalahan.'
+            ]);
+        }
+
+        // Baru attempt login
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return $this->redirectByRole();
+        }
+
         return back()->withErrors([
-            'email' =>'Login ditolak. Status akun Anda tidak aktif. Hubungi administrator jika ini adalah kesalahan.'
+            'email' => 'Email atau password salah',
         ]);
     }
-
-    // Baru attempt login
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-        return $this->redirectByRole();
-    }
-
-    return back()->withErrors([
-        'email' => 'Email atau password salah',
-    ]);
-}
 
     public function register(Request $request)
     {
@@ -55,14 +55,26 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
-            'status'   => 'active',
+            'no_telpon' => 'required',
+            'alamat' => 'required',
+            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        $fotoName = null;
+
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $fotoName = time() . '_' . $foto->getClientOriginalName();
+            $foto->move(public_path('foto_peminjam'), $fotoName);
+        }
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'peminjam',
+            'status' => 'active',
 
             'no_telpon' => $request->no_telpon,
             'alamat' => $request->alamat,

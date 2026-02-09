@@ -25,7 +25,7 @@
                     @forelse($alats as $alat)
                         <tr class="text-center align-middle">
 
-                            <td>{{ $alats->firstName() + $loop->index }}</td>
+                            <td>{{ $alats->firstItem() + $loop->index }}</td>
 
                             {{-- FOTO --}}
                             <td>

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard Peminjam')
 @section('page_title', 'Dashboard Peminjam')
 
 @section('content')
@@ -82,14 +83,14 @@
 
                 <div class="table-responsive">
                     <table class="table align-middle table-hover">
-                        <thead class="text-muted small">
+                        <thead class="text-muted small text-center">
                             <tr>
-                                <th>#</th>
+                                <th>No</th>
                                 <th>Tanggal Pinjam</th>
                                 <th class="text-center">Status</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-center">
                             @forelse ($peminjamanTerbaru as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Alat')
 @section('page_title', 'Edit Alat')
 
 @section('content')

@@ -65,7 +65,7 @@
                 <tbody class="text-center">
                     @forelse($pengembalians as $item)
                     <tr>
-                        <td>{{ $pengembalians->firstName() + $loop->index }}</td>
+                        <td>{{ $pengembalians->firstItem() + $loop->index }}</td>
                         <td>{{ $item->peminjaman->user->name ?? '-' }}</td>
                         {{-- FOTO --}}
                     <td>

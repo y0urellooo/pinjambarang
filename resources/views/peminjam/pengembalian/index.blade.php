@@ -31,7 +31,7 @@
             <tbody class="text-center align-middle">
                 @forelse($pengembalians as $item)
                 <tr>
-                    <td>{{ $pengembalians->firstName() + $loop->index }}</td>
+                    <td>{{ $pengembalians->firstItem() + $loop->index }}</td>
 
                     {{-- FOTO --}}
                     <td>
