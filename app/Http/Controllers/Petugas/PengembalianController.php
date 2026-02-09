@@ -17,8 +17,8 @@ class PengembalianController extends Controller
             'peminjaman.user',
             'peminjaman.alat'
         ])
-        ->orderBy('tanggal_kembali_aktual', 'desc')
-        ->get();
+            ->orderBy('tanggal_kembali_aktual', 'desc')
+            ->get();
 
         return view('petugas.pengembalian.index', compact('pengembalians'));
     }
@@ -47,16 +47,17 @@ class PengembalianController extends Controller
 
             // tanggal rencana & aktual
             $tanggal_rencana = Carbon::parse($peminjaman->tanggal_kembali_rencana);
-            $tanggal_aktual  = Carbon::parse($request->tanggal_kembali_aktual);
+            $tanggal_aktual = Carbon::parse($request->tanggal_kembali_aktual);
 
             // hitung denda telat
             $denda_telat = 0;
+
             if ($tanggal_aktual->gt($tanggal_rencana)) {
-                $hari_telat = $tanggal_aktual->diffInDays($tanggal_rencana);
-                $denda_telat = $hari_telat * 5000;
+                $hari_telat = $tanggal_rencana->diffInDays($tanggal_aktual);
+                $denda_telat = $hari_telat * 10000;
             }
 
-            // total denda
+            // total denda (telat + kondisi barang)
             $total_denda = ($request->denda ?? 0) + $denda_telat;
 
             // simpan pengembalian

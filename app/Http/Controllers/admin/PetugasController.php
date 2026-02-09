@@ -23,18 +23,18 @@ class PetugasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|max:25',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|max:8',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'name.required' => 'Nama petugas wajib diisi.',
-            'name.max' => 'required|max:50',
+            'name.max' => 'Nama maksimal 25 karakter',
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah digunakan.',
             'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal 6 karakter.',
+            'password.max' => 'Password maksimal 8 karakter.',
             'foto.required' => 'Foto wajib diisi.',
             'foto.image' => 'File harus berupa gambar.',
             'foto.mimes' => 'Format foto harus jpg, jpeg, atau png.',

@@ -92,7 +92,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="py-4 text-muted">
+                        <td colspan="10" class="py-4 text-muted">
                             Tidak ada data pengembalian
                         </td>
                     </tr>

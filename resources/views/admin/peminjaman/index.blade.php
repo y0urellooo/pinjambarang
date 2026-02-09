@@ -17,7 +17,6 @@
                     <th>Alat</th>
                     <th>Tgl Pinjam</th>
                     <th>Tgl Kembali Rencana</th>
-                    <th>Tgl Kembali Aktual</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -40,9 +39,6 @@
                     <td>{{ $item->alat->nama_alat }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d M Y') }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tanggal_kembali_rencana)->format('d M Y') }}</td>
-                    <td>
-                        {{ \Carbon\Carbon::parse($item->pengembalian->tanggal_kembali_aktual)->format('d M Y') }}
-                    </td>
                     <td>
                         <span class="badge
                             {{ $item->status == 'menunggu' ? 'bg-warning' :

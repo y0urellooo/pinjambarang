@@ -79,15 +79,15 @@
 
             <!-- deskripsi -->
             <div class="mb-3">
-                <textarea name="deskripsi" class="form-control" rows="3">
-                {{ old('deskripsi', $alat->deskripsi) }}
-                </textarea>
+                <textarea name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror"
+                    rows="3">{{ old('deskripsi', $alat->deskripsi) }}</textarea>
 
                 @error('deskripsi')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                 @enderror
+
             </div>
 
             <div class="d-flex gap-2">

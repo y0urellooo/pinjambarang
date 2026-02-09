@@ -37,7 +37,7 @@ class AlatController extends Controller
             'nama_alat' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
             'jumlah_alat' => 'required|integer|min:0',
-            'deskripsi' => 'nullable|string',
+            'deskripsi' => 'required|string',
         ], [
             'foto.image' => 'File harus berupa gambar',
             'foto.mimes' => 'Format gambar harus jpg, jpeg, atau png',
@@ -48,6 +48,7 @@ class AlatController extends Controller
             'jumlah_alat.required' => 'Jumlah alat wajib diisi',
             'jumlah_alat.integer' => 'Jumlah alat harus berupa angka',
             'jumlah_alat.min' => 'Jumlah alat tidak boleh kurang dari 0',
+            'deskripsi.required' => 'Deskripsi wajib diisi',
             'deskripsi.string' => 'Deskripsi harus berupa teks',
         ]);
 

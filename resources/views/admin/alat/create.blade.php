@@ -72,9 +72,19 @@
 
         <!-- deskripsi -->
         <div class="mb-3">
-            <label>Deskripsi</label>
-            <textarea name="deskripsi" class="form-control" rows="3"></textarea>
+    <label class="form-label">Deskripsi</label>
+    <textarea name="deskripsi"
+        class="form-control @error('deskripsi') is-invalid @enderror"
+        rows="3"
+        placeholder="Masukkan deskripsi alat">{{ old('deskripsi') }}</textarea>
+
+    @error('deskripsi')
+        <div class="invalid-feedback">
+            {{ $message }}
         </div>
+    @enderror
+</div>
+
 
         <div class="d-flex gap-2">
             <button class="btn btn-primary">Simpan</button>

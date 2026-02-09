@@ -51,9 +51,30 @@
                             <td>{{ $alat->jumlah_alat }}</td>
 
                             {{-- DESKRIPSI --}}
-                            <td class="text-start">
-                                {{ $alat->deskripsi ?? '-' }}
+                            <td class="text-start" style="max-width: 250px;">
+                                @php
+                                    $limit = 40;
+                                    $isLong = strlen($alat->deskripsi) > $limit;
+                                @endphp
+
+                                <div class="deskripsi-wrapper">
+                                    <span class="short-text">
+                                        {{ \Illuminate\Support\Str::limit($alat->deskripsi, $limit) }}
+                                    </span>
+
+                                    @if ($isLong)
+                                        <span class="full-text d-none">
+                                            {{ $alat->deskripsi }}
+                                        </span>
+
+                                        <a href="javascript:void(0)" class="text-primary small d-block mt-1"
+                                            onclick="toggleDeskripsi(this)">
+                                            Lihat selengkapnya
+                                        </a>
+                                    @endif
+                                </div>
                             </td>
+
 
                             <td>
                                 <a href="{{ route('admin.alat.edit', $alat->id) }}" class="btn btn-warning btn-sm">

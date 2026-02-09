@@ -43,7 +43,7 @@
                     </td>
 
                     <td>{{ $item->peminjaman->alat->nama_alat }}</td>
-                    <td>{{ $item->peminjaman->alat->jumlah_pinjam }}</td>
+                    <td>{{ $item->peminjaman->jumlah_pinjam }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->peminjaman->tanggal_pinjam)->format('d M Y') }}</td>
 
                     <td>

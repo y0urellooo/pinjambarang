@@ -48,7 +48,7 @@
                 <input type="number"
                        name="denda"
                        class="form-control"
-                       placeholder="Masukkan nominal denda"
+                       placeholder="Masukkan nominal denda kondisi barang"
                        min="0">
             </div>
 

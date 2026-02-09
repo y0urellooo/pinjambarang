@@ -26,7 +26,7 @@
                 name="name"
                 class="form-control @error('name') is-invalid @enderror"
                 value="{{ old('name') }}"
-                placeholder="Masukkan nama petugas">
+                placeholder="Nama maksimal 25 karakter">
             @error('name')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
