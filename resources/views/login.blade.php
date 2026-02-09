@@ -17,13 +17,11 @@
                 <div class="card shadow">
                     <div class="card-body">
                         <h3 class="text-center mb-4">Login</h3>
-
                         @if ($errors->any())
                             <div class="alert alert-danger text-center">
                                 {{ $errors->first() }}
                             </div>
                         @endif
-
                         <form method="POST" action="/login">
                             @csrf
 

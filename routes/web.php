@@ -14,6 +14,7 @@ use App\Http\Controllers\Petugas\PengembalianController as PetugasPengembalianCo
 use App\Http\Controllers\Peminjam\AlatController as PeminjamAlatController;
 use App\Http\Controllers\Peminjam\PeminjamanController as PeminjamPeminjamanController;
 use App\Http\Controllers\Petugas\LaporanController;
+use App\Http\Controllers\Admin\UserController;
 
 // ROUTES
 Route::get('/', function () {
@@ -46,6 +47,9 @@ Route::prefix('admin')
         Route::resource('/alat', AlatController::class);
         Route::resource('/data-peminjaman', PeminjamanController::class)
             ->only(['index']);
+            Route::patch('/admin/peminjam/{id}/toggle-status', 
+            [PeminjamController::class, 'toggleStatus']
+                    )->name('peminjam.toggleStatus');
 
         // pengembalian
         Route::resource('/pengembalian', PengembalianController::class)->only(['index']);

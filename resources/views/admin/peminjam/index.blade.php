@@ -15,6 +15,7 @@
                     <th>Nama</th>
                     <th>Email</th>
                     <th width="180">Tanggal Daftar</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,9 +25,25 @@
                     <td>{{ $p->name }}</td>
                     <td>{{ $p->email }}</td>
                     <td>{{ $p->created_at->format('d M Y') }}</td>
-                </tr>
-                @empty
-                <tr>
+                    <td colspan="5" class="text-center text-muted">
+                        <form action="{{ route('admin.peminjam.toggleStatus', $p->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+
+                            @if($p->status == 'active')
+                                <button class="btn btn-warning btn-sm">
+                                    Nonaktifkan
+                                </button>
+                            @else
+                                <button class="btn btn-success btn-sm">
+                                    Aktifkan
+                                </button>
+                            @endif
+                        </form>
+                    </td>
+                    </tr>
+                    @empty
+                    <tr>
                     <td colspan="4" class="text-center text-muted">
                         Belum ada peminjam
                     </td>
