@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Peminjam;
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
 use App\Models\Alat;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
@@ -34,7 +35,7 @@ class PeminjamanController extends Controller
             'tanggal_kembali_rencana' => 'required|date',
         ]);
 
-        Peminjaman::create([
+        $peminjaman = Peminjaman::create([
             'user_id' => auth()->id(),
             'alat_id' => $alat->id,
             'jumlah_pinjam' => $request->jumlah_pinjam,
@@ -42,6 +43,9 @@ class PeminjamanController extends Controller
             'tanggal_kembali_rencana' => $request->tanggal_kembali_rencana,
             'status' => 'menunggu',
         ]);
+
+        // log pengajuan peminjaman
+        ActivityLog::log('apply', "Pengajuan peminjaman #{$peminjaman->id} oleh " . auth()->user()?->name, 'Peminjaman', Peminjaman::class, $peminjaman->id);
 
         return redirect()
             ->route('peminjam.peminjaman.index')
@@ -79,6 +83,9 @@ class PeminjamanController extends Controller
         $peminjaman->update([
             'status' => 'pengajuan_kembali'
         ]);
+
+        // log pengajuan pengembalian oleh peminjam
+        ActivityLog::log('apply_return', "Pengajuan pengembalian untuk peminjaman #{$peminjaman->id} oleh " . auth()->user()?->name, 'Peminjaman', Peminjaman::class, $peminjaman->id);
 
         return back()->with('success', 'Pengajuan pengembalian berhasil dikirim');
     }

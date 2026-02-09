@@ -37,7 +37,7 @@
                     <i class="bi bi-check2-circle me-2"></i> Pengembalian
                 </a>
 
-                <a href="/admin/log-aktivitas" class="nav-link {{ request()->is('admin/log-aktvitas*') ? 'active' : '' }}">
+                <a href="{{ route('admin.activity-logs.index') }}" class="nav-link {{ request()->is('admin/activity-logs*') ? 'active' : '' }}">
                     <i class="bi bi-clock-history me-2"></i> Log Aktivitas
                 </a>
             @endif

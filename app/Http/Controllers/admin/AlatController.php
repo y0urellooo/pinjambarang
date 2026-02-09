@@ -5,15 +5,20 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Alat;
 use App\Models\Kategori;
+use App\Traits\ActivitylogTrait;
 use Illuminate\Http\Request;
 
 class AlatController extends Controller
 {
+    use ActivitylogTrait;
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->logView('Alat', 'Melihat daftar alat');
         $alats = Alat::latest()->paginate(8);
         return view('admin.alat.index', compact('alats'));
     }
@@ -58,7 +63,10 @@ class AlatController extends Controller
             $validated['foto'] = $foto;
         }
 
-        Alat::create($validated);
+        $alat = Alat::create($validated);
+
+        // Log aktivitas
+        $this->logCreate('Alat', Alat::class, $alat->id, $validated, "Membuat alat baru: {$alat->nama_alat}");
 
         return redirect()->route('admin.alat.index')
             ->with('success', 'Alat berhasil ditambahkan');
@@ -86,6 +94,8 @@ class AlatController extends Controller
      */
     public function update(Request $request, Alat $alat)
     {
+        $oldData = $alat->toArray();
+
         $validated = $request->validate([
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'nama_alat' => 'required|string|max:255',
@@ -113,6 +123,9 @@ class AlatController extends Controller
 
         $alat->update($validated);
 
+        // Log aktivitas
+        $this->logUpdate('Alat', Alat::class, $alat->id, $oldData, $validated, "Mengubah alat: {$alat->nama_alat}");
+        
         return redirect()->route('admin.alat.index')
             ->with('success', 'Alat berhasil diupdate');
     }
@@ -122,9 +135,12 @@ class AlatController extends Controller
      */
     public function destroy(Alat $alat)
     {
+        $oldData = $alat->toArray();
+        $alatName = $alat->nama_alat;
+        
         $alat->delete();
 
-        return redirect()->route('admin.alat.index')
-            ->with('success', 'Alat berhasil dihapus');
+        // Log aktivitas
+        $this->logDelete('Alat', Alat::class, $alat->id, $oldData, "Menghapus alat: {$alatName}");
     }
 }

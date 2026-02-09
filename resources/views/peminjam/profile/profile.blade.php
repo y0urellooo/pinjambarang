@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('title', 'Profil Peminjam')
 @section('page_title', 'Profil Peminjam')
 
 @section('content')

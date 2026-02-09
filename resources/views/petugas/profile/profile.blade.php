@@ -1,5 +1,6 @@
-@extends('layouts.app')
+~@extends('layouts.app')
 
+@section('title', 'Profil Petugas')
 @section('page_title', 'Profil Petugas')
 
 @section('content')

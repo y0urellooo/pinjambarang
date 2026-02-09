@@ -18,6 +18,7 @@ use App\Http\Controllers\Peminjam\PembayaranController;
 use App\Http\Controllers\Peminjam\PeminjamanController as PeminjamPeminjamanController;
 use App\Http\Controllers\Petugas\LaporanController;
 use App\Http\Controllers\Peminjam\ProfilController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 // ROUTES
 Route::get('/', function () {
@@ -35,9 +36,19 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // admin route
 Route::prefix('admin')
-    ->middleware(['auth', 'admin'])
+    ->middleware(['auth'])
     ->name('admin.')
     ->group(function () {
+
+        Route::get('/test-simple', function () {
+            return response()->json([
+                'message' => 'Auth middleware working!',
+                'user_id' => auth()->id(),
+                'user_name' => auth()->user()?->name,
+                'user_role' => auth()->user()?->role,
+                'is_admin_role' => auth()->user()?->role === 'admin',
+            ]);
+        });
 
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
@@ -75,6 +86,25 @@ Route::prefix('admin')
             '/pengembalian/{peminjaman}/kemblaikan',
             [PengembalianController::class, 'store']
         )->name('pengembalian.store');
+
+        // Activity Log Management - HARUS SEBELUM LAINNYA
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])
+            ->name('activity-logs.index');
+        
+        Route::get('/activity-logs/report/index', [ActivityLogController::class, 'report'])
+            ->name('activity-logs.report');
+        
+        Route::get('/activity-logs/export/csv', [ActivityLogController::class, 'export'])
+            ->name('activity-logs.export');
+        
+        Route::post('/activity-logs/cleanup', [ActivityLogController::class, 'cleanup'])
+            ->name('activity-logs.cleanup');
+        
+        Route::get('/activity-logs/user/{user}', [ActivityLogController::class, 'userActivity'])
+            ->name('activity-logs.user');
+        
+        Route::get('/activity-logs/{activityLog}', [ActivityLogController::class, 'show'])
+            ->name('activity-logs.show');
     });
 
 // petugas route

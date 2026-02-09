@@ -4,12 +4,16 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
+use App\Traits\ActivitylogTrait;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
 {
+    use ActivitylogTrait;
+
     public function index()
     {
+        $this->logView('Kategori', 'Melihat daftar kategori');
         $kategoris = Kategori::latest()->paginate(8);
         return view('admin.kategori.index', compact('kategoris'));
     }
@@ -30,9 +34,12 @@ class KategoriController extends Controller
             'nama_kategori.max' => 'Nama kategori maksimal 25 huruf'
         ]);
 
-        Kategori::create([
+        $kategori = Kategori::create([
             'nama_kategori' => $request->nama_kategori,
         ]);
+
+        // Log aktivitas
+        $this->logCreate('Kategori', Kategori::class, $kategori->id, $kategori->toArray(), "Membuat kategori baru: {$kategori->nama_kategori}");
 
         return redirect()
             ->route('admin.kategori.index')
@@ -52,8 +59,12 @@ class KategoriController extends Controller
         ]);
 
         $kategori = Kategori::findOrFail($id);
+        $oldData = $kategori->toArray();
         $kategori->nama_kategori = $request->nama_kategori;
         $kategori->save();
+
+        // Log aktivitas
+        $this->logUpdate('Kategori', Kategori::class, $kategori->id, $oldData, $kategori->toArray(), "Mengubah kategori: {$kategori->nama_kategori}");
 
         return redirect()
             ->route('admin.kategori.index')
@@ -69,7 +80,13 @@ class KategoriController extends Controller
                 ->route('admin.kategori.index')
                 ->with('error', 'Kategori tidak dapat dihapus karena digunakan oleh alat.');
         }
+
+        $oldData = $kategori->toArray();
+        $kategoriName = $kategori->nama_kategori;
         $kategori->delete();
+
+        // Log aktivitas
+        $this->logDelete('Kategori', Kategori::class, $kategori->id, $oldData, "Menghapus kategori: {$kategoriName}");
 
         return redirect()
             ->route('admin.kategori.index')

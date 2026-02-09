@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Petugas;
 use App\Http\Controllers\Controller;
 use App\Models\Pengembalian;
 use App\Models\Peminjaman;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -61,7 +62,7 @@ class PengembalianController extends Controller
             $total_denda = ($request->denda ?? 0) + $denda_telat;
 
             // simpan pengembalian
-            Pengembalian::create([
+            $pengembalian = Pengembalian::create([
                 'peminjaman_id' => $peminjaman->id,
                 'tanggal_kembali_aktual' => $tanggal_aktual,
                 'kondisi' => $request->kondisi,
@@ -87,6 +88,9 @@ class PengembalianController extends Controller
             if ($total_denda > 0) {
                 $peminjaman->user->increment('total_denda', $total_denda);
             }
+
+                // log pengembalian diproses oleh petugas
+                ActivityLog::log('return', "Pengembalian #{$pengembalian->id} diproses oleh " . auth()->user()?->name, 'Pengembalian', Pengembalian::class, $pengembalian->id);
         });
 
         return redirect()

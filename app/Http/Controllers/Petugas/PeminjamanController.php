@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Petugas;
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
+use App\Models\ActivityLog;
 use Illuminate\Support\Facades\DB;
 
 class PeminjamanController extends Controller
@@ -32,6 +33,9 @@ class PeminjamanController extends Controller
         }
         $peminjaman->update(['status' => 'dipinjam']);
         $peminjaman->alat->decrement('jumlah_alat', $peminjaman->jumlah_pinjam);
+        // log approve
+        ActivityLog::log('approve', "Peminjaman #{$peminjaman->id} disetujui oleh " . auth()->user()?->name, 'Peminjaman', Peminjaman::class, $peminjaman->id);
+
         return back()->with('success', 'Peminjaman disetujui');
     }
 
@@ -41,6 +45,8 @@ class PeminjamanController extends Controller
         $peminjaman = Peminjaman::findOrFail($id);
         $peminjaman->status = 'ditolak';
         $peminjaman->save();
+        // log reject
+        ActivityLog::log('reject', "Peminjaman #{$peminjaman->id} ditolak oleh " . auth()->user()?->name, 'Peminjaman', Peminjaman::class, $peminjaman->id);
 
         return back()->with('success', 'Peminjaman ditolak');
     }
@@ -59,6 +65,8 @@ class PeminjamanController extends Controller
         $peminjaman->update([
             'status' => 'pengajuan_kembali'
         ]);
+        // log return request (oleh peminjam)
+        ActivityLog::log('apply_return', "Pengajuan pengembalian untuk peminjaman #{$peminjaman->id} oleh " . auth()->user()?->name, 'Peminjaman', Peminjaman::class, $peminjaman->id);
 
         return back()->with('success', 'Pengajuan pengembalian berhasil');
     }

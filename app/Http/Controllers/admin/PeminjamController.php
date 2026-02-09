@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\ActivityLog;
 
 class PeminjamController extends Controller
 {
@@ -24,6 +25,10 @@ class PeminjamController extends Controller
 
         $user->status = $user->status === 'active' ? 'nonactive' : 'active';
         $user->save();
+
+        // Log aktivitas aktif/nonaktif
+        $action = $user->status === 'active' ? 'activate' : 'deactivate';
+        ActivityLog::log($action, "Mengubah status peminjam: {$user->name} menjadi {$user->status}", 'User', User::class, $user->id);
 
         return back()->with('success', 'Status peminjam berhasil diubah');
     }

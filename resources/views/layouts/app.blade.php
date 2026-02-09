@@ -27,7 +27,7 @@
         .sidebar {
             width: 240px;
             min-height: 100vh;
-            background: #020617;
+            background: #af116b;
         }
 
         .sidebar .nav-link {
@@ -36,12 +36,12 @@
         }
 
         .sidebar .nav-link:hover {
-            background: #1e293b;
+            background: #9d166e;
             color: #fff;
         }
 
         .sidebar .nav-link.active {
-            background: #334155;
+            background: #951976;
             color: #fff;
         }
 
