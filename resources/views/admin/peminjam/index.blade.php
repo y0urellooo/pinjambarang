@@ -16,20 +16,20 @@
                     <th>Nama</th>
                     <th>Email</th>
                     <th width="180">Tanggal Daftar</th>
-                    <th>Aksi</th>
+                    <th width="160">Aksi</th>
                 </tr>
             </thead>
             <tbody class="align-middle">
                 @forelse($peminjams as $p)
                 <tr class="text-center">
-                    {{ $peminjams->firstItem() + $loop->index }}
+                    <td>{{ $peminjams->firstItem() + $loop->index }}</td>
 
                     {{-- FOTO --}}
                     <td>
                         @if ($p->foto)
-                            <img src="{{ asset('foto_peminjam/' . $p->foto) }}" 
-                                 class="rounded" 
-                                 width="50" height="50" alt="Foto {{ $p->name }}">
+                            <img src="{{ asset('foto_peminjam/' . $p->foto) }}"
+                                 class="rounded"
+                                 width="50" height="50">
                         @else
                             <span class="text-muted">-</span>
                         @endif
@@ -37,10 +37,16 @@
 
                     <td>{{ $p->name }}</td>
                     <td>{{ $p->email }}</td>
-                    
                     <td>{{ $p->created_at->format('d M Y') }}</td>
-                    <td colspan="5" class="text-center text-muted">
-                        <form action="{{ route('admin.peminjam.toggleStatus', $p->id) }}" method="POST">
+
+                    {{-- AKSI --}}
+                    <td>
+                        <form 
+                            action="{{ route('admin.peminjam.toggleStatus', $p->id) }}" 
+                            method="POST"
+                            class="form-toggle-status"
+                            data-status="{{ $p->status }}"
+                        >
                             @csrf
                             @method('PATCH')
 
@@ -55,10 +61,10 @@
                             @endif
                         </form>
                     </td>
-                    </tr>
-                    @empty
-                    <tr>
-                    <td colspan="4" class="text-center text-muted">
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="text-center text-muted">
                         Belum ada peminjam
                     </td>
                 </tr>
@@ -66,8 +72,25 @@
             </tbody>
         </table>
 
-        <!-- pagination -->
-        <x-pagination :paginator="$peminjams" />
+        <div class="p-3">
+            <x-pagination :paginator="$peminjams" />
+        </div>
     </div>
 </div>
+
+{{-- SCRIPT --}}
+<script>
+document.querySelectorAll('.form-toggle-status').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        const status = this.dataset.status;
+        const message = status === 'active'
+            ? 'Yakin ingin menonaktifkan peminjam ini?'
+            : 'Yakin ingin mengaktifkan peminjam ini?';
+
+        if (!confirm(message)) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
 @endsection

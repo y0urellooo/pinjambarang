@@ -83,15 +83,15 @@
 
                 <div class="table-responsive">
                     <table class="table align-middle table-hover">
-                        <thead class="text-muted small">
+                        <thead class="text-muted small text-center">
                             <tr>
-                                <th>#</th>
+                                <th>No</th>
                                 <th>Peminjam</th>
                                 <th>Tanggal Pinjam</th>
                                 <th class="text-center">Status</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-center">
                             @forelse ($peminjamanTerbaru as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
@@ -103,7 +103,7 @@
                                         @elseif ($item->status == 'dikembalikan')
                                             <span class="badge badge-soft-success">Dikembalikan</span>
                                         @else
-                                            <span class="badge badge-soft-danger">Terlambat</span>
+                                            <span class="badge badge-soft-danger">Menunggu</span>
                                         @endif
                                     </td>
                                 </tr>

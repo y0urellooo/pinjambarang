@@ -41,7 +41,7 @@
                 ->diffInDays(\Carbon\Carbon::parse($item->tanggal_kembali_rencana));
                 @endphp
                 <tr class="text-center align-middle">
-                    <td>{{ $peminjamans->firstName() + $loop->index }}</td>
+                    <td>{{ $peminjamans->firstItem() + $loop->index }}</td>
 
                     {{-- FOTO --}}
                     <td>

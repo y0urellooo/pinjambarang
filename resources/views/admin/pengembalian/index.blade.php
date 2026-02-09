@@ -23,7 +23,7 @@
             <tbody>
                 @forelse ($pengembalians as $item)
                 <tr class="text-center align-middle">
-                    <td>{{ $pengembalians->firstName() + $loop->index }}</td>
+                    <td>{{ $pengembalians->firstItem() + $loop->index }}</td>
                     <td>{{ $item->peminjaman->user->name }}</td>
 
                     {{-- FOTO ALAT --}}

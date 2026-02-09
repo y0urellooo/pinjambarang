@@ -75,12 +75,12 @@
                         <thead class="text-muted small uppercase">
                             <tr>
                                 <th>Data Alat</th>
-                                <th class="text-center">Kategori</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Stok</th>
+                                <th  class="text-center">Kategori</th>
+                                <th  class="text-center">Status</th>
+                                <th  class="text-center">Stok</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody  class="text-center">
                             @forelse($alatTerbaru as $alat)
                             <tr>
                                 <td>
@@ -94,14 +94,13 @@
                                         @endif
                                         <div>
                                             <div class="fw-bold">{{ $alat->nama_alat }}</div>
-                                            <small class="text-muted">ID: #{{ $alat->id }}</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="text-center">
+                                <td >
                                     <span class="badge bg-light text-dark border">{{ $alat->kategori->nama_kategori }}</span>
                                 </td>
-                                <td class="text-center">
+                                <td >
                                     @if($alat->jumlah_alat > 0)
                                         <span class="badge badge-soft-success">Ready</span>
                                     @else
