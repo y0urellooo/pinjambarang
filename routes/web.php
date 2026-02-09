@@ -80,6 +80,7 @@ Route::prefix('petugas')
     ->name('petugas.')
     ->group(function () {
 
+     // dashboard petugas
     Route::get('/dashboard', [PetugasDashboardController::class, 'index'])
         ->name('dashboard');
 
@@ -134,6 +135,7 @@ Route::prefix('peminjam')
     ->name('peminjam.')
     ->group(function () {
 
+        // dashboard peminjam
          Route::get(
             '/dashboard',
             [App\Http\Controllers\Peminjam\DashboardController::class, 'index']

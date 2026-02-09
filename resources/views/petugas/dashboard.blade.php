@@ -175,7 +175,6 @@
     </div>
 </div>
 
-{{-- STYLE (SAMA DENGAN ADMIN) --}}
 <style>
 .stat-card {
     border-radius: 15px;

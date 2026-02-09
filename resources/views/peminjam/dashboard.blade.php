@@ -171,6 +171,7 @@
     </div>
 </div>
 
+{{-- css --}}
 <style>
 .stat-card {
     border-radius: 15px;
