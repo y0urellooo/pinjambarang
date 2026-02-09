@@ -72,7 +72,7 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table align-middle table-hover">
-                        <thead class="text-muted small uppercase">
+                        <thead class="table-primary text-muted small uppercase">
                             <tr>
                                 <th>Data Alat</th>
                                 <th  class="text-center">Kategori</th>
@@ -153,18 +153,11 @@
                     </div>
                 </div>
             </div>
-
-            {{-- MINI TIPS/INFO --}}
-            <div class="alert alert-primary border-0 p-4" style="border-radius: 15px;">
-                <h6 class="fw-bold"><i class="bi bi-lightbulb me-2"></i>Tips Admin</h6>
-                <small class="d-block mb-2">Gunakan fitur <strong>Stok Habis</strong> untuk memantau alat yang perlu segera dibeli atau diservis.</small>
-            </div>
         </div>
     </div>
 </div>
 
 <style>
-    /* Custom Styling untuk membuat dashboard lebih 'hidup' */
     .stat-card {
         border: none;
         border-radius: 15px;

@@ -9,12 +9,31 @@
 
 <div class="card">
     <div class="card-body p-0">
+
+        {{-- ALERT --}}
         @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+        @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+        @if(session('info'))
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{ session('info') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         @endif
 
         <table class="table table-bordered mb-0">
-            <thead class="table-dark text-center align-middle">
+            <thead class="table-primary text-center align-middle">
                 <tr>
                     <th>No</th>
                     <th>Foto</th>
@@ -45,15 +64,8 @@
                     <td>{{ $item->peminjaman->alat->nama_alat }}</td>
                     <td>{{ $item->peminjaman->jumlah_pinjam }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->peminjaman->tanggal_pinjam)->format('d M Y') }}</td>
-
-                    <td>
-                        {{ \Carbon\Carbon::parse($item->peminjaman->tanggal_kembali_rencana)->format('d M Y') }}
-                    </td>
-
-                    <td>
-                        {{ \Carbon\Carbon::parse($item->tanggal_kembali)->format('d M Y') }}
-                    </td>
-
+                    <td>{{ \Carbon\Carbon::parse($item->peminjaman->tanggal_kembali_rencana)->format('d M Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->tanggal_kembali)->format('d M Y') }}</td>
                     <td>{{ number_format($item->denda) }}</td>
 
                     <!-- Status Bayar -->
@@ -65,10 +77,10 @@
 
                     <!-- Aksi -->
                     <td>
-                        @if($item->status_bayar === 'belum')
+                        @if($item->status_bayar !== 'lunas')
                         <form action="{{ route('peminjam.pengembalian.bayar', $item->id) }}" method="POST">
                             @csrf
-                            <button class="btn btn-primary btn-sm">Bayar Sekarang</button>
+                            <button class="btn btn-outline-primary btn-sm">Bayar Sekarang</button>
                         </form>
                         @else
                         <span class="badge bg-success">Sudah Dibayar</span>
@@ -77,7 +89,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="9" class="text-muted">Belum ada pengembalian dengan denda</td>
+                    <td colspan="10" class="text-muted">Belum ada pengembalian dengan denda</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -87,5 +99,16 @@
         <x-pagination :paginator="$pengembalians" />
     </div>
 </div>
+
+{{-- Optional: auto-hide alert --}}
+<script>
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.classList.add('fade');
+            setTimeout(() => alert.remove(), 500);
+        });
+    }, 3000);
+</script>
 
 @endsection

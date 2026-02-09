@@ -45,7 +45,7 @@
                         <a href="{{ route('petugas.profile.show') }}" class="btn btn-outline-secondary">
                             Batal
                         </a>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-outline-primary">
                             <i class="bi bi-save me-1"></i> Simpan
                         </button>
                     </div>

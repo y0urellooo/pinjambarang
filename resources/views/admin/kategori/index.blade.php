@@ -26,7 +26,7 @@
     <div class="card-body p-0">
 
         <table class="table table-bordered mb-0">
-            <thead class="table-dark text-center">
+            <thead class="table-primary text-center">
                 <tr>
                     <th width="100">No</th>
                     <th>Nama Kategori</th>
@@ -40,7 +40,7 @@
                     <td>{{ $kategori->nama_kategori }}</td>
                     <td>
                         <a href="{{ route('admin.kategori.edit', $kategori->id) }}"
-                            class="btn btn-warning btn-sm">
+                            class="btn btn-outline-warning btn-sm">
                             Edit
                         </a>
 
@@ -49,7 +49,7 @@
                             @csrf
                             @method('DELETE')
                             <button onclick="return confirm('Hapus data?')"
-                                class="btn btn-danger btn-sm">
+                                class="btn btn-outline-danger btn-sm">
                                 Hapus
                             </button>
                         </form>
@@ -64,7 +64,7 @@
                 @endforelse
             </tbody>
         </table>
-        
+
         <!-- pagination -->
         <x-pagination :paginator="$kategoris" />
     </div>

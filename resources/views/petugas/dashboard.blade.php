@@ -83,7 +83,7 @@
 
                 <div class="table-responsive">
                     <table class="table align-middle table-hover">
-                        <thead class="text-muted small text-center">
+                        <thead class="table-primary text-muted small text-center">
                             <tr>
                                 <th>No</th>
                                 <th>Peminjam</th>
@@ -160,16 +160,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            {{-- INFO --}}
-            <div class="alert alert-primary border-0 p-4" style="border-radius: 15px;">
-                <h6 class="fw-bold">
-                    <i class="bi bi-info-circle me-2"></i>Tips Petugas
-                </h6>
-                <small>
-                    Periksa peminjaman <strong>terlambat</strong> setiap hari untuk menghindari penumpukan denda.
-                </small>
             </div>
         </div>
     </div>

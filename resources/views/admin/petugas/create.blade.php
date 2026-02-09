@@ -66,8 +66,8 @@
             @enderror
         </div>
 
-        <button class="btn btn-success">Simpan</button>
-        <a href="{{ route('admin.petugas.index') }}" class="btn btn-secondary">
+        <button class="btn btn-outline-success">Simpan</button>
+        <a href="{{ route('admin.petugas.index') }}" class="btn btn-outline-secondary">
             Kembali
         </a>
     </div>

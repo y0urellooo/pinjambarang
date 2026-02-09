@@ -23,20 +23,31 @@ class ProfilController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'name'           => 'required',
-            'foto'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'name' => 'required',
+            'jenis_kelamin' => 'required',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        // Siapkan data yang akan diupdate
+        $data = [
+            'name' => $request->name,
+            'jenis_kelamin' => $request->jenis_kelamin,
+        ];
+
+        // Jika ada file foto, simpan dan tambahkan ke data
         if ($request->hasFile('foto')) {
             $foto = time() . '.' . $request->foto->extension();
             $request->foto->move(public_path('foto_petugas'), $foto);
-            $user->foto = $foto;
+            $data['foto'] = $foto;
         }
 
-        $user->update([
-            'name'          => $request->name,
-            'jenis_kelamin' => $request->jenis_kelamin,
-        ]);
+        // Update user sekaligus
+        $user->update($data);
+
+        logAktivitas(
+            'Profil',
+            'Petugas memperbarui profil'
+        );
 
         return redirect()->route('petugas.profile.show')
             ->with('success', 'Profil berhasil diperbarui');

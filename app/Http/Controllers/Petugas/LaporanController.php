@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Peminjaman;
 use App\Models\Pengembalian;
 
 class LaporanController extends Controller
@@ -24,18 +23,36 @@ class LaporanController extends Controller
     public function index(Request $request)
     {
         $pengembalians = $this->queryLaporan($request)->paginate(8);
+
+        logAktivitas(
+            'Laporan',
+            'Membuka halaman laporan pengembalian'
+        );
+
         return view('petugas.laporan.index', compact('pengembalians'));
     }
 
     public function laporan(Request $request)
     {
         $pengembalians = $this->queryLaporan($request)->get();
+
+        logAktivitas(
+            'Laporan',
+            'Melihat data laporan pengembalian'
+        );
+
         return view('petugas.laporan.index', compact('pengembalians'));
     }
 
     public function cetak(Request $request)
     {
         $pengembalians = $this->queryLaporan($request)->get();
+
+        logAktivitas(
+            'Laporan',
+            'Mencetak laporan pengembalian'
+        );
+
         return view('petugas.laporan.laporan-print', compact('pengembalians'));
     }
 }

@@ -59,9 +59,9 @@
                 @enderror
             </div>
 
-            <button class="btn btn-success">Ajukan</button>
+            <button class="btn btn-outline-success">Ajukan</button>
             <a href="{{ route('peminjam.alat.index') }}"
-                class="btn btn-secondary">
+                class="btn btn-outline-secondary">
                 Kembali
             </a>
         </form>

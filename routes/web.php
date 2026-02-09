@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfilController as AdminProfilController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\AlatController;
+use App\Http\Controllers\Admin\LogAktivitasController;
 use App\Http\Controllers\Admin\PeminjamanController;
 use App\Http\Controllers\Admin\PeminjamController;
 use App\Http\Controllers\Admin\PengembalianController;
@@ -43,7 +44,6 @@ Route::prefix('admin')
             ->name('dashboard');
 
         // profil admin
-        // profil admin
         Route::get('/profile', [AdminProfilController::class, 'show'])
             ->name('profile.show');
 
@@ -60,21 +60,17 @@ Route::prefix('admin')
         Route::resource('/alat', AlatController::class);
         Route::resource('/peminjaman', PeminjamanController::class)
             ->only(['index']);
-            Route::patch('/admin/peminjam/{id}/toggle-status', 
+        Route::patch(
+            '/admin/peminjam/{id}/toggle-status',
             [PeminjamController::class, 'toggleStatus']
-                    )->name('peminjam.toggleStatus');
+        )->name('peminjam.toggleStatus');
 
         // pengembalian
         Route::resource('/pengembalian', PengembalianController::class)->only(['index']);
-        Route::get(
-            '/pengembalian/{peminjaman}',
-            [PengembalianController::class, 'create']
-        )->name('pengembalian.create');
 
-        Route::post(
-            '/pengembalian/{peminjaman}/kemblaikan',
-            [PengembalianController::class, 'store']
-        )->name('pengembalian.store');
+        // log aktivitas
+        Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])
+            ->name('log.index');
     });
 
 // petugas route
@@ -83,9 +79,9 @@ Route::prefix('petugas')
     ->name('petugas.')
     ->group(function () {
 
-     // dashboard petugas
-    Route::get('/dashboard', [PetugasDashboardController::class, 'index'])
-        ->name('dashboard');
+        // dashboard petugas
+        Route::get('/dashboard', [PetugasDashboardController::class, 'index'])
+            ->name('dashboard');
 
         // profil petugas
         Route::get('/profile', [\App\Http\Controllers\Petugas\ProfilController::class, 'show'])
@@ -129,7 +125,6 @@ Route::prefix('petugas')
 
         Route::get('/laporan-cetak', [LaporanController::class, 'cetak'])
             ->name('laporan-cetak');
-
     });
 
 // peminjam route
@@ -139,7 +134,7 @@ Route::prefix('peminjam')
     ->group(function () {
 
         // dashboard peminjam
-         Route::get(
+        Route::get(
             '/dashboard',
             [App\Http\Controllers\Peminjam\DashboardController::class, 'index']
         )->name('dashboard');
@@ -171,8 +166,8 @@ Route::prefix('peminjam')
         )->name('peminjaman.store');
 
         Route::delete(
-            '/peminjaman/{peminjaman}/cencel',
-            [PeminjamPeminjamanController::class, 'cencel']
+            '/peminjaman/{peminjaman}/cancel',
+            [PeminjamPeminjamanController::class, 'cancel']
         )->name('peminjaman.cencel');
 
         Route::post(
@@ -201,5 +196,4 @@ Route::prefix('peminjam')
         // Bayar langsung via tombol
         Route::post('/pengembalian/{pengembalian}/bayar', [PembayaranController::class, 'bayar'])
             ->name('pengembalian.bayar');
-
     });

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
-use App\Models\Pengembalian;
 use Illuminate\Support\Facades\DB;
 
 class PeminjamanController extends Controller
@@ -13,41 +12,74 @@ class PeminjamanController extends Controller
     public function index()
     {
         $peminjamans = Peminjaman::with(['user', 'alat'])
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->paginate(8);
 
         return view('petugas.peminjaman.index', compact('peminjamans'));
     }
 
-    // acc peminjaman 
+    // approve peminjaman
     public function approve($id)
     {
-        $peminjaman = Peminjaman::findOrFail($id);
+        $peminjaman = Peminjaman::with('alat')->findOrFail($id);
 
         if (!$peminjaman->alat) {
             abort(400, 'Alat tidak ditemukan');
         }
-        if ($peminjaman->alat->jumlah_alat < $peminjaman->jumlah_pinjam) {
-            abort(400, 'Stok tidak mencukupi');
+
+        if ($peminjaman->status !== 'menunggu') {
+            return back()->with('error', 'Status peminjaman tidak valid');
         }
-        $peminjaman->update(['status' => 'dipinjam']);
-        $peminjaman->alat->decrement('jumlah_alat', $peminjaman->jumlah_pinjam);
+
+        if ($peminjaman->alat->jumlah_alat < $peminjaman->jumlah_pinjam) {
+            return back()->with('error', 'Stok tidak mencukupi');
+        }
+
+        DB::transaction(function () use ($peminjaman) {
+
+            // update status
+            $peminjaman->update([
+                'status' => 'dipinjam'
+            ]);
+
+            // kurangi stok
+            $peminjaman->alat->decrement(
+                'jumlah_alat',
+                $peminjaman->jumlah_pinjam
+            );
+
+            // log aktivitas
+            logAktivitas(
+                'Peminjaman',
+                'Menyetujui peminjaman ID: ' . $peminjaman->id
+            );
+        });
+
         return back()->with('success', 'Peminjaman disetujui');
     }
 
-    // tolak
+    // reject peminjaman
     public function reject($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
-        $peminjaman->status = 'ditolak';
-        $peminjaman->save();
+
+        if ($peminjaman->status !== 'menunggu') {
+            return back()->with('error', 'Status peminjaman tidak valid');
+        }
+
+        $peminjaman->update([
+            'status' => 'ditolak'
+        ]);
+
+        logAktivitas(
+            'Peminjaman',
+            'Menolak peminjaman ID: ' . $peminjaman->id
+        );
 
         return back()->with('success', 'Peminjaman ditolak');
     }
 
-    // proses pengembalian
-    
-    // proses pengajuan pengembalian (oleh peminjam)
+    // petugas konfirmasi pengajuan pengembalian
     public function kembalikan($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
@@ -59,6 +91,11 @@ class PeminjamanController extends Controller
         $peminjaman->update([
             'status' => 'pengajuan_kembali'
         ]);
+
+        logAktivitas(
+            'Pengembalian',
+            'Petugas memproses pengajuan pengembalian ID: ' . $peminjaman->id
+        );
 
         return back()->with('success', 'Pengajuan pengembalian berhasil');
     }

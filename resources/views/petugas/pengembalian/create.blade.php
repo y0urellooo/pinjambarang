@@ -52,8 +52,8 @@
                        min="0">
             </div>
 
-            <button class="btn btn-success">Simpan Pengembalian</button>
-            <a href="{{ route('petugas.peminjaman.index') }}" class="btn btn-secondary">
+            <button class="btn btn-outline-success">Simpan Pengembalian</button>
+            <a href="{{ route('petugas.peminjaman.index') }}" class="btn btn-outline-secondary">
                 Kembali
             </a>
         </form>

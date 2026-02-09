@@ -20,7 +20,7 @@
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <table class="table table-bordered table-hover mb-0">
-                <thead class="table-dark">
+                <thead class="table-primary">
                     <tr class="text-center">
                         <th>No</th>
                         <th>Foto</th>
@@ -78,14 +78,14 @@
 
 
                             <td>
-                                <a href="{{ route('admin.alat.edit', $alat->id) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('admin.alat.edit', $alat->id) }}" class="btn btn-outline-warning btn-sm">
                                     Edit
                                 </a>
 
                                 <form action="{{ route('admin.alat.destroy', $alat->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button onclick="return confirm('Hapus barang ini?')" class="btn btn-danger btn-sm">
+                                    <button onclick="return confirm('Hapus barang ini?')" class="btn btn-outline-danger btn-sm">
                                         Hapus
                                     </button>
                                 </form>

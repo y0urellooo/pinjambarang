@@ -20,6 +20,11 @@ class PengembalianController extends Controller
             ->orderBy('tanggal_kembali_aktual', 'desc')
             ->paginate(8);
 
+        logAktivitas(
+            'Pengembalian',
+            'Membuka halaman data pengembalian'
+        );
+
         return view('petugas.pengembalian.index', compact('pengembalians'));
     }
 
@@ -30,6 +35,11 @@ class PengembalianController extends Controller
                 ->route('petugas.peminjaman.index')
                 ->with('error', 'Peminjaman belum mengajukan pengembalian');
         }
+
+        logAktivitas(
+            'Pengembalian',
+            'Membuka form pengembalian alat ID: ' . $peminjaman->id
+        );
 
         return view('petugas.pengembalian.create', compact('peminjaman'));
     }
@@ -45,11 +55,9 @@ class PengembalianController extends Controller
 
         DB::transaction(function () use ($request, $peminjaman) {
 
-            // tanggal rencana & aktual
             $tanggal_rencana = Carbon::parse($peminjaman->tanggal_kembali_rencana);
             $tanggal_aktual = Carbon::parse($request->tanggal_kembali_aktual);
 
-            // hitung denda telat
             $denda_telat = 0;
 
             if ($tanggal_aktual->gt($tanggal_rencana)) {
@@ -57,10 +65,8 @@ class PengembalianController extends Controller
                 $denda_telat = $hari_telat * 10000;
             }
 
-            // total denda (telat + kondisi barang)
             $total_denda = ($request->denda ?? 0) + $denda_telat;
 
-            // simpan pengembalian
             Pengembalian::create([
                 'peminjaman_id' => $peminjaman->id,
                 'tanggal_kembali_aktual' => $tanggal_aktual,
@@ -70,7 +76,6 @@ class PengembalianController extends Controller
                 'status_bayar' => $total_denda > 0 ? 'belum' : 'lunas',
             ]);
 
-            // kembalikan stok jika tidak hilang
             if ($request->kondisi !== 'hilang') {
                 $peminjaman->alat->increment(
                     'jumlah_alat',
@@ -78,15 +83,18 @@ class PengembalianController extends Controller
                 );
             }
 
-            // update status peminjaman
             $peminjaman->update([
                 'status' => 'dikembalikan'
             ]);
 
-            // tambah total denda user
             if ($total_denda > 0) {
                 $peminjaman->user->increment('total_denda', $total_denda);
             }
+
+            logAktivitas(
+                'Pengembalian',
+                'Memproses pengembalian alat ID: ' . $peminjaman->id
+            );
         });
 
         return redirect()
@@ -94,7 +102,6 @@ class PengembalianController extends Controller
             ->with('success', 'Pengembalian berhasil diproses');
     }
 
-    // laporan
     public function laporan(Request $request)
     {
         $pengembalians = Pengembalian::with(['peminjaman.user', 'peminjaman.alat'])
@@ -106,6 +113,11 @@ class PengembalianController extends Controller
             })
             ->orderBy('tanggal_kembali_aktual', 'desc')
             ->get();
+
+        logAktivitas(
+            'Laporan',
+            'Membuka laporan pengembalian'
+        );
 
         return view('petugas.laporan.index', compact('pengembalians'));
     }
@@ -119,6 +131,11 @@ class PengembalianController extends Controller
             ])
             ->orderBy('tanggal_kembali_aktual', 'desc')
             ->get();
+
+        logAktivitas(
+            'Laporan',
+            'Mencetak laporan pengembalian'
+        );
 
         return view('petugas.laporan.cetak_pengembalian', compact('pengembalians'));
     }

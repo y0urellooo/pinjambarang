@@ -64,8 +64,8 @@
             @enderror
         </div>
 
-        <button class="btn btn-primary">Update</button>
-        <a href="{{ route('admin.petugas.index') }}" class="btn btn-secondary">
+        <button class="btn btn-outline-primary">Update</button>
+        <a href="{{ route('admin.petugas.index') }}" class="btn btn-outline-secondary">
             Kembali
         </a>
     </div>

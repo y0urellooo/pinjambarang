@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alat;
@@ -60,6 +60,9 @@ class AlatController extends Controller
 
         Alat::create($validated);
 
+        // log aktivitas
+        logAktivitas('Alat', 'Menambahkan alat: ' . $validated['nama_alat']);
+
         return redirect()->route('admin.alat.index')
             ->with('success', 'Alat berhasil ditambahkan');
     }
@@ -113,6 +116,9 @@ class AlatController extends Controller
 
         $alat->update($validated);
 
+        // log aktivitas
+        logAktivitas('Alat', 'Mengupdate alat: ' . $alat->nama_alat);
+
         return redirect()->route('admin.alat.index')
             ->with('success', 'Alat berhasil diupdate');
     }
@@ -122,7 +128,12 @@ class AlatController extends Controller
      */
     public function destroy(Alat $alat)
     {
+        $nama = $alat->nama_alat;
+
         $alat->delete();
+
+        // log aktivitas
+        logAktivitas('Alat', 'Menghapus alat: ' . $nama);
 
         return redirect()->route('admin.alat.index')
             ->with('success', 'Alat berhasil dihapus');

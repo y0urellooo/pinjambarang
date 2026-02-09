@@ -83,7 +83,7 @@
 
                 <div class="table-responsive">
                     <table class="table align-middle table-hover">
-                        <thead class="text-muted small text-center">
+                        <thead class="table-primary text-muted small text-center">
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal Pinjam</th>
@@ -159,20 +159,10 @@
                     </div>
                 </div>
             </div>
-
-            <div class="alert alert-primary border-0 p-4" style="border-radius: 15px;">
-                <h6 class="fw-bold">
-                    <i class="bi bi-info-circle me-2"></i>Tips
-                </h6>
-                <small>
-                    Pastikan mengembalikan alat tepat waktu untuk menghindari status <strong>terlambat</strong>.
-                </small>
-            </div>
         </div>
     </div>
 </div>
 
-{{-- css --}}
 <style>
 .stat-card {
     border-radius: 15px;

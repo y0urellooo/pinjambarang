@@ -19,7 +19,7 @@
 <div class="card shadow-sm">
     <div class="card-body p-0">
         <table class="table table-bordered mb-0">
-            <thead class="table-dark text-center">
+            <thead class="table-primary text-center">
                 <tr>
                     <th width="80">No</th>
                     <th>Foto</th>
@@ -49,7 +49,7 @@
                     <td>{{ $p->email }}</td>
                     <td>
                         <a href="{{ route('admin.petugas.edit', $p->id) }}"
-                            class="btn btn-warning btn-sm">
+                            class="btn btn-outline-warning btn-sm">
                             Edit
                         </a>
 
@@ -58,7 +58,7 @@
                             @csrf
                             @method('DELETE')
                             <button onclick="return confirm('Hapus petugas?')"
-                                class="btn btn-danger btn-sm">
+                                class="btn btn-outline-danger btn-sm">
                                 Hapus
                             </button>
                         </form>

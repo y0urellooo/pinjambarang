@@ -18,25 +18,32 @@ class ProfilController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'name'           => 'required',
-            'no_telpon'      => 'required',
-            'alamat'         => 'required',
-            'jenis_kelamin'  => 'required',
-            'foto'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'name'          => 'required',
+            'no_telpon'     => 'required',
+            'alamat'        => 'required',
+            'jenis_kelamin' => 'required',
+            'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        if ($request->hasFile('foto')) {
-            $foto = time() . '.' . $request->foto->extension();
-            $request->foto->move(public_path('foto_peminjam'), $foto);
-            $user->foto = $foto;
-        }
-
-        $user->update([
+        $data = [
             'name'          => $request->name,
             'no_telpon'     => $request->no_telpon,
             'alamat'        => $request->alamat,
             'jenis_kelamin' => $request->jenis_kelamin,
-        ]);
+        ];
+
+        if ($request->hasFile('foto')) {
+            $foto = time() . '.' . $request->foto->extension();
+            $request->foto->move(public_path('foto_peminjam'), $foto);
+            $data['foto'] = $foto;
+        }
+
+        $user->update($data);
+
+        logAktivitas(
+            'Profil',
+            'Peminjam memperbarui profil'
+        );
 
         return redirect()->route('peminjam.profile')
             ->with('success', 'Profil berhasil diperbarui');

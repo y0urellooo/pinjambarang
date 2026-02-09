@@ -12,8 +12,8 @@ class PetugasController extends Controller
     public function index()
     {
         $petugas = User::where('role', 'petugas')
-        ->latest()
-        ->paginate(8);
+            ->latest()
+            ->paginate(8);
         return view('admin.petugas.index', compact('petugas'));
     }
 
@@ -56,7 +56,13 @@ class PetugasController extends Controller
             $data['foto'] = $foto;
         }
 
-        User::create($data);
+        $petugas = User::create($data);
+
+        logAktivitas(
+            'Petugas',
+            'Menambahkan petugas: ' . $petugas->name
+        );
+
 
         return redirect()->route('admin.petugas.index')
             ->with('success', 'Petugas berhasil ditambahkan');
@@ -102,7 +108,15 @@ class PetugasController extends Controller
             $data['foto'] = $foto;
         }
 
+        $namaLama = $petugas->name;
+
         $petugas->update($data);
+
+        logAktivitas(
+            'Petugas',
+            'Mengedit petugas: ' . $namaLama . ' menjadi ' . $petugas->name
+        );
+
 
         return redirect()->route('admin.petugas.index')
             ->with('success', 'Petugas berhasil diupdate');
@@ -113,10 +127,24 @@ class PetugasController extends Controller
         $petugas = User::where('role', 'petugas')->findOrFail($id);
 
         if ($petugas->peminjamans()->exists()) {
+
+            logAktivitas(
+                'Petugas',
+                'Gagal menghapus petugas: ' . $petugas->name . ' karena masih memiliki peminjaman'
+            );
+
             return back()->with('error', 'Petugas masih memiliki data peminjaman');
         }
 
+        $namaPetugas = $petugas->name;
+
         $petugas->delete();
+
+        logAktivitas(
+            'Petugas',
+            'Menghapus petugas: ' . $namaPetugas
+        );
+
 
         return back()->with('success', 'Petugas berhasil dihapus');
     }

@@ -14,7 +14,7 @@
 
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
-            <thead class="table-dark text-center">
+            <thead class="table-primary text-center">
                 <tr class="align-middle">
                     <th>No</th>
                     <th>Peminjam</th>
@@ -31,7 +31,7 @@
             <tbody class="text-center">
                 @forelse($pengembalians as $item)
                 <tr>
-                    <td>{{ $pengembalians->fisrtName() + $loop->index }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->peminjaman->user->name ?? '-' }}</td>
                     {{-- FOTO --}}
                     <td>
@@ -65,9 +65,6 @@
                 @endforelse
             </tbody>
         </table>
-
-        <!-- pagination -->
-        <x-pagination :paginator="$pengembalians" />
     </div>
 </div>
 @endsection

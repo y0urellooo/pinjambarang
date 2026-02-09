@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
@@ -23,19 +23,18 @@ class KategoriController extends Controller
     {
         $request->validate([
             'nama_kategori' => 'required|max:25|unique:kategoris',
-        ],
-        [
-            'nama_kategori.required' => 'Nama kategori wajib diisi.',
-            'nama_kategori.unique' => 'Nama kategori sudah ada.',
-            'nama_kategori.max' => 'Nama kategori maksimal 25 huruf'
+        ], [
+            'nama_kategori.unique' => 'kategori sudah ada'
         ]);
 
-        Kategori::create([
+        $kategori = Kategori::create([
             'nama_kategori' => $request->nama_kategori,
         ]);
 
-        return redirect()
-            ->route('admin.kategori.index')
+        // ✅ CREATE
+        logAktivitas('Kategori', 'Menambahkan kategori: ' . $kategori->nama_kategori);
+
+        return redirect()->route('admin.kategori.index')
             ->with('success', 'Kategori berhasil ditambahkan');
     }
 
@@ -52,11 +51,19 @@ class KategoriController extends Controller
         ]);
 
         $kategori = Kategori::findOrFail($id);
+
+        $namaLama = $kategori->nama_kategori;
+
         $kategori->nama_kategori = $request->nama_kategori;
         $kategori->save();
 
-        return redirect()
-            ->route('admin.kategori.index')
+        // ✅ UPDATE
+        logAktivitas(
+            'Kategori',
+            'Mengedit kategori: ' . $namaLama . ' menjadi ' . $kategori->nama_kategori
+        );
+
+        return redirect()->route('admin.kategori.index')
             ->with('success', 'Kategori berhasil diupdate');
     }
 
@@ -65,14 +72,26 @@ class KategoriController extends Controller
         $kategori = Kategori::findOrFail($id);
 
         if ($kategori->alats()->count() > 0) {
-            return redirect()
-                ->route('admin.kategori.index')
+
+            // optional: gagal hapus tetap dicatat
+            logAktivitas(
+                'Kategori',
+                'Gagal menghapus kategori: ' . $kategori->nama_kategori . ' karena masih digunakan'
+            );
+
+            return redirect()->route('admin.kategori.index')
                 ->with('error', 'Kategori tidak dapat dihapus karena digunakan oleh alat.');
         }
+
+        $namaKategori = $kategori->nama_kategori;
+
         $kategori->delete();
 
-        return redirect()
-            ->route('admin.kategori.index')
+        // ✅ DELETE
+        logAktivitas('Kategori', 'Menghapus kategori: ' . $namaKategori);
+
+        return redirect()->route('admin.kategori.index')
             ->with('success', 'Kategori berhasil dihapus');
     }
 }
+

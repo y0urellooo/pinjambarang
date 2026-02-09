@@ -22,7 +22,6 @@ class ProfilController extends Controller
     {
         $user = Auth::user();
 
-        // VALIDASI HANYA FIELD YANG ADA
         $request->validate([
             'name' => 'required',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -39,6 +38,11 @@ class ProfilController extends Controller
         }
 
         $user->update($data);
+
+        logAktivitas(
+            'Profil Admin',
+            'Memperbarui profil admin'
+        );
 
         return redirect()->route('admin.profile.show')
             ->with('success', 'Profil admin berhasil diperbarui');

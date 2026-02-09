@@ -9,7 +9,7 @@
     <div class="card">
         <div class="card-body p-0">
             <table class="table table-bordered mb-0">
-                <thead class="table-dark text-center">
+                <thead class="table-primary text-center">
                     <tr>
                         <th>No</th>
                         <th>Foto</th>
@@ -73,13 +73,13 @@
 
                             <td>
                                 @if($alat->jumlah_alat > 0)
-                                    <span class="badge bg-success">Tersedia</span>
+                                    <span class="badge bg-primary">Tersedia</span>
                                 @else
                                     <span class="badge bg-danger">Habis</span>
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('peminjam.peminjaman.create', $alat->id) }}" class="btn btn-primary btn-sm">
+                                <a href="{{ route('peminjam.peminjaman.create', $alat->id) }}" class="btn btn-outline-success btn-sm">
                                     Pinjam
                                 </a>
                             </td>

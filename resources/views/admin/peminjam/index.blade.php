@@ -9,7 +9,7 @@
 <div class="card shadow-sm">
     <div class="card-body p-0">
         <table class="table table-bordered mb-0">
-            <thead class="table-dark text-center">
+            <thead class="table-primary text-center">
                 <tr>
                     <th width="80">No</th>
                     <th>Foto</th>
@@ -27,11 +27,11 @@
                     {{-- FOTO --}}
                     <td>
                         @if ($p->foto)
-                            <img src="{{ asset('foto_peminjam/' . $p->foto) }}"
-                                 class="rounded"
-                                 width="50" height="50">
+                        <img src="{{ asset('foto_peminjam/' . $p->foto) }}"
+                            class="rounded"
+                            width="50" height="50">
                         @else
-                            <span class="text-muted">-</span>
+                        <span class="text-muted">-</span>
                         @endif
                     </td>
 
@@ -41,23 +41,22 @@
 
                     {{-- AKSI --}}
                     <td>
-                        <form 
-                            action="{{ route('admin.peminjam.toggleStatus', $p->id) }}" 
+                        <form
+                            action="{{ route('admin.peminjam.toggleStatus', $p->id) }}"
                             method="POST"
                             class="form-toggle-status"
-                            data-status="{{ $p->status }}"
-                        >
+                            data-status="{{ $p->status }}">
                             @csrf
                             @method('PATCH')
 
                             @if($p->status == 'active')
-                                <button class="btn btn-warning btn-sm">
-                                    Nonaktifkan
-                                </button>
+                            <button class="btn btn-danger btn-sm">
+                                Nonaktifkan
+                            </button>
                             @else
-                                <button class="btn btn-success btn-sm">
-                                    Aktifkan
-                                </button>
+                            <button class="btn btn-success btn-sm">
+                                Aktifkan
+                            </button>
                             @endif
                         </form>
                     </td>
@@ -72,25 +71,23 @@
             </tbody>
         </table>
 
-        <div class="p-3">
-            <x-pagination :paginator="$peminjams" />
-        </div>
+        <x-pagination :paginator="$peminjams" />
     </div>
 </div>
 
 {{-- SCRIPT --}}
 <script>
-document.querySelectorAll('.form-toggle-status').forEach(form => {
-    form.addEventListener('submit', function(e) {
-        const status = this.dataset.status;
-        const message = status === 'active'
-            ? 'Yakin ingin menonaktifkan peminjam ini?'
-            : 'Yakin ingin mengaktifkan peminjam ini?';
+    document.querySelectorAll('.form-toggle-status').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const status = this.dataset.status;
+            const message = status === 'active' ?
+                'Yakin ingin menonaktifkan peminjam ini?' :
+                'Yakin ingin mengaktifkan peminjam ini?';
 
-        if (!confirm(message)) {
-            e.preventDefault();
-        }
+            if (!confirm(message)) {
+                e.preventDefault();
+            }
+        });
     });
-});
 </script>
 @endsection

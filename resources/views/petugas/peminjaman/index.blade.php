@@ -22,7 +22,7 @@
 <div class="card shadow-sm">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
-            <thead class="table-dark text-center">
+            <thead class="table-primary text-center">
                 <tr>
                     <th>No</th>
                     <th>Peminjam</th>
@@ -90,7 +90,7 @@
                         <form action="{{ route('petugas.peminjaman.approve', $item->id) }}" method="POST"
                             class="d-inline">
                             @csrf
-                            <button class="btn btn-success btn-sm">
+                            <button class="btn btn-outline-success btn-sm">
                                 Setujui
                             </button>
                         </form>
@@ -98,7 +98,7 @@
                         <form action="{{ route('petugas.peminjaman.reject', $item->id) }}" method="POST"
                             class="d-inline">
                             @csrf
-                            <button class="btn btn-danger btn-sm">
+                            <button class="btn btn-outline-danger btn-sm">
                                 Tolak
                             </button>
                         </form>
@@ -109,7 +109,7 @@
 
                         {{-- PENGAJUAN KEMBALI --}}
                         @elseif($item->status === 'pengajuan_kembali')
-                        <a href="{{ route('petugas.pengembalian.create', $item->id) }}" class="btn btn-warning btn-sm">
+                        <a href="{{ route('petugas.pengembalian.create', $item->id) }}" class="btn btn-outline-warning btn-sm">
                             Proses Pengembalian
                         </a>
 

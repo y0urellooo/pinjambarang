@@ -20,9 +20,9 @@
                        required>
             </div>
 
-            <button class="btn btn-primary">Update</button>
+            <button class="btn btn-outline-primary">Update</button>
             <a href="{{ route('admin.kategori.index') }}"
-               class="btn btn-secondary">
+               class="btn btn-outline-secondary">
                 Kembali
             </a>
         </form>

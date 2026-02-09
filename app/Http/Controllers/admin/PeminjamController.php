@@ -25,6 +25,13 @@ class PeminjamController extends Controller
         $user->status = $user->status === 'active' ? 'nonactive' : 'active';
         $user->save();
 
+        // log aktivitas
+        logAktivitas('Peminjam', 'Mengubah status peminjam: ' . $user->name);
+
+        $statusBaru = $user->status === 'active' ? 'Aktif' : 'Nonaktif';
+
+        logAktivitas('Peminjam', 'Mengubah status ' . $user->name . ' menjadi ' . $statusBaru);
+
         return back()->with('success', 'Status peminjam berhasil diubah');
     }
 }

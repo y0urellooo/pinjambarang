@@ -88,8 +88,8 @@
 
 
         <div class="d-flex gap-2">
-            <button class="btn btn-primary">Simpan</button>
-            <a href="{{ route('admin.alat.index') }}" class="btn btn-secondary">Kembali</a>
+            <button class="btn btn-outline-primary">Simpan</button>
+            <a href="{{ route('admin.alat.index') }}" class="btn btn-outline-secondary">Kembali</a>
         </div>
     </div>
 </form>

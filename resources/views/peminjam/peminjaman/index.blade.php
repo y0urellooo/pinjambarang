@@ -21,7 +21,7 @@
 <div class="card">
     <div class="card-body p-0">
         <table class="table table-bordered mb-0">
-            <thead class="table-dark text-center">
+            <thead class="table-primary text-center">
                 <tr>
                     <th>No</th>
                     <th>Foto</th>
@@ -71,7 +71,7 @@
                             class="d-inline" onsubmit="return confirm('Batalkan pengajuan peminjaman?')">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-danger btn-sm">
+                            <button class="btn btn-outline-danger btn-sm">
                                 Batalkan
                             </button>
                         </form>
@@ -80,7 +80,7 @@
                         <form method="POST" action="{{ route('peminjam.peminjaman.ajukan_pengembalian', $item->id) }}"
                             onsubmit="return confirm('Ajukan pengembalian barang?')">
                             @csrf
-                            <button class="btn btn-warning rounded text-white fw-semibold btn-sm">
+                            <button class="btn btn-outline-warning rounded fw-semibold btn-sm">
                                 Ajukan Pengembalian
                             </button>
                         </form>

@@ -28,8 +28,8 @@
                 @enderror
             </div>
 
-            <button class="btn btn-success">Simpan</button>
-            <a href="{{ route('admin.kategori.index') }}" class="btn btn-secondary">Kembali</a>
+            <button class="btn btn-outline-success">Simpan</button>
+            <a href="{{ route('admin.kategori.index') }}" class="btn btn-outline-secondary">Kembali</a>
         </form>
     </div>
 </div>
