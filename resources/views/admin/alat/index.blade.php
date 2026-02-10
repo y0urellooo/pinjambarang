@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Data Alat')
-@section('page_title', 'Alat')
+@section('page_title', 'Manajemen Alat')
 
 @section('content')
     <h3 class="mb-4">Data Alat</h3>
@@ -46,7 +46,11 @@
                             </td>
 
                             <td>{{ $alat->nama_alat }}</td>
-                            <td>{{ $alat->kategori->nama_kategori }}</td>
+                            <td>
+                                @foreach ($alat->kategoris as $kategori)
+                                    <span class="badge bg-secondary">{{ $kategori->nama_kategori }}</span>
+                                @endforeach
+                            </td>
 
 
                             <td>{{ $alat->jumlah_alat }}</td>

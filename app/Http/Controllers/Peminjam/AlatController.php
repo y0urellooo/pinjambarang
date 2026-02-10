@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class AlatController extends Controller
 {
     public function index() {
-        $alats = Alat::with('kategori')
+        $alats = Alat::with('kategoris')
         ->orderBy('nama_alat', 'asc')
         ->paginate(8);
 

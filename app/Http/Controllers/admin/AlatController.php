@@ -14,7 +14,7 @@ class AlatController extends Controller
      */
     public function index()
     {
-        $alats = Alat::latest()->paginate(8);
+        $alats = Alat::with('kategoris')->latest()->paginate(8);
         return view('admin.alat.index', compact('alats'));
     }
 
@@ -32,36 +32,47 @@ class AlatController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'nama_alat' => 'required|string|max:255',
-            'kategori_id' => 'required|exists:kategoris,id',
+            'kategori' => 'required|array|min:1',
+            'kategori.*' => 'required|exists:kategoris,id',
             'jumlah_alat' => 'required|integer|min:0',
             'deskripsi' => 'required|string',
         ], [
             'foto.image' => 'File harus berupa gambar',
             'foto.mimes' => 'Format gambar harus jpg, jpeg, atau png',
             'foto.max' => 'Ukuran gambar maksimal 2MB',
+
             'nama_alat.required' => 'Nama alat wajib diisi',
-            'kategori_id.required' => 'Kategori wajib dipilih',
-            'kategori_id.exists' => 'Kategori tidak valid',
+
+            'kategori.required' => 'Kategori wajib dipilih',
+            'kategori.array' => 'Kategori tidak valid',
+            'kategori.*.exists' => 'Kategori tidak ditemukan',
+
             'jumlah_alat.required' => 'Jumlah alat wajib diisi',
             'jumlah_alat.integer' => 'Jumlah alat harus berupa angka',
             'jumlah_alat.min' => 'Jumlah alat tidak boleh kurang dari 0',
+
             'deskripsi.required' => 'Deskripsi wajib diisi',
-            'deskripsi.string' => 'Deskripsi harus berupa teks',
         ]);
 
         if ($request->hasFile('foto')) {
             $foto = time() . '.' . $request->foto->extension();
             $request->foto->move(public_path('foto_alat'), $foto);
-            $validated['foto'] = $foto;
         }
 
-        Alat::create($validated);
+        $alat = Alat::create([
+            'nama_alat' => $request->nama_alat,
+            'jumlah_alat' => $request->jumlah_alat,
+            'deskripsi' => $request->deskripsi,
+            'foto' => $foto ?? null,
+        ]);
 
-        // log aktivitas
-        logAktivitas('Alat', 'Menambahkan alat: ' . $validated['nama_alat']);
+        // SIMPAN KATEGORI
+        $alat->kategoris()->attach($request->kategori);
+
+        logAktivitas('Alat', 'Menambahkan alat: ' . $alat->nama_alat);
 
         return redirect()->route('admin.alat.index')
             ->with('success', 'Alat berhasil ditambahkan');
@@ -89,34 +100,44 @@ class AlatController extends Controller
      */
     public function update(Request $request, Alat $alat)
     {
-        $validated = $request->validate([
+        $request->validate([
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'nama_alat' => 'required|string|max:255',
-            'kategori_id' => 'required|exists:kategoris,id',
+            'kategori' => 'required|array|min:1',
+            'kategori.*' => 'required|exists:kategoris,id',
             'jumlah_alat' => 'required|integer|min:0',
             'deskripsi' => 'nullable|string',
         ], [
             'foto.image' => 'File harus berupa gambar',
             'foto.mimes' => 'Format gambar harus jpg, jpeg, atau png',
             'foto.max' => 'Ukuran gambar maksimal 2MB',
+
             'nama_alat.required' => 'Nama alat wajib diisi',
-            'kategori_id.required' => 'Kategori wajib dipilih',
-            'kategori_id.exists' => 'Kategori tidak valid',
+
+            'kategori.required' => 'Kategori wajib dipilih',
+            'kategori.array' => 'Kategori tidak valid',
+            'kategori.*.exists' => 'Kategori tidak ditemukan',
+
             'jumlah_alat.required' => 'Jumlah alat wajib diisi',
             'jumlah_alat.integer' => 'Jumlah alat harus berupa angka',
             'jumlah_alat.min' => 'Jumlah alat tidak boleh kurang dari 0',
-            'deskripsi.string' => 'Deskripsi harus berupa teks',
         ]);
 
         if ($request->hasFile('foto')) {
             $foto = time() . '.' . $request->foto->extension();
             $request->foto->move(public_path('foto_alat'), $foto);
-            $validated['foto'] = $foto;
+            $alat->foto = $foto;
         }
 
-        $alat->update($validated);
+        $alat->update([
+            'nama_alat' => $request->nama_alat,
+            'jumlah_alat' => $request->jumlah_alat,
+            'deskripsi' => $request->deskripsi,
+        ]);
 
-        // log aktivitas
+        // UPDATE KATEGORI
+        $alat->kategoris()->sync($request->kategori);
+
         logAktivitas('Alat', 'Mengupdate alat: ' . $alat->nama_alat);
 
         return redirect()->route('admin.alat.index')
@@ -128,11 +149,19 @@ class AlatController extends Controller
      */
     public function destroy(Alat $alat)
     {
+        // CEK APAKAH ALAT SUDAH / SEDANG DIPINJAM
+        if ($alat->peminjaman()->exists()) {
+            return redirect()->route('admin.alat.index')
+                ->with('error', 'Alat tidak bisa dihapus karena masih digunakan dalam peminjaman');
+        }
+
         $nama = $alat->nama_alat;
+
+        // hapus relasi kategori (biar rapi)
+        $alat->kategoris()->detach();
 
         $alat->delete();
 
-        // log aktivitas
         logAktivitas('Alat', 'Menghapus alat: ' . $nama);
 
         return redirect()->route('admin.alat.index')

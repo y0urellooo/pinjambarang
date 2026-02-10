@@ -6,19 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Alat extends Model
 {
-
     protected $table = 'alats';
+
     protected $fillable = [
         'foto',
         'nama_alat',
-        'kategori_id',
         'jumlah_alat',
         'deskripsi'
     ];
 
-    public function kategori()
+    // MANY TO MANY
+    public function kategoris()
     {
-        return $this->belongsTo(Kategori::class, 'kategori_id');
+        return $this->belongsToMany(
+            Kategori::class,
+            'alat_kategori',
+            'alat_id',
+            'kategori_id'
+        );
     }
 
     public function peminjaman()

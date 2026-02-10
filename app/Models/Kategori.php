@@ -10,8 +10,13 @@ class Kategori extends Model
         'nama_kategori',
     ];
 
-    public function alats ()
+    public function alats()
     {
-        return $this->hasMany(Alat::class, 'kategori_id');
+        return $this->belongsToMany(
+            Alat::class,
+            'alat_kategori',
+            'kategori_id',
+            'alat_id'
+        );
     }
 }

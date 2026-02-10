@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $alatTersedia = Alat::where('jumlah_alat', '>', 0)->count();
         $alatHabis = Alat::where('jumlah_alat', 0)->count();
 
-        $alatTerbaru = Alat::with('kategori')
+        $alatTerbaru = Alat::with('kategoris')
             ->latest()
             ->take(5)
             ->get();

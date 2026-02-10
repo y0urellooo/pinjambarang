@@ -37,7 +37,15 @@
                             </td>
 
                             <td>{{ $alat->nama_alat }}</td>
-                            <td>{{ $alat->kategori->nama_kategori }}</td>
+                            <td class="text-center">
+                                            @forelse ($alat->kategoris as $kategori)
+                                                <span class="badge bg-light text-dark border me-1">
+                                                    {{ $kategori->nama_kategori }}
+                                                </span>
+                                            @empty
+                                                <span class="text-muted">-</span>
+                                            @endforelse
+                                        </td>
                             <td>{{ $alat->jumlah_alat }}</td>
 
                             {{-- DESKRIPSI --}}
