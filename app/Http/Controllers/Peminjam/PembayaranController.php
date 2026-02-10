@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class PembayaranController extends Controller
 {
-    // list pengembalian yang ada denda
     public function index()
     {
         $pengembalians = Pengembalian::with('peminjaman.alat')

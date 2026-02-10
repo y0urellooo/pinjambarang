@@ -11,19 +11,31 @@ class LogAktivitasController extends Controller
     public function index(Request $request)
     {
         $logs = LogAktivitas::query()
-            ->when($request->role, function($query, $role) {
+            ->when($request->role, function ($query, $role) {
                 $query->where('role', $role);
             })
-            ->when($request->modul, function($query, $modul) {
-                $query->where('modul', 'like', "%{$modul}%");
-            })
-            ->when($request->aktivitas, function($query, $aktivitas) {
-                $query->where('aktivitas', 'like', "%{$aktivitas}%");
+            ->when($request->modul, function ($query, $modul) {
+                $query->where('modul', $modul);
             })
             ->latest()
-            ->paginate(8)
+            ->paginate(10)
             ->withQueryString();
 
-        return view('admin.log.index', compact('logs'));
+        // urutkan
+        $moduls = collect([
+            'Dashboard',
+            'Alat',
+            'Kategori',
+            'Peminjaman',
+            'Pengembalian',
+            'Laporan',
+            'Petugas',
+            'Profil Admin'
+        ])->filter(
+                fn($m) =>
+                LogAktivitas::where('modul', $m)->exists()
+            );
+
+        return view('admin.log.index', compact('logs', 'moduls'));
     }
 }

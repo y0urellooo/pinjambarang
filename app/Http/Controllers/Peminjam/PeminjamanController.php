@@ -38,7 +38,7 @@ class PeminjamanController extends Controller
 
         $request->validate([
             'jumlah_pinjam' => 'required|integer|min:1|max:' . $alat->jumlah_alat,
-            'tanggal_pinjam' => 'required|date',
+            'tanggal_pinjam' => 'required|date|after_or_equal:today',
             'tanggal_kembali_rencana' => 'required|date|after_or_equal:tanggal_pinjam',
         ], [
             'jumlah_pinjam.required' => 'Jumlah pinjam wajib diisi',
@@ -46,6 +46,7 @@ class PeminjamanController extends Controller
             'jumlah_pinjam.min' => 'Jumlah pinjam minimal 1',
             'jumlah_pinjam.max' => 'Jumlah pinjam melebihi stok alat',
             'tanggal_pinjam.required' => 'Tanggal pinjam wajib diisi',
+            'tanggal_pinjam.after_or_equal' => 'Tanggal pinjam minimal hari ini',
             'tanggal_kembali_rencana.required' => 'Tanggal kembali wajib diisi',
             'tanggal_kembali_rencana.after_or_equal' => 'Tanggal kembali tidak boleh kurang dari tanggal pinjam',
         ]);

@@ -58,7 +58,7 @@ Route::prefix('admin')
             ->name('peminjam.index');
         Route::resource('/kategori', KategoriController::class);
         Route::resource('/alat', AlatController::class);
-        Route::resource('/peminjaman', PeminjamanController::class)
+        Route::resource('/data-peminjaman', PeminjamanController::class)
             ->only(['index']);
         Route::patch(
             '/admin/peminjam/{id}/toggle-status',
@@ -66,7 +66,7 @@ Route::prefix('admin')
         )->name('peminjam.toggleStatus');
 
         // pengembalian
-        Route::resource('/pengembalian', PengembalianController::class)->only(['index']);
+        Route::resource('/data-pengembalian', PengembalianController::class)->only(['index']);
 
         // log aktivitas
         Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])

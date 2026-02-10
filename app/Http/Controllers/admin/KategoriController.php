@@ -31,7 +31,6 @@ class KategoriController extends Controller
             'nama_kategori' => $request->nama_kategori,
         ]);
 
-        // ✅ CREATE
         logAktivitas('Kategori', 'Menambahkan kategori: ' . $kategori->nama_kategori);
 
         return redirect()->route('admin.kategori.index')
@@ -57,7 +56,6 @@ class KategoriController extends Controller
         $kategori->nama_kategori = $request->nama_kategori;
         $kategori->save();
 
-        // ✅ UPDATE
         logAktivitas(
             'Kategori',
             'Mengedit kategori: ' . $namaLama . ' menjadi ' . $kategori->nama_kategori
@@ -73,7 +71,6 @@ class KategoriController extends Controller
 
         if ($kategori->alats()->count() > 0) {
 
-            // optional: gagal hapus tetap dicatat
             logAktivitas(
                 'Kategori',
                 'Gagal menghapus kategori: ' . $kategori->nama_kategori . ' karena masih digunakan'
@@ -87,7 +84,6 @@ class KategoriController extends Controller
 
         $kategori->delete();
 
-        // ✅ DELETE
         logAktivitas('Kategori', 'Menghapus kategori: ' . $namaKategori);
 
         return redirect()->route('admin.kategori.index')

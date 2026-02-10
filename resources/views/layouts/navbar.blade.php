@@ -14,7 +14,7 @@
         </div>
 
         {{-- User & Notification --}}
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center me-3">
 
             @auth
                 @php

@@ -98,13 +98,26 @@
                                     <td class="fw-semibold">{{ $item->user->name ?? '-' }}</td>
                                     <td>{{ $item->tanggal_pinjam }}</td>
                                     <td class="text-center">
-                                        @if ($item->status == 'dipinjam')
-                                            <span class="badge badge-soft-warning">Dipinjam</span>
-                                        @elseif ($item->status == 'dikembalikan')
-                                            <span class="badge badge-soft-success">Dikembalikan</span>
-                                        @else
-                                            <span class="badge badge-soft-danger">Menunggu</span>
-                                        @endif
+                                        @switch($item->status)
+                                            @case('dipinjam')
+                                                <span class="badge badge-soft-primary">Dipinjam</span>
+                                                @break
+
+                                            @case('dikembalikan')
+                                                <span class="badge badge-soft-success">Dikembalikan</span>
+                                                @break
+
+                                            @case('ditolak')
+                                                <span class="badge badge-soft-danger">Ditolak</span>
+                                                @break
+
+                                            @case('terlambat')
+                                                <span class="badge badge-soft-warning">Terlambat</span>
+                                                @break
+
+                                            @default
+                                                <span class="badge badge-soft-secondary">Menunggu</span>
+                                        @endswitch
                                     </td>
                                 </tr>
                             @empty
@@ -197,8 +210,10 @@
     background: #f8f9fa;
     border-color: #0d6efd;
 }
-.badge-soft-success { background: #e6f7ee; color: #198754; }
-.badge-soft-warning { background: #fff4e5; color: #fd7e14; }
-.badge-soft-danger  { background: #fdecea; color: #dc3545; }
+.badge-soft-primary  { background: #e7f1ff; color: #0d6efd; }
+.badge-soft-success  { background: #e6f7ee; color: #198754; }
+.badge-soft-warning  { background: #fff4e5; color: #fd7e14; }
+.badge-soft-danger   { background: #fdecea; color: #dc3545; }
+.badge-soft-secondary{ background: #f1f3f5; color: #6c757d; }
 </style>
 @endsection
