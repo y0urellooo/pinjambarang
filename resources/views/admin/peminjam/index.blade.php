@@ -51,7 +51,7 @@
                             @method('PATCH')
 
                             @if($p->status == 'active')
-                                <button class="btn btn-warning btn-sm">
+                                <button class="btn btn-danger btn-sm">
                                     Nonaktifkan
                                 </button>
                             @else
